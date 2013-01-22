@@ -8,6 +8,7 @@ from argyle.postgres import create_db_user, create_db
 from argyle.supervisor import supervisor_command, upload_supervisor_app_conf
 from argyle.system import service_command, start_service, stop_service, restart_service
 
+from fabric import utils
 from fabric.api import cd, env, get, hide, local, put, require, run, settings, sudo, task
 from fabric.contrib import files, console
 
@@ -287,3 +288,35 @@ def load_db_dump(dump_file):
     temp_file = os.path.join(env.home, '%(environment)s.sql' % env)
     put(dump_file, temp_file, use_sudo=True)
     sudo('psql -d %s -f %s' % (env.db, temp_file), user=env.project_user)
+
+
+@task
+def reset_local_media():
+    """ Reset local media from remote host """
+
+    require('environment', provided_by=('staging', 'production'))
+    media = os.path.join(env.code_root, 'public/media')
+    local("rsync -rvaz 'ssh -p %s' %s@%s:%s %s/public" %
+                    (env.ssh_port, env.user, env.hosts[0], media, PROJECT_ROOT))
+
+
+@task
+def reset_local_db():
+    """ Reset local database from remote host """
+    require('code_root', provided_by=('production', 'staging'))
+    question = 'Are you sure you want to reset your local ' \
+               'database with the %(environment)s database?' % env
+    if not console.confirm(question, default=False):
+        utils.abort('Local database reset aborted.')
+    if env.environment == 'staging':
+        from raspberryio.settings.staging import DATABASES as remote
+    else:
+        from raspberryio.settings.production import DATABASES as remote
+    from raspberryio.settings.local import DATABASES as loc
+    local_db = loc['default']['NAME']
+    remote_db = remote['default']['NAME']
+    with settings(warn_only=True):
+        local('dropdb %s' % local_db)
+    local('createdb %s' % local_db)
+    host = '%s@%s' % (env.project_user, env.hosts[0])
+    local('ssh -p %s -C %s pg_dump -Ox %s | psql %s' % (env.ssh_port, host, remote_db, local_db))
