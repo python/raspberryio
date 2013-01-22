@@ -40,6 +40,7 @@
 <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
 
 <div id="page">
+    {% block navbar %}
     <div class="navbar navbar-inverse">
         <div class="navbar-inner">
             <div class="container">
@@ -55,6 +56,7 @@
             </div>
         </div>
     </div>
+    {% endblock %}
 
     {% if page.title %}
     <header>
