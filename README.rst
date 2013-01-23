@@ -44,13 +44,13 @@ Create the Postgres database::
 
     createdb -E UTF-8 raspberryio
 
-Run the initial syncdb/migrate. When asked to create a superuser type `no`::
+Run the initial syncdb/migrate. When asked to create a superuser type `no`
+(N.B. - Creating a superuser in the syncdb step will cause an integrity error because
+of a required one-to-one with a user profile model that doesn't exist in the
+database yet.)::
 
     django-admin.py syncdb
     django-admin.py migrate
-
-Creating a superuser in the syncdb step will cause an IntegrityError later
-because of the one-to-one with a user profile model.
 
 Create a superuser (This will also create the profile correctly)::
 
