@@ -12,10 +12,10 @@ class Migration(SchemaMigration):
         db.create_table('userprofile_profile', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
-            ('bio', self.gf('django.db.models.fields.TextField')()),
-            ('website', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('twitter_id', self.gf('django.db.models.fields.CharField')(max_length=200)),
-            ('avatar', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
+            ('bio', self.gf('django.db.models.fields.TextField')(default='', blank=True)),
+            ('website', self.gf('django.db.models.fields.URLField')(default='', max_length=200, blank=True)),
+            ('twitter_id', self.gf('django.db.models.fields.CharField')(default='', max_length=200, blank=True)),
+            ('avatar', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
         ))
         db.send_create_signal('userprofile', ['Profile'])
 
@@ -64,12 +64,12 @@ class Migration(SchemaMigration):
         },
         'userprofile.profile': {
             'Meta': {'object_name': 'Profile'},
-            'avatar': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
-            'bio': ('django.db.models.fields.TextField', [], {}),
+            'avatar': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'bio': ('django.db.models.fields.TextField', [], {'default': "''", 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'twitter_id': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'twitter_id': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '200', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['auth.User']", 'unique': 'True'}),
-            'website': ('django.db.models.fields.URLField', [], {'max_length': '200'})
+            'website': ('django.db.models.fields.URLField', [], {'default': "''", 'max_length': '200', 'blank': 'True'})
         }
     }
 

@@ -33,38 +33,32 @@ Then create a local settings file and set your ``DJANGO_SETTINGS_MODULE`` to use
     echo "export DJANGO_SETTINGS_MODULE=raspberryio.settings.local" >> $VIRTUAL_ENV/bin/postactivate
     echo "unset DJANGO_SETTINGS_MODULE" >> $VIRTUAL_ENV/bin/postdeactivate
 
-Exit the virtualenv and reactivate it to activate the settings just changed::
+Exit the virtualenv, add the project directory to the virtualenv and reactivate
+it to activate the settings just changed::
 
     deactivate
+    add2virtualenv ../
     workon raspberryio
 
-Create the Postgres database and run the initial syncdb/migrate::
+Create the Postgres database::
 
     createdb -E UTF-8 raspberryio
-    python manage.py syncdb
-    python manage.py migrate
+
+Run the initial syncdb/migrate. When asked to create a superuser type `no`::
+
+    django-admin.py syncdb
+    django-admin.py migrate
+
+Creating a superuser in the syncdb step will cause an IntegrityError later
+because of the one-to-one with a user profile model.
+
+Create a superuser (This will also create the profile correctly)::
+
+    django-admin.py createsuperuser
 
 You should now be able to run the development server::
 
-    python manage.py runserver
-
-
-Setup repository
-------------------------
-
-Before your project can be deployed to a server, the code needs to be
-accessible in a git repository.
-
-1. Add your project code to a git repo, hosted somewhere your server can clone it from.
-
-2. Edit ``fabfile.py`` near the top and insert your repo's URL.  E.g., change this::
-
-    env.repo = u'' # FIXME: Add repo URL
-
-   to this::
-
-    env.repo = u'git@github.com:account/reponame.git'
-
+    django-admin.py runserver
 
 
 Server Provisioning
