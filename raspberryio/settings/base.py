@@ -149,6 +149,7 @@ FIXTURE_DIRS = (
 
 
 INSTALLED_APPS = (
+    # Django Contrib apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -160,6 +161,7 @@ INSTALLED_APPS = (
     # External apps
     'south',
     'compressor',
+    # Mezzanine
     "mezzanine.boot",
     "mezzanine.conf",
     "mezzanine.core",
@@ -170,7 +172,8 @@ INSTALLED_APPS = (
     "mezzanine.galleries",
     "mezzanine.twitter",
     "mezzanine.accounts",
-    "userprofile",
+    # Project apps
+    "raspberryio.userprofile",
     #"mezzanine.mobile",
     PACKAGE_NAME_FILEBROWSER,
     PACKAGE_NAME_GRAPPELLI
