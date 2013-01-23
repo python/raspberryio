@@ -169,7 +169,8 @@ INSTALLED_APPS = (
     "mezzanine.pages",
     "mezzanine.galleries",
     "mezzanine.twitter",
-    #"mezzanine.accounts",
+    "mezzanine.accounts",
+    "userprofile",
     #"mezzanine.mobile",
     PACKAGE_NAME_FILEBROWSER,
     PACKAGE_NAME_GRAPPELLI
@@ -210,6 +211,8 @@ SKIP_SOUTH_TESTS = True
 COMPRESS_PRECOMPILERS = (
    ('text/less', 'lessc {infile} {outfile}'),
 )
+
+AUTH_PROFILE_MODULE = "userprofile.Profile"
 
 ####################
 # DYNAMIC SETTINGS #
