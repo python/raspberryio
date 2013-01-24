@@ -12,9 +12,10 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     # Static homepage template for now
-    url("^$", direct_to_template, {"template": "homepage.html"}, name="home"),
+    url(r"^$", direct_to_template, {"template": "homepage.html"}, name="home"),
 
-    url('^accounts/', include('raspberryio.userprofile.urls')),
+    url(r'^projects/', include('raspberryio.project.urls')),
+    url(r'^accounts/', include('raspberryio.userprofile.urls')),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
