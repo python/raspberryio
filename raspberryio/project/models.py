@@ -24,11 +24,9 @@ class Project(Displayable, Ownable, AdminThumbMixin):
     tldr = RichTextField()
     categories = models.ManyToManyField(BlogCategory, related_name='projects')
     score = models.IntegerField(default=0)
-    created_datetime = models.DateTimeField()
-    modified_datetime = models.DateTimeField()
+    created_datetime = models.DateTimeField('Created')
+    modified_datetime = models.DateTimeField('Modified')
 
-    # FIXME: Should be a method that returns featured_photo if avaialble and
-    # falls back to a thumbnail of the video
     admin_thumb_field = 'featured_photo'
 
     def save(self, *args, **kwargs):

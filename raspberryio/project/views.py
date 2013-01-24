@@ -4,7 +4,7 @@ from raspberryio.project.models import Project
 
 
 def project_list(request):
-    projects = Project.objects.all()
+    projects = Project.objects.published()
     return render(request, 'project/project_list.html', {
         'projects': projects,
     })
