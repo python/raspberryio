@@ -19,8 +19,21 @@ DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False
 }
 
-SOUTH_TESTS_MIGRATE = True
+
+COMPRESS_ENABLED = False
 
 CELERY_ALWAYS_EAGER = True
 
-COMPRESS_ENABLED = False
+# Testing
+SOUTH_TESTS_MIGRATE = True
+
+TEST_RUNNER = 'hilbert.test.CoverageRunner'
+
+DEFAULT_TEST_LABELS = ['project', 'userprofile']
+
+COVERAGE_MODULES = (
+    'forms',
+    'models',
+    'views',
+    'utils',
+)

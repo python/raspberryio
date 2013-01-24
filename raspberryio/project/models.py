@@ -33,7 +33,7 @@ class Project(Displayable, Ownable, AdminThumbMixin):
 
     def save(self, *args, **kwargs):
         # Set created and modified datetimes if not provided.
-        if not self.id and not 'created_datetime' not in kwargs:
+        if not self.id and not 'created_datetime' in kwargs:
             self.created_datetime = now()
         if not 'modified_datetime' in kwargs:
             self.modified_datetime = now()
@@ -46,7 +46,7 @@ class ProjectStep(Orderable, RichText):
     """
 
     project = models.ForeignKey('Project', related_name='steps')
-    gallery = models.OneToOneField(Gallery)
+    gallery = models.OneToOneField(Gallery, blank=True, null=True)
     video = models.URLField(blank=True, default='')
 
     def is_editable(self, request):

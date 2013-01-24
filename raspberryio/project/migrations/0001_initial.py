@@ -26,6 +26,7 @@ class Migration(SchemaMigration):
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='projects', to=orm['auth.User'])),
             ('featured_photo', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
             ('featured_video', self.gf('django.db.models.fields.URLField')(default='', max_length=200, blank=True)),
+            ('featured_video_thumbnail', self.gf('django.db.models.fields.files.ImageField')(max_length=100, null=True, blank=True)),
             ('tldr', self.gf('mezzanine.core.fields.RichTextField')()),
             ('score', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('created_datetime', self.gf('django.db.models.fields.DateTimeField')()),
@@ -48,7 +49,7 @@ class Migration(SchemaMigration):
             ('content', self.gf('mezzanine.core.fields.RichTextField')()),
             ('_order', self.gf('django.db.models.fields.IntegerField')(null=True)),
             ('project', self.gf('django.db.models.fields.related.ForeignKey')(related_name='steps', to=orm['project.Project'])),
-            ('gallery', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['galleries.Gallery'], unique=True)),
+            ('gallery', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['galleries.Gallery'], unique=True, null=True, blank=True)),
             ('video', self.gf('django.db.models.fields.URLField')(default='', max_length=200, blank=True)),
         ))
         db.send_create_signal('project', ['ProjectStep'])
@@ -162,6 +163,7 @@ class Migration(SchemaMigration):
             'expiry_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'featured_photo': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'featured_video': ('django.db.models.fields.URLField', [], {'default': "''", 'max_length': '200', 'blank': 'True'}),
+            'featured_video_thumbnail': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
@@ -182,7 +184,7 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "('_order',)", 'object_name': 'ProjectStep'},
             '_order': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
             'content': ('mezzanine.core.fields.RichTextField', [], {}),
-            'gallery': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['galleries.Gallery']", 'unique': 'True'}),
+            'gallery': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['galleries.Gallery']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'project': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'steps'", 'to': "orm['project.Project']"}),
             'video': ('django.db.models.fields.URLField', [], {'default': "''", 'max_length': '200', 'blank': 'True'})
