@@ -172,11 +172,11 @@ INSTALLED_APPS = (
     "mezzanine.galleries",
     "mezzanine.twitter",
     "mezzanine.accounts",
-    # Project apps
-    "raspberryio.userprofile",
-    #"mezzanine.mobile",
     PACKAGE_NAME_FILEBROWSER,
-    PACKAGE_NAME_GRAPPELLI
+    PACKAGE_NAME_GRAPPELLI,
+    # RaspberryIO apps
+    "raspberryio.userprofile",
+    "raspberryio.project",
 )
 
 PASSWORD_HASHERS = (
