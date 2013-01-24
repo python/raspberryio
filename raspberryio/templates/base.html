@@ -13,18 +13,13 @@
 
     <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico">
 
-    {% ifinstalled mezzanine.blog %}
-    <link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}">
-    <link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
-    {% endifinstalled %}
-
     {% if debug %}
-    <link rel="stylesheet/less" type="text/css" media="all" href="{{ STATIC_URL }}less/site.less">
-    <script src="{{ STATIC_URL }}js/libs/less-1.3.0.min.js"></script>
+        <link rel="stylesheet/less" type="text/css" media="all" href="{{ STATIC_URL }}less/site.less">
+        <script src="{{ STATIC_URL }}js/libs/less-1.3.0.min.js"></script>
     {% else %}
-    {% compress css %}
-    <link rel="stylesheet" type="text/less" media="all" href="{{ STATIC_URL }}less/site.less">
-    {% endcompress %}
+        {% compress css %}
+            <link rel="stylesheet" type="text/less" media="all" href="{{ STATIC_URL }}less/site.less">
+        {% endcompress %}
     {% endif %}
 
     <!--[if lt IE 9]>
