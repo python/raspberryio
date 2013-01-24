@@ -37,6 +37,13 @@ class Project(Displayable, Ownable, AdminThumbMixin):
             self.modified_datetime = now()
         super(Project, self).save(*args, **kwargs)
 
+    @models.permalink
+    def get_absolute_url(self):
+        return ('project-detail', [self.slug])
+
+    def __unicode__(self):
+        return u'Project: {0}'.format(self.title)
+
 
 class ProjectStep(Orderable, RichText):
     """
@@ -53,3 +60,13 @@ class ProjectStep(Orderable, RichText):
         """
         user = request.user
         return user.is_superuser or user.id == self.project.user_id
+
+    @models.permalink
+    def get_absolute_url(self):
+        # FIXME: Change to project_step_detail when implemented
+        return ('project-detail', [self.project.slug])
+
+    def __unicode__(self):
+        return u'ProjectStep: Step {0} of project {1}'.format(
+            self._order, self.project.title
+        )
