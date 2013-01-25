@@ -14,8 +14,12 @@ urlpatterns = patterns('',
     # Static homepage template for now
     url(r"^$", direct_to_template, {"template": "homepage.html"}, name="home"),
 
+    # RaspberryIO apps
     url(r'^projects/', include('raspberryio.project.urls')),
     url(r'^accounts/', include('raspberryio.userprofile.urls')),
+
+    # Mezzanine urls
+    url(r'^', include('mezzanine.urls')),
 
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
