@@ -2,6 +2,7 @@ from django.contrib.sites.models import Site as DjangoSite
 
 from hilbert.test import TestCase
 from mezzanine.utils.sites import current_site_id
+from mezzanine.blog.models import BlogCategory
 
 from raspberryio.userprofile import models as userprofile
 from raspberryio.project import models as project
@@ -42,8 +43,9 @@ class RaspberryIOBaseTestCase(TestCase):
         }
         return self.create_instance(DjangoSite, defaults=defaults, **kwargs)
 
-    def create_superuser(self, **kwargs):
-        user = self.create_user(**kwargs)
+    def create_superuser(self, data=None):
+        data = data or {}
+        user = self.create_user(data=data)
         user.is_superuser = True
         user.save()
         return user
@@ -75,3 +77,9 @@ class ProjectBaseTestCase(RaspberryIOBaseTestCase):
         return self.create_instance(
             project.ProjectStep, defaults=defaults, **kwargs
         )
+
+    def create_category(self, **kwargs):
+        defaults = {
+            'title': kwargs.pop('title', self.get_random_string()),
+        }
+        return self.create_instance(BlogCategory, defaults=defaults, **kwargs)

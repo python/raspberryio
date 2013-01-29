@@ -1,6 +1,7 @@
 from django.db import models
 
-from mezzanine.core.models import Displayable, Ownable, Orderable, RichText
+from mezzanine.core.models import (Displayable, Ownable, Orderable, RichText,
+    CONTENT_STATUS_PUBLISHED)
 from mezzanine.core.fields import RichTextField
 from mezzanine.utils.models import AdminThumbMixin, upload_to
 from mezzanine.utils.timezone import now
@@ -36,6 +37,11 @@ class Project(Displayable, Ownable, AdminThumbMixin):
         if not 'modified_datetime' in kwargs:
             self.modified_datetime = now()
         super(Project, self).save(*args, **kwargs)
+
+    @property
+    def is_published(self):
+        return (self.publish_date <= now() and
+            self.status == CONTENT_STATUS_PUBLISHED)
 
     @models.permalink
     def get_absolute_url(self):

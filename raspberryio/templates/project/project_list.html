@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load url from future %}
 
 {% block body_id %}project-list{% endblock %}
 
@@ -73,6 +74,10 @@
 			<a href="#"><img src="http://placehold.it/250x200&amp;text=+ Add a project"></a>
 		</li>
 	</ul>
+	{# FIXME: Unstyled display of existing projects #}
+    {% for project in projects %}
+        <a href="{% url 'project-detail' project.slug %}">{{ project.title }}</p>
+    {% endfor %}
 </div>		  
 {% endblock %}
 

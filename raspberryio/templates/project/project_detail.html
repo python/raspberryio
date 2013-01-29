@@ -1,5 +1,20 @@
 {% extends "base.html" %}
+{% load url from future %}
 
 {% block main %}
-    {{ project }}
+    <h2>
+        {{ project.title }}
+    </h2>
+    Categories
+    <ul>
+        {% for category in project.categories.all %}
+            <li class="category">
+                {{ category.title }}
+            </li>
+        {% endfor %}
+    </ul>
+    {{ project.tldr|safe }}
+    {% if request.user == project.user or request.user.is_superuser %}
+        <a href="{% url 'project-create-edit' project.slug %}">Edit Project</a>
+    {% endif %}
 {% endblock %}
