@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags %}
+
+{% block meta_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block body_id %}account{% endblock %}
+
+{% block main %}
+<fieldset>
+    <legend>{{ title }} </legend>
+    <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+    {% for field in form %}
+        <div class="fieldWrapper {{ field.html_name }}">
+            {{ field.errors }}
+            {{ field.label_tag }}{{ field }}
+        </div>
+    {% endfor %}
+   	<input class="submit" type="submit" value="{{ title }}">
+    </form>
+</fieldset>
+{% endblock %}
+
+
+

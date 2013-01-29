@@ -9,7 +9,7 @@
     <meta name="description" content="{% block meta_description %}{% endblock %}">
     {% block extra-meta %}{% endblock %}
 
-    <title>{% block meta_title %}{% endblock %}{% block site_title %}{{ settings.SITE_TITLE }}{% endblock %}</title>
+    <title>{% block meta_title %}{% endblock %} {% block site_title %}{{ settings.SITE_TITLE }}{% endblock %}</title>
 
     <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico">
 
@@ -72,9 +72,13 @@
 
     {% block content %}
         <div class="container">
+            <div id="content">
             {% block main %}{% endblock %}
+            </div>
         </div>
     {% endblock %}
+
+    <div id="push"></div>
 
     {% block navbar %}
     <div class="navbar navbar-fixed-bottom">

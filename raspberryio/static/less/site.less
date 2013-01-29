@@ -6,6 +6,7 @@
 // -- Fonts
 // -- Generic styles
 // -- Homepage
+// -- Account
 
 /* Bootstrap imports
 ==================== */
@@ -51,6 +52,10 @@ html, body {
 #page {
 	min-height: 100%;
     position: relative;
+}
+
+#content {
+	padding-top: 15px;
 }
 
 #global-nav {
@@ -145,14 +150,6 @@ input:-ms-input-placeholder  {
 /* Homepage
 ================= */
 body#homepage {
-	// #page {
-	// 	@media (min-width: 320px) and (max-width: 600px) {
-	// 		padding-bottom: 120px;
-	// 	}
-	// 	@media (min-width: 800px) and (max-width: 1024px) {
-	// 		padding-bottom: 120px;
-	// 	}
-	// }
 	header {
         padding: 25px 0;
         text-align: center;
@@ -205,4 +202,29 @@ body#homepage {
 	    	}
     	}
     } 
+}
+
+/* Account
+================= */
+body#account {
+	fieldset {
+		padding-bottom: 25px;
+		legend {
+			.page-header;
+			border-bottom-color: @grayLight;
+			margin-bottom: 0;
+		}
+		form {
+			textarea {
+				width: 50%;
+				height: 100px;
+			}
+			.submit {
+				.btn;
+				.btn-primary;
+				.btn-large;
+				margin: 20px 0;
+			}
+		}
+	}
 }
