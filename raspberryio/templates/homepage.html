@@ -8,8 +8,15 @@
 {% block content %}
 <header>
   <hgroup class="container">
-    <h1>Welcome to Rapberry I/O!</h1>
+    <h1>Welcome to Raspberry I/O!</h1>
     <p>This is a place for learning, sharing and creating your Raspberry Pi project.</p>
+    {# This form should post the user name to the registration form on submit. #}
+    <form class="form-search">
+    	<div class="input-append">
+    		<input type="text" class="search-query">
+    		<button type="submit" class="btn">Sign Up</button>
+    	</div>
+    </form>
   </hgroup>
 </header>
 

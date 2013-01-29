@@ -43,7 +43,6 @@
                 {% if user.is_authenticated %}
                 <a href="{% url 'logout' %}">Log Out</a>
                 {% else %}
-                <a href="{% url 'signup' %}">Sign Up</a>
                 <a href="{% url 'login' %}">Log In</a>
                 {% endif %}
                 <form class="navbar-search">
