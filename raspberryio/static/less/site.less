@@ -89,6 +89,19 @@ html, body {
 	}
 }
 
+input::-webkit-input-placeholder {
+	color: #CCCCCC;
+}
+input:-moz-placeholder {
+	color: #CCCCCC;
+}
+input::-moz-placeholder {
+	color: #CCCCCC;
+}
+input:-ms-input-placeholder  {
+	color: #CCCCCC;
+}
+
 .navbar {
 	font-size: 18px;
 	min-height: 60px;
@@ -175,7 +188,7 @@ body#homepage {
     	text-align: center;
     	form {
 	    	input { 
-	    		padding: 10px 15px;
+	    		padding: 8px 15px 10px 15px;
 	    		.border-radius(20px);
 	    		width: 50%;
 	    		font-size: 24px;
