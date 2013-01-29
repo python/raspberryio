@@ -225,6 +225,10 @@ COMPRESS_PRECOMPILERS = (
 
 AUTH_PROFILE_MODULE = "userprofile.Profile"
 
+ACCOUNTS_PROFILE_VIEWS_ENABLED = True
+
+
+
 ####################
 # DYNAMIC SETTINGS #
 ####################
