@@ -42,49 +42,154 @@
 
 body {
 	background: url('../img/background.png');
-	padding-top: 40px;
 }
 
-h1 {
-	font-family: 'Harabara';
-	font-weight: normal;
-	letter-spacing: 0.0001em; 
+html, body {
+	height: 100%;
 }
 
+#page {
+	min-height: 100%;
+    position: relative;
+}
 
-
-header {
-	h1 {
-		.page-header;
-		font-family: 'Harabara, Helvetica, Arial, sans-serif';
+#global-nav {
+	.box-shadow(0 -1px 3px @grayLight);
+	background-color: @white;
+	padding: 5px 20px 10px;
+	@media (max-width: 767px) {
+		margin: 0 -20px;
 	}
+	a { margin-top: 9px;}
+	.brand {
+		.pull-left;
+		font-family: 'Harabara';
+ 		font-weight: normal;
+ 		letter-spacing: 0.02em; 
+ 		font-size: 24px;
+	}
+	.right-block {
+		.pull-right;
+		font-size: 13px;
+		@media (max-width: 480px) {
+			float: none;
+		}
+		a {
+			.pull-left;
+			padding-right: 10px;
+			@media (max-width: 480px) {
+				padding: 0 10px;
+			}
+		}
+		.navbar-search {
+			@media (max-width: 480px) {
+				margin-top: 8px;
+			}
+		}
+	}
+}
+
+.navbar {
+	font-size: 18px;
+	min-height: 60px;
+	@media (max-width: 979px) {
+		position: fixed;
+	}	
+	.navbar-inner { 
+	 	text-align: center;
+	 	padding: 0 5px;
+	 	.box-shadow(0 1px 4px @grayLighter);
+	 	border-bottom: 1px solid #CCCCCC;
+	 	
+	}
+	.nav,.nav > li {
+	    float: none;
+	    display: inline-block;
+	    *display: inline; /* ie7 fix */
+	    *zoom: 1; /* hasLayout ie7 trigger */
+	    vertical-align: top;
+	}
+	.nav > li {
+		border-left: 1px solid @grayLighter;
+		&:last-child { border-right: 1px solid @grayLighter; }
+		> a {
+	    	padding: 15px 20px;
+		}
+	}
+	footer {
+		text-align: center;
+		font-size: 11px;
+		color: @white;
+		padding: 10px 0;
+		background-color: @grayDark;
+	}
+}
+
+#push {
+	height: 60px;
 }
 
 /* Homepage
 ================= */
 body#homepage {
-	text-align: center;
-	.masthead {
-		h1 { 
-			color: @darkPurple;
+	// #page {
+	// 	@media (min-width: 320px) and (max-width: 600px) {
+	// 		padding-bottom: 120px;
+	// 	}
+	// 	@media (min-width: 800px) and (max-width: 1024px) {
+	// 		padding-bottom: 120px;
+	// 	}
+	// }
+	header {
+        padding: 25px 0;
+        text-align: center;
+        hgroup {
+            p { .lead; }
+        }
+    }
+    #featured {
+    	background-color: @black;
+    	@media (max-width: 767px) {
+			margin: 0 -20px;
 		}
-		img { 
-			width: 20%;
-			min-width: 150px; 
+		.info {
+			padding: 150px 20px;
+			@media (max-width: 480px) {
+				padding: 50px 20px;
+			}
+			.text-shadow();
+			color: @white;
+			background: url('http://placekitten.com/1500/500');
 		}
-	}
-
-	.message {
-		margin: auto;
-		padding: 20px 0;
-		max-width: 767px;
-		a {
-			.btn;
-			.btn-inverse;
-			.btn-large;
+		h2 {
+			margin: 0;
 		}
-		p {
-			.lead;
+		p { 
+			font-size: 21px;
+    		font-weight: 200;
+    		line-height: 30px;
 		}
-	}
+    }
+    #jumbo-search {
+    	padding: 25px 0;
+    	text-align: center;
+    	form {
+	    	input { 
+	    		padding: 10px 15px;
+	    		.border-radius(20px);
+	    		width: 50%;
+	    		font-size: 24px;
+	    		@media (max-width: 800px) {
+	    			width: 90%;
+	    		}
+	    		@media (min-width: 800px) and (max-width: 1024px) {
+	    			width: 70%;
+	    		}
+	    	}
+	    	span {
+	    		.help-block;
+	    		padding: 10px 0;
+	    	}
+    	}
+    } 
 }

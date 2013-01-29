@@ -35,22 +35,23 @@
 <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
 
 <div id="page">
-    {% block navbar %}
-    <div class="navbar navbar-inverse">
-        <div class="navbar-inner">
-            <div class="container">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-                {% if settings.SITE_TITLE %}<a class="brand" href="/">{{ settings.SITE_TITLE }}</a>{% endif %}
-                <div class="nav-collapse">
-                    {% page_menu "pages/menus/dropdown.html" %}
-                </div>
+    {% block global_nav %}
+    <nav id="global-nav">
+        <div class="container">
+            <a class="brand" href="/">{{ settings.SITE_TITLE }}</a>
+            <div class="right-block">
+                {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">Log Out</a>
+                {% else %}
+                <a href="{% url 'signup' %}">Sign Up</a>
+                <a href="{% url 'login' %}">Log In</a>
+                {% endif %}
+                <form class="navbar-search">
+                    <input type="text" class="search-query" placeholder="Search">
+                </form>
             </div>
         </div>
-    </div>
+    </nav>
     {% endblock %}
 
     {% if page.title %}
@@ -76,14 +77,39 @@
         </div>
     {% endblock %}
 
-    <footer>
-    {% block footer %}{% endblock %}
-    </footer>
+    {% block navbar %}
+    <div class="navbar navbar-fixed-bottom">
+        <div class="navbar-inner">
+            <div class="container">
+                <ul class="nav">
+                    <li>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'profile' user.username %}">Your Profile</a>
+                        {% else %}
+                        <a href="{% url 'login' %}">Log In</a>
+                        {% endif %}
+                    </li>
+                    <li class="home"><a href="#">Home</a></li>
+                    <li><a href="#">Projects</a></li>
+                </ul>
+            </div>
+        </div> 
+        <footer>
+            {% block footer %}
+            &copy;{% now "Y" %} <a href="http://www.python.org/psf/">Python Software Foundation</a>
+            {% page_menu "pages/menus/dropdown.html" %}
+            {% endblock %}
+        </footer>
+    </div>
+    {% endblock %}
+
 
     <script src="//code.jquery.com/jquery-1.8.3.min.js"></script>
     {% include "includes/footer_scripts.html" %}
 
     <script src="{{ STATIC_URL }}js/libs/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/libs/jquery.fittext.js"></script>
+
 
     {% compress js %}
     <script src="{{ STATIC_URL }}js/site.js"></script>
