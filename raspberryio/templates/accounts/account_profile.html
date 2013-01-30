@@ -7,16 +7,93 @@
 {% block body_class %}profile{% endblock %}
 
 {% block main %}
-<div id="content">
-	<div class="userinfo span3">	
-		<img src="{% gravatar_url profile_user.email 175 %}">
-		<div class="profile">
-		{% if profile_user == request.user %}
-			<a href="{% url "profile_update" %}">{% trans "Edit profile" %}</a>
+<div class="row">
+	<div class="avatar span2">	
+		<img src="{% gravatar_url profile_user.email 250 %}">
+	</div>
+	<div class="userprofile span6">
+		<h2>
+			{{ profile_user.get_full_name }}
+			{% if not profile_user == request.user %}<a class="follow">Follow</a>{% endif %}
+			<span>{{ profile_user.username }}</span>
+		</h2>
+		{% with profile_user.get_profile as profile %}
+		{% if profile.website or profile.twitter_id %}
+		<ul>
+			<li>
+				<a href="{{ profile_user.get_profile.website }}">
+					{{ profile_user.get_profile.website }}
+				</a>
+			</li>
+			<li>
+				<a href="http://twitter.com/{{ profile_user.get_profile.twitter_id }}">
+					@{{ profile_user.get_profile.twitter_id }}
+				</a>
+			</li>
+		</ul>
 		{% endif %}
-		<h2>{{ profile_user.get_full_name }}</h2>
-		<p><a class="follow">Follow</a></p>
-		</div>
+		{% if profile.bio %}<p>{{ profile.bio }}</p>{% endif %}
+		{% endwith %}
+	</div>
+	<div class="stats span3">
+		<h3>Stats</h3>
+		<ul>
+			<li><strong>Public projects:</strong> 1</li>
+			<li><strong>Watched projects:</strong> </li>
+			<li><strong>Followers:</strong> <a href="#">5</a></li>
+			<li><strong>Following:</strong> <a href="#">2</a></li>
+		</ul>
 	</div>
 </div>
+<div class="row">
+	<div class="span12">
+		<h3>{{ profile_user.first_name }}'s Projects</h3>
+	</div>
+</div>
+{% endblock %}
+
+{% block full_container %}
+<div class="user-projects">
+	<ul>
+		<li>
+			<a href="#">
+		    	<img src="http://placehold.it/250x200&amp;text=Project photo">
+		    </a>
+		</li>
+		<li>
+			<a href="#">
+		    	<img src="http://placehold.it/250x200&amp;text=Project photo">
+		    </a>
+		</li>
+		<li>
+			<a href="#">
+		    	<img src="http://placehold.it/250x200&amp;text=Project photo">
+		    </a>
+		</li>
+		<li>
+			<a href="#">
+		    	<img src="http://placehold.it/250x200&amp;text=Project photo">
+		    </a>
+		</li>
+		<li>
+			<a href="#">
+		    	<img src="http://placehold.it/250x200&amp;text=Project photo">
+		    </a>
+		</li>
+		<li>
+			<a href="#">
+		    	<img src="http://placehold.it/250x200&amp;text=Project photo">
+		    </a>
+		</li>
+		<li>
+			<a href="#">
+		    	<img src="http://placehold.it/250x200&amp;text=Project photo">
+		    </a>
+		</li>
+		<li class="add">
+		    <img src="http://placehold.it/250x200&amp;text=Project photo">
+		    <a href="#" class="add-btn">+ Project</a>
+		</li>
+	</ul>
+</div>		  
 {% endblock %}
