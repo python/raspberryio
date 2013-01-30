@@ -41,6 +41,7 @@
             <a class="brand" href="/">{{ settings.SITE_TITLE }}</a>
             <div class="right-block">
                 {% if user.is_authenticated %}
+                <a href="{% url 'profile' user.username %}">My Profile</a>
                 <a href="{% url 'logout' %}">Log Out</a>
                 {% else %}
                 <a href="{% url 'login' %}">Log In</a>
@@ -85,15 +86,15 @@
         <div class="navbar-inner">
             <div class="container">
                 <ul class="nav">
-                    <li>
-                        {% if user.is_authenticated %}
-                        <a href="{% url 'profile' user.username %}">Your Profile</a>
-                        {% else %}
-                        <a href="{% url 'login' %}">Log In</a>
-                        {% endif %}
-                    </li>
-                    <li class="home"><a href="#">Home</a></li>
-                    <li><a href="#">Projects</a></li>
+                    {% if user.is_authenticated %}
+                    {# Below goes to form to add a project. #}
+                    <li><a href="#">Create</a></li>
+                    {% endif %}
+                    <li><a href="#">Explore</a></li>
+                    <li><a href="#">Learn</a></li>
+                    {% comment %}
+                    <li><a href="#">Contests</a></li>
+                    {% endcomment %}
                 </ul>
             </div>
         </div> 

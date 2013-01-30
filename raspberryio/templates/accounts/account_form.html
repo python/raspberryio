@@ -9,12 +9,7 @@
 <fieldset>
     <legend>{{ title }} </legend>
     <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
-    {% for field in form %}
-        <div class="fieldWrapper {{ field.html_name }}">
-            {{ field.errors }}
-            {{ field.label_tag }}{{ field }}
-        </div>
-    {% endfor %}
+   	{% fields_for form %}
    	<input class="submit" type="submit" value="{{ title }}">
     </form>
 </fieldset>

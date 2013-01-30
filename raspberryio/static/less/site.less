@@ -6,7 +6,7 @@
 // -- Fonts
 // -- Generic styles
 // -- Homepage
-// -- Account
+// -- Account pages
 
 /* Bootstrap imports
 ==================== */
@@ -110,6 +110,9 @@ input:-ms-input-placeholder  {
 .navbar {
 	font-size: 18px;
 	min-height: 60px;
+	@media (max-width: 320px) {
+		font-size: 14px;
+	}
 	@media (max-width: 979px) {
 		position: fixed;
 	}	
@@ -155,6 +158,20 @@ body#homepage {
         text-align: center;
         hgroup {
             p { .lead; }
+            input { 
+	    		padding: 8px 15px 10px 15px;
+	    		.border-radius(20px 0 0 20px);
+	    		font-size: 20px;
+	    		@media (max-width: 320px) {
+	    			padding: 10px 10px 8px;
+	    			font-size: 16px;
+	    			width: 60%;
+	    		}
+	    	}
+	    	.btn {
+	    		padding: 9px 12px;
+	    		.border-radius(0 20px 20px 0);
+	    	}
         }
     }
     #featured {
@@ -204,7 +221,7 @@ body#homepage {
     } 
 }
 
-/* Account
+/* Account pages
 ================= */
 body#account {
 	fieldset {
@@ -218,12 +235,42 @@ body#account {
 			textarea {
 				width: 50%;
 				height: 100px;
+				@media (max-width: 480px) {
+					width: 90%;
+				}
 			}
 			.submit {
 				.btn;
 				.btn-primary;
 				.btn-large;
 				margin: 20px 0;
+			}
+		}
+	}
+	&.login {
+		.submit {
+			margin: 20px 0 0 0;
+		}
+		.extra {
+			margin-bottom: 20px;
+		}
+	}
+	&.profile {
+		#content {
+			.makeRow;
+		}
+		.userinfo {
+			img {
+				border: 8px solid @white;
+				.box-shadow( 1px 1px 3px 2px @grayLight);
+			}
+			.profile {
+				text-align: center;
+				a.follow {
+					.btn;
+					.btn-primary;
+					.btn-large;
+				}
 			}
 		}
 	}

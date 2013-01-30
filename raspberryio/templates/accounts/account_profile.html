@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n future mezzanine_tags %}
+
+{% block meta_title %}{{ profile_user.username }}{% endblock %}
+{% block title %}{{ profile_user.username }}{% endblock %}
+{% block body_id %}account{% endblock %}
+{% block body_class %}profile{% endblock %}
+
+{% block main %}
+<div id="content">
+	<div class="userinfo span3">	
+		<img src="{% gravatar_url profile_user.email 175 %}">
+		<div class="profile">
+		{% if profile_user == request.user %}
+			<a href="{% url "profile_update" %}">{% trans "Edit profile" %}</a>
+		{% endif %}
+		<h2>{{ profile_user.get_full_name }}</h2>
+		<p><a class="follow">Follow</a></p>
+		</div>
+	</div>
+</div>
+{% endblock %}

@@ -12,4 +12,6 @@ window.log = function f(){ log.history = log.history || []; log.history.push(arg
 $(function() {
     $('.middleinput:text, textarea').addClass('xlarge');
     $('.control-group label').addClass('control-label');
+
+    $(".userinfo h2").fitText(1.2, { minFontSize: '28px', maxFontSize: '30px' });
 });

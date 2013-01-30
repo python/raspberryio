@@ -10,11 +10,11 @@
   <hgroup class="container">
     <h1>Welcome to Raspberry I/O!</h1>
     <p>This is a place for learning, sharing and creating your Raspberry Pi project.</p>
-    {# This form should post the user name to the registration form on submit. #}
-    <form class="form-search">
+    {# This form should post the username to the registration form on submit. #}
+    <form class="form-search">{% csrf_token %}
     	<div class="input-append">
-    		<input type="text" class="search-query" placeholder="Enter your name">
-    		<button type="submit" class="btn">Sign Up</button>
+    		<input type="text" class="search-query" placeholder="Pick a username">
+    		<button type="submit" class="btn">Continue</button>
     	</div>
     </form>
   </hgroup>
@@ -33,5 +33,4 @@
     	<span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
 	</form>
 </div>
-
 {% endblock %}
