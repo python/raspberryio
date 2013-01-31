@@ -166,7 +166,7 @@ class ProjectCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_edit_invalid_form(self):
-        response = self.client.post(self.url, {'title': ''})
+        response = self.client.post(self.get_edit_url(), {'title': ''})
         project_form = response.context['project_form']
         self.assertEqual(response.status_code, 200)
         self.assertTrue(project_form.errors)
@@ -181,4 +181,96 @@ class ProjectCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
             'categories': [self.create_category().id]
         }
         response = self.client.post(self.get_edit_url(), form_data)
+        self.assertEqual(response.status_code, 403)
+
+
+class ProjectStepCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
+    url_name = 'project-step-create-edit'
+
+    def setUp(self):
+        self.project = self.create_project(status=CONTENT_STATUS_PUBLISHED)
+        super(ProjectStepCreateEditTestCase, self).setUp()
+        # AuthViews create and auto-login a user. Set the project to belong to
+        # this user
+        self.project.user = self.user
+        self.project.save()
+
+    def get_url_args(self):
+        """ Sets the args for the create project step url set in self.url """
+        return (self.project.slug,)
+
+    def get_edit_url(self, project_slug, step_order):
+        """
+        self.url points to using the view for creating a new step. Use this
+        helper to create a link to the edit view.
+        """
+        return reverse(self.url_name, args=(project_slug, step_order))
+
+    def test_other_user_cannot_edit(self):
+        other_user = self.create_user(data={'password': 'password'})
+        self.client.login(username=other_user.username, password='password')
+        project_step = self.create_project_step(project=self.project)
+        url = self.get_edit_url(self.project.slug, project_step._order)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+    def test_superuser_can_edit(self):
+        super_user = self.create_superuser(data={'password': 'password'})
+        self.client.login(username=super_user.username, password='password')
+        project_step = self.create_project_step(project=self.project)
+        url = self.get_edit_url(self.project.slug, project_step._order)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_bad_project_slug(self):
+        project_step = self.create_project_step(project=self.project)
+        url = self.get_edit_url('bad-slug', project_step._order)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_bad_order_number(self):
+        project_step = self.create_project_step(project=self.project)
+        url = self.get_edit_url(self.project.slug, 4)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_create_valid(self):
+        form_data = {
+            'content': self.get_random_string(),
+        }
+        response = self.client.post(self.url, form_data)
+        self.assertEqual(response.status_code, 302)
+
+    def test_create_invalid(self):
+        response = self.client.post(self.url, {'content': ''})
+        project_step_form = response.context['project_step_form']
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(project_step_form.errors)
+
+    def test_edit_valid_form(self):
+        form_data = {
+            'content': self.get_random_string(),
+        }
+        project_step = self.create_project_step(project=self.project)
+        edit_url = self.get_edit_url(self.project.slug, project_step._order)
+        response = self.client.post(edit_url, form_data)
+        self.assertEqual(response.status_code, 302)
+
+    def test_edit_invalid_form(self):
+        project_step = self.create_project_step(project=self.project)
+        edit_url = self.get_edit_url(self.project.slug, project_step._order)
+        response = self.client.post(edit_url, {'content': ''})
+        project_step_form = response.context['project_step_form']
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(project_step_form.errors)
+
+    def test_edit_form_wrong_user(self):
+        other_user = self.create_user(data={'password': 'password'})
+        self.client.login(username=other_user.username, password='password')
+        form_data = {
+            'content': self.get_random_string(),
+        }
+        project_step = self.create_project_step(project=self.project)
+        edit_url = self.get_edit_url(self.project.slug, project_step._order)
+        response = self.client.post(edit_url, form_data)
         self.assertEqual(response.status_code, 403)

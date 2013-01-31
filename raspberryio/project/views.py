@@ -58,7 +58,7 @@ def project_step_create_edit(request, project_slug, project_step_number=None):
         return HttpResponseForbidden('You are not the owner of this project.')
     if project_step_number is not None:
         project_step = get_object_or_404(
-            ProjectStep, project=project, order=project_step_number
+            ProjectStep, project=project, _order=project_step_number
         )
     else:
         project_step = ProjectStep(project=project)
