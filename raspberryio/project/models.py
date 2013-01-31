@@ -23,7 +23,7 @@ class Project(Displayable, Ownable, AdminThumbMixin):
         blank=True, null=True, editable=False
     )
     tldr = models.TextField()
-    categories = models.ManyToManyField('ProjectCategory', related_name='projects')
+    categories = models.ManyToManyField(BlogCategory, related_name='projects')
     score = models.IntegerField(default=0)
     created_datetime = models.DateTimeField('Created')
     modified_datetime = models.DateTimeField('Modified')
