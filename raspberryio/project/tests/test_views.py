@@ -6,7 +6,6 @@ from hilbert.test import ViewTestMixin, AuthViewMixin
 from mezzanine.utils.timezone import now
 from mezzanine.core.models import (CONTENT_STATUS_PUBLISHED,
     CONTENT_STATUS_DRAFT)
-from mezzanine.blog.models import BlogCategory
 
 from raspberryio.project.tests.base import ProjectBaseTestCase
 
@@ -139,12 +138,10 @@ class ProjectCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_create_valid(self):
-        category, created = BlogCategory.objects.get_or_create(title='foo')
         form_data = {
             'title': self.get_random_string(),
             'tldr': self.get_random_string(),
-            'status': CONTENT_STATUS_DRAFT,
-            'categories': [category.id]
+            'categories': [self.create_category().id]
         }
         response = self.client.post(self.url, form_data)
         self.assertEqual(response.status_code, 302)
@@ -159,7 +156,6 @@ class ProjectCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
         form_data = {
             'title': self.get_random_string(),
             'tldr': self.get_random_string(),
-            'status': CONTENT_STATUS_DRAFT,
             'categories': [self.create_category().id]
         }
         response = self.client.post(self.get_edit_url(), form_data)
@@ -177,7 +173,6 @@ class ProjectCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
         form_data = {
             'title': self.get_random_string(),
             'tldr': self.get_random_string(),
-            'status': CONTENT_STATUS_DRAFT,
             'categories': [self.create_category().id]
         }
         response = self.client.post(self.get_edit_url(), form_data)

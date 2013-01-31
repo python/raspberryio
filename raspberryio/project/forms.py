@@ -8,7 +8,6 @@ class ProjectForm(forms.ModelForm):
         model = Project
         fields = (
             'title', 'featured_photo', 'featured_video', 'tldr', 'categories',
-            'status', 'publish_date',
         )
 
 

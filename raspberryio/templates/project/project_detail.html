@@ -2,6 +2,12 @@
 {% load url from future %}
 
 {% block main %}
+    {% if not project.is_published %}
+        {% if request.user == project.user %}
+            This project is saved as a draft.
+            {# TODO: Add a button that makes ajax request to publish project #}
+        {% endif %}
+    {% endif %}
     <h2>
         {{ project.title }}
     </h2>
