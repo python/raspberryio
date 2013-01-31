@@ -144,3 +144,19 @@ is not given, it will use the default branch defined for this environment in
 
 New requirements or South migrations are detected by parsing the VCS changes and
 will be installed/run automatically.
+
+
+Testing
+------------------------
+
+The Raspberry I/O test suite only tests internal apps by default and prints a
+coverage when complete. To run the test suite, assure you've installed the
+local development requirements as follows::
+
+    cd raspberryio
+    workon raspberryio
+    pip install -r requirements/dev.txt
+
+Run the test suite with::
+
+    django-admin.py test
