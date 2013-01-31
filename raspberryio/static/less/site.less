@@ -271,7 +271,7 @@ body#account {
 			p {
 				line-height: 24px;
 				margin-top: 10px;
-				@media (min-width: 320px) and (max-width: 767px) {
+				@media (max-width: 767px) {
 					.hide;
 				}
 			}
@@ -306,7 +306,15 @@ body#account {
 			.border-radius(10px);
 		}
 		.user-projects {
-			margin: 25px 0 500px;
+			@media (min-width: 1200px) {
+				margin: 25px 0 800px;
+			}
+			@media (min-width: 1024px) and (max-width: 1200px) {
+				margin: 25px 0 600px;
+			}
+			@media (min-width: 767px) and (max-width: 1024px) {
+				margin: 25px 0 500px;
+			}
 			@media (min-width: 320px) and (max-width: 767px) {
 				margin: 25px 0 100px;
 			}
