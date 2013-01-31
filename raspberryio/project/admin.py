@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib import admin
 
-from raspberryio.project.models import Project, ProjectStep
+from raspberryio.project.models import Project, ProjectStep, ProjectCategory
+from mezzanine.blog.models import BlogCategory
 
 
 class ProjectAdminForm(forms.ModelForm):
@@ -26,4 +27,14 @@ class ProjectAdmin(admin.ModelAdmin):
     inlines = (ProjectStepInline,)
     raw_id_fields = ('user',)
 
+
+class ProjectCategoryAdmin(admin.ModelAdmin):
+    model = ProjectCategory
+    fields = ('title',)
+
 admin.site.register(Project, ProjectAdmin)
+try:
+    admin.site.unregister(BlogCategory)
+except:
+    pass
+admin.site.register(ProjectCategory, ProjectCategoryAdmin)

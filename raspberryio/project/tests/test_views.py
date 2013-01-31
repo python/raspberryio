@@ -141,7 +141,7 @@ class ProjectCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
         form_data = {
             'title': self.get_random_string(),
             'tldr': self.get_random_string(),
-            'categories': [self.create_category().id]
+            'categories': [self.create_project_category().id]
         }
         response = self.client.post(self.url, form_data)
         self.assertEqual(response.status_code, 302)
@@ -156,7 +156,7 @@ class ProjectCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
         form_data = {
             'title': self.get_random_string(),
             'tldr': self.get_random_string(),
-            'categories': [self.create_category().id]
+            'categories': [self.create_project_category().id]
         }
         response = self.client.post(self.get_edit_url(), form_data)
         self.assertEqual(response.status_code, 302)
@@ -173,7 +173,7 @@ class ProjectCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
         form_data = {
             'title': self.get_random_string(),
             'tldr': self.get_random_string(),
-            'categories': [self.create_category().id]
+            'categories': [self.create_project_category().id]
         }
         response = self.client.post(self.get_edit_url(), form_data)
         self.assertEqual(response.status_code, 403)
