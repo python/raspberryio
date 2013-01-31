@@ -8,7 +8,7 @@
 {% block main %}
 <fieldset>
     <legend>{{ title }} </legend>
-    <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+    <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
    	{% fields_for form %}
    	<input class="submit" type="submit" value="{{ title }}">
     </form>
