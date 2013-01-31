@@ -47,8 +47,15 @@
 </div>
 {% endblock %}
 
+{# Waiting until we have more dev work in place to make this work. #}
+{% comment %}
 {% block full_container %}
-<div class="user-projects">
+    {% include 'includes/project-gallery.html' %}
+{% endblock %}
+{% endcomment %}
+
+{% block full_container %}
+<div class="projects-display">
 	<div class="gallery">
 		<nav>
 			<span id="position">
@@ -108,8 +115,7 @@
 </div>		  
 {% endblock %}
 
-{# We probably want to put a conditional around here for when there are no projects for the user #}
-{% block extra-js %}
+{% block extra_js %}
 <script src="{{ STATIC_URL }}js/libs/swipe.min.js"></script>
 <script type="text/javascript">
 	$(function(){

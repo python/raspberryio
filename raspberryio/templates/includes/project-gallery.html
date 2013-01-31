@@ -1,0 +1,35 @@
+{% if projects %}
+<div class="projects-display">
+	<div class="gallery">
+		<nav>
+			<span id="position">
+				{% for project in projects %}
+				<em {% if forloop.first %}class="on"{% endif %}>•</em>
+				{% endfor %}
+			</span>
+		</nav>
+		<div id="slider" class="swipe">
+		  <ul class="swipe-wrap">
+		  	{% for project in projects %}
+		    <li>
+		    	<a href="{% url 'project-detail' project.slug %}">
+		    		<img src="http://placehold.it/300x250&amp;text=Project photo" alt="{{ project }}">
+		    	</a>
+		    </li>
+		    {% endfor %}
+		  </ul>
+		</div>
+	</div>
+	<ul class="tiled">
+		{% for project in projects %}
+		<li>
+			<a href="{% url 'project-detail' project.slug %}">
+				<img src="http://placehold.it/250x200&amp;text=Project photo">
+			</a>
+		</li>
+		{% endfor %}
+	</ul>
+</div>
+{% else %}
+<h3 class="no-projects">There are no projects :(</h3>
+{% endif %}

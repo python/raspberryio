@@ -163,6 +163,77 @@ html, body {
 	}
 }
 
+.projects-display{
+	@media (min-width: 1200px) {
+		margin: 25px 0 800px;
+	}
+	@media (min-width: 1024px) and (max-width: 1200px) {
+		margin: 25px 0 600px;
+	}
+	@media (min-width: 767px) and (max-width: 1024px) {
+		margin: 25px 0 500px;
+	}
+	@media (min-width: 320px) and (max-width: 767px) {
+		margin: 25px 0 100px;
+	}
+	.gallery {
+		@media (min-width: 320px) and (max-width: 767px) {
+			.show;
+		}
+		@media (min-width: 767px) {
+			.hide;
+		}
+		.swipe {
+		  overflow: hidden;
+		  visibility: hidden;
+		  position: relative;
+		  .swipe-wrap {
+			  overflow: hidden;
+			  position: relative;
+			  li {
+			  	float: left;
+		  		width: 100%;
+		  		position: relative;
+		  		img {
+		  			width: 100%;
+		  		}
+			  }
+			}
+		}
+		nav {
+			text-align: center;
+			font-size: 18px;
+			padding-bottom: 10px;
+			em.on {
+				color: @blue;
+			}
+		}
+	}
+	ul.tiled {
+		@media (max-width: 767px) {
+			.hide;
+		}
+		margin: 0;
+		li {
+			width: 25%;
+			.pull-left;
+			overflow: hidden;
+			img {
+				width: 100%;
+				border-left: 1px solid @white;
+				border-bottom: 1px solid @white;
+			}
+			&.add {
+				.opacity(50);
+			}
+		}
+	}
+}
+
+.no-projects {
+	text-align: center;
+}
+
 #push {
 	height: 60px;
 }
@@ -170,6 +241,8 @@ html, body {
 [class^="icon-"], [class*=" icon-"] {
 	background-image: url('../img/glyphicons-halflings.png')
 	}
+
+
 
 /* Homepage
 ================= */
@@ -333,68 +406,25 @@ body#account {
 			padding: 0 15px 15px;
 			.border-radius(10px);
 		}
-		.user-projects {
-			@media (min-width: 1200px) {
-				margin: 25px 0 800px;
-			}
-			@media (min-width: 1024px) and (max-width: 1200px) {
-				margin: 25px 0 600px;
-			}
-			@media (min-width: 767px) and (max-width: 1024px) {
-				margin: 25px 0 500px;
-			}
-			@media (min-width: 320px) and (max-width: 767px) {
-				margin: 25px 0 100px;
-			}
-			.gallery {
-				@media (min-width: 320px) and (max-width: 767px) {
-					.show;
-				}
+	}
+}
+
+/* Project list page
+====================== */
+body#project-list {
+	#content {
+		text-align: center;
+		form {
+			input {
+				padding: 0 20px;
+				.border-radius(30px);
+				font-size: 22px;
+				height: 60px;
 				@media (min-width: 767px) {
-					.hide;
+					width: 60%;
 				}
-				.swipe {
-				  overflow: hidden;
-				  visibility: hidden;
-				  position: relative;
-				  .swipe-wrap {
-					  overflow: hidden;
-					  position: relative;
-					  li {
-					  	float: left;
-				  		width: 100%;
-				  		position: relative;
-				  		img {
-				  			width: 100%;
-				  		}
-					  }
-					}
-				}
-				nav {
-					text-align: center;
-					font-size: 18px;
-					padding-bottom: 10px;
-					em.on {
-						color: @blue;
-					}
-				}
-			}
-			ul.tiled {
 				@media (max-width: 767px) {
-					.hide;
-				}
-				li {
-					width: 25%;
-					.pull-left;
-					overflow: hidden;
-					img {
-						width: 100%;
-						border-left: 1px solid @white;
-						border-bottom: 1px solid @white;
-					}
-					&.add {
-						.opacity(50);
-					}
+					width: 80%;
 				}
 			}
 		}

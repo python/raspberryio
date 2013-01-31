@@ -99,7 +99,7 @@
                     {# Below goes to form to add a project. #}
                     <li><a href="#">Create</a></li>
                     {% endif %}
-                    <li><a href="#">Explore</a></li>
+                    <li><a href="{% url 'project-list' %}">Explore</a></li>
                     <li><a href="#">Learn</a></li>
                     {% comment %}
                     <li><a href="#">Contests</a></li>
@@ -128,7 +128,7 @@
     <script src="{{ STATIC_URL }}js/site.js"></script>
     {% endcompress %}
    
-    {% block extra-js %}{% endblock %}
+    {% block extra_js %}{% endblock %}
 
 </body>
 </html>
