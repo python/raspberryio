@@ -13,7 +13,7 @@
 		  	{% for project in projects %}
 		    <li>
 		    	<a href="{% url 'project-detail' project.slug %}">
-		    		<img src="http://placehold.it/300x250&amp;text=Project photo" alt="{{ project }}">
+		    		<img src="http://placehold.it/300x250&amp;text=Project photo" alt="{{ project.title }}">
 		    	</a>
 		    </li>
 		    {% endfor %}
@@ -24,7 +24,7 @@
 		{% for project in projects %}
 		<li>
 			<a href="{% url 'project-detail' project.slug %}">
-				<img src="http://placehold.it/250x200&amp;text=Project photo">
+				<img src="http://placehold.it/250x200&amp;text=Project photo" alt="{{ project.title }}">
 			</a>
 		</li>
 		{% endfor %}

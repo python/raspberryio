@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block main %}
+    <form class="project-create-edit-form" action="" method="post" accept-charset="utf-8"> {% csrf_token %}
+        {{ project_form.as_p }}
+        <input type="submit" id="submit-project-create-edit" value="Ok"/>
+    </form>
+    {% if project.id %}
+        {% for step in project.steps.all %}
+            <a href="{% url 'project-step-create-edit' project.slug step.order %}">
+                Edit step {{ step.order }}
+            </a>
+            <br>
+        {% endfor %}
+        <a href="{% url 'project-step-create-edit' project.slug %}">
+            Create a new project step
+        </a>
+    {% endif %}
+    {% comment %}
+        FIXME: Remove these br tags. Used temporarily because the above links
+        were being hidden by the bottom nav.
+    {% endcomment %}
+    <br>
+    <br>
+    <br>
+{% endblock %}

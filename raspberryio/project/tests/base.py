@@ -42,8 +42,9 @@ class RaspberryIOBaseTestCase(TestCase):
         }
         return self.create_instance(DjangoSite, defaults=defaults, **kwargs)
 
-    def create_superuser(self, **kwargs):
-        user = self.create_user(**kwargs)
+    def create_superuser(self, data=None):
+        data = data or {}
+        user = self.create_user(data=data)
         user.is_superuser = True
         user.save()
         return user
@@ -71,7 +72,16 @@ class ProjectBaseTestCase(RaspberryIOBaseTestCase):
     def create_project_step(self, **kwargs):
         defaults = {
             'project': kwargs.pop('project', self.create_project()),
+            'content': self.get_random_string(),
         }
         return self.create_instance(
             project.ProjectStep, defaults=defaults, **kwargs
+        )
+
+    def create_project_category(self, **kwargs):
+        defaults = {
+            'title': kwargs.pop('title', self.get_random_string()),
+        }
+        return self.create_instance(
+            project.ProjectCategory, defaults=defaults, **kwargs
         )
