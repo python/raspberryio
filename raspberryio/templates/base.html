@@ -40,14 +40,22 @@
         <div class="container">
             <a class="brand" href="/">{{ settings.SITE_TITLE }}</a>
             <div class="right-block">
-                {% if user.is_authenticated %}
-                <a href="{% url 'profile' user.username %}">My Profile</a>
-                <a href="{% url 'logout' %}">Log Out</a>
-                {% else %}
-                <a href="{% url 'login' %}">Log In</a>
-                {% endif %}
+                <ul class="nav">
+                    {% if user.is_authenticated %}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">My Profile<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'profile' user.username %}">View Profile</a></li>
+                            <li><a href="{% url 'profile_update' %}">Edit Profile</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{% url 'logout' %}">Log Out</a></li>
+                    {% else %}
+                    <li><a href="{% url 'login' %}">Log In</a></li>
+                    {% endif %}
+                </ul>
                 <form class="navbar-search">
-                    <input type="text" class="search-query" placeholder="Search">
+                   <input type="text" class="search-query" placeholder="Search">
                 </form>
             </div>
         </div>
