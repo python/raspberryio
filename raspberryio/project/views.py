@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import login_required
 
 from mezzanine.utils.sites import current_site_id
 
-from raspberryio.project.models import Project
-from raspberryio.project.forms import ProjectForm
+from raspberryio.project.models import Project, ProjectStep
+from raspberryio.project.forms import ProjectForm, ProjectStepForm
 
 
 def project_list(request):
@@ -47,4 +47,27 @@ def project_create_edit(request, project_slug=None):
         return redirect(project)
     return render(request, 'project/project_create_edit.html', {
         'project_form': project_form,
+    })
+
+
+@login_required
+def project_step_create_edit(request, project_slug, project_step_number=None):
+    user = request.user
+    project = get_object_or_404(Project, slug=project_slug)
+    if project.user != user and not user.is_superuser:
+        return HttpResponseForbidden('You are not the owner of this project.')
+    if project_step_number is not None:
+        project_step = get_object_or_404(
+            ProjectStep, project=project, order=project_step_number
+        )
+    else:
+        project_step = ProjectStep(project=project)
+    project_step_form = ProjectStepForm(
+        request.POST or None, instance=project_step
+    )
+    if project_step_form.is_valid():
+        project_step_form.save()
+        return redirect('project-create-edit', project.slug)
+    return render(request, 'project/project_step_create_edit.html', {
+        'project_step_form': project_step_form,
     })

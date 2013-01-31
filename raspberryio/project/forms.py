@@ -1,5 +1,5 @@
 from django import forms
-from raspberryio.project.models import Project
+from raspberryio.project.models import Project, ProjectStep
 
 
 class ProjectForm(forms.ModelForm):
@@ -7,6 +7,15 @@ class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = (
-            'title', 'status', 'publish_date', 'featured_photo',
-            'featured_video', 'tldr', 'categories'
+            'title', 'featured_photo', 'featured_video', 'tldr', 'categories',
+            'status', 'publish_date',
+        )
+
+
+class ProjectStepForm(forms.ModelForm):
+
+    class Meta:
+        model = ProjectStep
+        fields = (
+            'content', 'gallery', 'video'
         )
