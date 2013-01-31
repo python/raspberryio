@@ -11,15 +11,16 @@
             <a href="{% url 'project-step-create-edit' project.slug step.order %}">
                 Edit step {{ step.order }}
             </a>
+            <br>
         {% endfor %}
         <a href="{% url 'project-step-create-edit' project.slug %}">
             Create a new project step
         </a>
     {% endif %}
-    {#
+    {% comment %}
         FIXME: Remove these br tags. Used temporarily because the above links
         were being hidden by the bottom nav.
-    #}
+    {% endcomment %}
     <br>
     <br>
     <br>
