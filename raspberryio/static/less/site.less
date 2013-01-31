@@ -6,7 +6,7 @@
 // -- Fonts
 // -- Generic styles
 // -- Homepage
-// -- Account pages
+// -- Account pages 
 
 /* Bootstrap imports
 ==================== */
@@ -79,11 +79,39 @@ html, body {
 		@media (max-width: 480px) {
 			float: none;
 		}
-		a {
+		ul.nav {
+			list-style: none;
 			.pull-left;
-			padding-right: 10px;
+			margin-bottom: 0;
 			@media (max-width: 480px) {
-				padding: 0 10px;
+				margin: 0 0 10px 0;
+			}
+			li {
+				.pull-left;
+				padding-right: 10px;
+				@media (max-width: 480px) {
+					padding: 0 10px;
+				}
+				a {
+					&:hover {
+						background-color: transparent;
+					}
+				}
+				ul.dropdown-menu {
+					li {
+						padding-right: 0;
+						float: none;
+						a {
+							margin-top: 0;
+						}
+					}
+				}
+				&.open {
+					a .caret {
+						border-bottom-color: @navbarLinkColor;
+						border-top-color: @navbarLinkColor;
+					}
+				}
 			}
 		}
 		.navbar-search {
