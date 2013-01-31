@@ -94,18 +94,7 @@ html, body {
 	}
 }
 
-input::-webkit-input-placeholder {
-	color: #CCCCCC;
-}
-input:-moz-placeholder {
-	color: #CCCCCC;
-}
-input::-moz-placeholder {
-	color: #CCCCCC;
-}
-input:-ms-input-placeholder  {
-	color: #CCCCCC;
-}
+.placeholder(#CCCCCC);
 
 .navbar {
 	font-size: 18px;
@@ -259,6 +248,11 @@ body#account {
 		}
 	}
 	&.profile {
+		#content {
+			@media (min-width: 320px) and (max-width: 767px) {
+				text-align: center;
+			}
+		}
 		ul {
 			list-style: none;
 			margin: 0;
@@ -277,6 +271,9 @@ body#account {
 			p {
 				line-height: 24px;
 				margin-top: 10px;
+				@media (min-width: 320px) and (max-width: 767px) {
+					.hide;
+				}
 			}
 			h2 {
 				text-overflow: ellipsis;
@@ -298,6 +295,9 @@ body#account {
 			}
 		}
 		.stats {
+			@media (min-width: 320px) and (max-width: 767px) {
+				.hide;
+			}
 			h3 {
 				border-bottom: 1px solid @grayLighter;
 			}
@@ -306,25 +306,58 @@ body#account {
 			.border-radius(10px);
 		}
 		.user-projects {
-			margin-bottom: 500px;
-			li {
-				width: 25%;
-				.pull-left;
-				overflow: hidden;
-				img {
-					width: 100%;
-					border-left: 1px solid @white;
-					border-bottom: 1px solid @white;
+			margin: 25px 0 500px;
+			@media (min-width: 320px) and (max-width: 767px) {
+				margin: 25px 0 100px;
+			}
+			.gallery {
+				@media (min-width: 320px) and (max-width: 767px) {
+					.show;
 				}
-				&.add {
+				@media (min-width: 767px) {
+					.hide;
+				}
+				.swipe {
+				  overflow: hidden;
+				  visibility: hidden;
+				  position: relative;
+				  .swipe-wrap {
+					  overflow: hidden;
+					  position: relative;
+					  li {
+					  	float: left;
+				  		width: 100%;
+				  		position: relative;
+				  		img {
+				  			width: 100%;
+				  		}
+					  }
+					}
+				}
+				nav {
 					text-align: center;
-					.add-btn {
-						z-index: 2;
-						top: -120px;
-						position: relative;
-						.btn;
-						.btn-primary;
-						.btn-large;
+					font-size: 18px;
+					padding-bottom: 10px;
+					em.on {
+						color: @blue;
+					}
+				}
+			}
+			ul.tiled {
+				@media (max-width: 767px) {
+					.hide;
+				}
+				li {
+					width: 25%;
+					.pull-left;
+					overflow: hidden;
+					img {
+						width: 100%;
+						border-left: 1px solid @white;
+						border-bottom: 1px solid @white;
+					}
+					&.add {
+						.opacity(50);
 					}
 				}
 			}
