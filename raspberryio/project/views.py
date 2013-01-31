@@ -46,6 +46,7 @@ def project_create_edit(request, project_slug=None):
         project_form.save()
         return redirect(project)
     return render(request, 'project/project_create_edit.html', {
+        'project': project,
         'project_form': project_form,
     })
 

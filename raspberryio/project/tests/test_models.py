@@ -71,3 +71,27 @@ class ProjectStepTestCase(ProjectBaseTestCase):
             self.project_step.is_editable(request),
             'Superusers should be able to edit any project step',
         )
+
+    def test_order_property(self):
+        """Assure the order property provides the _order value"""
+        self.assertEqual(self.project_step.order, self.project_step._order)
+        project_step2 = self.create_project_step(project=self.project)
+        self.assertEqual(project_step2.order, project_step2._order)
+
+    def test_order_number(self):
+        """
+        Assure the proper order number is assigned to new ProjectSteps. (This
+        should happen from built-in Mezzanine functionality as long as
+        Meta:order_with_respect_to points to the Project FK)
+        """
+        project2 = self.create_project(user=self.user)
+        # Create two steps in each of the two projects
+        project1_step0 = self.project_step
+        project2_step0 = self.create_project_step(project=project2)
+        project1_step1 = self.create_project_step(project=self.project)
+        project2_step1 = self.create_project_step(project=project2)
+        # Assure the order numbers for the steps are unique per project
+        self.assertEqual(project1_step0._order, 0)
+        self.assertEqual(project1_step1._order, 1)
+        self.assertEqual(project2_step0._order, 0)
+        self.assertEqual(project2_step1._order, 1)

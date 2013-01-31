@@ -22,7 +22,7 @@ class Project(Displayable, Ownable, AdminThumbMixin):
         upload_to='images/project_featured_video_thumbnails',
         blank=True, null=True, editable=False
     )
-    tldr = RichTextField()
+    tldr = models.TextField()
     categories = models.ManyToManyField(BlogCategory, related_name='projects')
     score = models.IntegerField(default=0)
     created_datetime = models.DateTimeField('Created')
@@ -60,12 +60,20 @@ class ProjectStep(Orderable, RichText):
     gallery = models.OneToOneField(Gallery, blank=True, null=True)
     video = models.URLField(blank=True, default='')
 
+    class Meta(object):
+        order_with_respect_to = 'project'
+
     def is_editable(self, request):
         """
         Restrict in-line editing to the owner of the project and superusers.
         """
         user = request.user
         return user.is_superuser or user.id == self.project.user_id
+
+    @property
+    def order(self):
+        """Exposes the step's _order attribute for use in templates"""
+        return self._order
 
     @models.permalink
     def get_absolute_url(self):
