@@ -22,7 +22,9 @@ class Project(Displayable, Ownable, AdminThumbMixin):
         upload_to='images/project_featured_video_thumbnails',
         blank=True, null=True, editable=False
     )
-    tldr = models.TextField()
+    tldr = models.TextField('Summary',
+        help_text='A brief summary of your project'
+    )
     categories = models.ManyToManyField(BlogCategory, related_name='projects')
     score = models.IntegerField(default=0)
     created_datetime = models.DateTimeField('Created')

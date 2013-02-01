@@ -44,7 +44,11 @@ def project_create_edit(request, project_slug=None):
     project_form = ProjectForm(request.POST or None, instance=project)
     if project_form.is_valid():
         project_form.save()
-        return redirect(project)
+        if not project.steps.exists():
+            redirect_args = ('project-step-create-edit', project.slug)
+        else:
+            redirect_args = (project,)
+        return redirect(*redirect_args)
     return render(request, 'project/project_create_edit.html', {
         'project': project,
         'project_form': project_form,
@@ -68,7 +72,15 @@ def project_step_create_edit(request, project_slug, project_step_number=None):
     )
     if project_step_form.is_valid():
         project_step_form.save()
-        return redirect('project-create-edit', project.slug)
+        # User clicked "save and add another"
+        if 'save-add' in request.POST:
+            redirect_args = ('project-step-create-edit', project.slug)
+        # User clicked "save" (catch anything else)
+        else:
+            redirect_args = (project,)
+        return redirect(*redirect_args)
     return render(request, 'project/project_step_create_edit.html', {
+        'project': project,
+        'project_step': project_step,
         'project_step_form': project_step_form,
     })

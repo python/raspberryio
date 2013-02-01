@@ -1,8 +1,13 @@
 {% extends "base.html" %}
+{% load url from future %}
 
 {% block main %}
+    <h3>
+        Editing step: {{ project_step.order }} of {{ project.title }}
+    </h3>
     <form class="project-step-create-edit-form" action="" method="post" accept-charset="utf-8"> {% csrf_token %}
         {{ project_step_form.as_p }}
-        <input type="submit" id="submit-project-step-create-edit" value="Ok"/>
+        <input type="submit" name="save" id="submit-project-step-create-edit" value="Save and Preview"/>
+        <input type="submit" name="save-add" id="submit-project-step-create-edit-add-another" value="Save and add another" />
     </form>
 {% endblock %}

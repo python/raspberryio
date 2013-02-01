@@ -8,6 +8,7 @@ from mezzanine.core.models import (CONTENT_STATUS_PUBLISHED,
     CONTENT_STATUS_DRAFT)
 
 from raspberryio.project.tests.base import ProjectBaseTestCase
+from raspberryio.project.models import Project
 
 
 class ProjectDetailViewTestCase(ViewTestMixin, ProjectBaseTestCase):
@@ -139,12 +140,20 @@ class ProjectCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
 
     def test_create_valid(self):
         form_data = {
-            'title': self.get_random_string(),
+            'title': 'new-project',
             'tldr': self.get_random_string(),
             'categories': [self.create_project_category().id]
         }
-        response = self.client.post(self.url, form_data)
-        self.assertEqual(response.status_code, 302)
+        response = self.client.post(self.url, form_data, follow=True)
+        new_project = Project.objects.get(slug='new-project')
+        url, status_code = response.redirect_chain[0]
+        expected_url = reverse(
+            'project-step-create-edit', args=[new_project.slug]
+        )
+        self.assertEqual(status_code, 302)
+        self.assertTrue(expected_url in url,
+            "Didn't redirect to {0}, redirected to {1}".format(expected_url, url)
+        )
 
     def test_create_invalid(self):
         response = self.client.post(self.url, {'title': ''})
@@ -154,12 +163,34 @@ class ProjectCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
 
     def test_edit_valid_form(self):
         form_data = {
+            'title': 'current-project',
+            'tldr': self.get_random_string(),
+            'categories': [self.create_project_category().id]
+        }
+        response = self.client.post(self.get_edit_url(), form_data, follow=True)
+        current_project = Project.objects.get(title='current-project')
+        url, status_code = response.redirect_chain[0]
+        expected_url = reverse('project-step-create-edit', args=[current_project.slug])
+        self.assertEqual(status_code, 302)
+        self.assertTrue(expected_url in url,
+            "Didn't redirect to {0}, redirected to {1}".format(expected_url, url)
+        )
+
+    def test_edit_valid_form_with_steps(self):
+        # Create a project step, so that redirect goes to project detail view
+        self.create_project_step(project=self.project)
+        form_data = {
             'title': self.get_random_string(),
             'tldr': self.get_random_string(),
             'categories': [self.create_project_category().id]
         }
-        response = self.client.post(self.get_edit_url(), form_data)
-        self.assertEqual(response.status_code, 302)
+        response = self.client.post(self.get_edit_url(), form_data, follow=True)
+        url, status_code = response.redirect_chain[0]
+        expected_url = reverse('project-detail', args=[self.project.slug])
+        self.assertEqual(status_code, 302)
+        self.assertTrue(expected_url in url,
+            "Didn't redirect to {0}, redirected to {1}".format(expected_url, url)
+        )
 
     def test_edit_invalid_form(self):
         response = self.client.post(self.get_edit_url(), {'title': ''})
@@ -248,8 +279,13 @@ class ProjectStepCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
         }
         project_step = self.create_project_step(project=self.project)
         edit_url = self.get_edit_url(self.project.slug, project_step._order)
-        response = self.client.post(edit_url, form_data)
-        self.assertEqual(response.status_code, 302)
+        response = self.client.post(edit_url, form_data, follow=True)
+        url, status_code = response.redirect_chain[0]
+        expected_url = reverse('project-detail', args=[self.project.slug])
+        self.assertEqual(status_code, 302)
+        self.assertTrue(expected_url in url,
+            "Didn't redirect to {0}, redirected to {1}".format(expected_url, url)
+        )
 
     def test_edit_invalid_form(self):
         project_step = self.create_project_step(project=self.project)
@@ -269,3 +305,20 @@ class ProjectStepCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
         edit_url = self.get_edit_url(self.project.slug, project_step._order)
         response = self.client.post(edit_url, form_data)
         self.assertEqual(response.status_code, 403)
+
+    def test_add_another_redirect(self):
+        form_data = {
+            'content': self.get_random_string(),
+            'save-add': 'Anything',
+        }
+        project_step = self.create_project_step(project=self.project)
+        edit_url = self.get_edit_url(self.project.slug, project_step._order)
+        response = self.client.post(edit_url, form_data, follow=True)
+        url, status_code = response.redirect_chain[0]
+        expected_url = reverse(
+            'project-step-create-edit', args=[self.project.slug]
+        )
+        self.assertEqual(status_code, 302)
+        self.assertTrue(expected_url in url,
+            "Didn't redirect to {0}, redirected to {1}".format(expected_url, url)
+        )
