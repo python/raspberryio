@@ -47,6 +47,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'profile' user.username %}">View Profile</a></li>
                             <li><a href="{% url 'profile_update' %}">Edit Profile</a></li>
+                            <li><a href="{% url 'project-create-edit' %}">Create Project</a></li>
                         </ul>
                     </li>
                     <li><a href="{% url 'logout' %}">Log Out</a></li>
@@ -95,10 +96,7 @@
         <div class="navbar-inner">
             <div class="container">
                 <ul class="nav">
-                    {% if user.is_authenticated %}
-                    {# Below goes to form to add a project. #}
-                    <li><a href="#">Create</a></li>
-                    {% endif %}
+                    <li><a href="{% url 'project-create-edit' %}">Create</a></li>
                     <li><a href="{% url 'project-list' %}">Explore</a></li>
                     <li><a href="#">Learn</a></li>
                     {% comment %}
