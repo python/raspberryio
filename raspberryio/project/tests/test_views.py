@@ -16,9 +16,11 @@ class ProjectDetailViewTestCase(ViewTestMixin, ProjectBaseTestCase):
 
     def setUp(self):
         self.user = self.create_user(data={'password': 'password'})
-        self.project = self.create_project(
-            user=self.user, status=CONTENT_STATUS_PUBLISHED
-        )
+        self.project = self.create_project(user=self.user)
+        # Status is set to DRAFT on first save. Needs to be published for the
+        # detail view to display the project.
+        self.project.status = CONTENT_STATUS_PUBLISHED
+        self.project.save()
         super(ProjectDetailViewTestCase, self).setUp()
 
     def get_url_args(self):
