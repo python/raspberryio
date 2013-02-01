@@ -1,9 +1,12 @@
-from django.http import HttpResponseForbidden, Http404
+from django.http import HttpResponse, HttpResponseForbidden, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required
+from django.utils import simplejson
 
 from mezzanine.utils.sites import current_site_id
+from mezzanine.core.models import CONTENT_STATUS_PUBLISHED
+from hilbert.decorators import ajax_only
 
 from raspberryio.project.models import Project, ProjectStep
 from raspberryio.project.forms import ProjectForm, ProjectStepForm
@@ -84,3 +87,16 @@ def project_step_create_edit(request, project_slug, project_step_number=None):
         'project_step': project_step,
         'project_step_form': project_step_form,
     })
+
+
+@login_required
+@ajax_only
+def publish_project(request, project_slug):
+    project = get_object_or_404(Project, slug=project_slug)
+    if request.user != project.user:
+        return HttpResponseForbidden('You are not the owner of this project.')
+    else:
+        project.status = CONTENT_STATUS_PUBLISHED
+        project.save()
+    json = simplejson.dumps({})
+    return HttpResponse(json, mimetype='application/json')

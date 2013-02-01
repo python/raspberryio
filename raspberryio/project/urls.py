@@ -27,4 +27,12 @@ urlpatterns = patterns('raspberryio.project.views',
         'project_step_create_edit',
         name='project-step-create-edit'
     ),
+
+    # Ajax views
+
+    # Publish a project
+    url(
+        r'^publish/(?P<project_slug>[\w-]+)/$', 'publish_project',
+        name='publish-project'
+    ),
 )
