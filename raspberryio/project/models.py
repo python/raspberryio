@@ -3,7 +3,7 @@ from django.db import models
 from mezzanine.core.models import (Displayable, Ownable, Orderable, RichText,
     CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED)
 from mezzanine.core.fields import RichTextField
-from mezzanine.utils.models import AdminThumbMixin, upload_to
+from mezzanine.utils.models import AdminThumbMixin
 from mezzanine.utils.timezone import now
 from mezzanine.galleries.models import Gallery
 from mezzanine.blog.models import BlogCategory
@@ -22,8 +22,8 @@ class Project(Displayable, Ownable, AdminThumbMixin):
         upload_to='images/project_featured_video_thumbnails',
         blank=True, null=True, editable=False
     )
-    tldr = models.TextField('Summary',
-        help_text='A brief summary of your project'
+    tldr = RichTextField('Description',
+        help_text='A description of your project as a whole.'
     )
     categories = models.ManyToManyField(BlogCategory, related_name='projects')
     score = models.IntegerField(default=0)
