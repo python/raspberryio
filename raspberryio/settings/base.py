@@ -227,6 +227,8 @@ AUTH_PROFILE_MODULE = "userprofile.Profile"
 
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 
+# Supply the custom TinyMCE JavaScript
+TINYMCE_SETUP_JS = os.path.join('js', 'libs', 'tinymce_setup.js')
 
 
 ####################
