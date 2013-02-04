@@ -7,6 +7,7 @@ from django.utils import simplejson
 from mezzanine.utils.sites import current_site_id
 from mezzanine.core.models import CONTENT_STATUS_PUBLISHED
 from hilbert.decorators import ajax_only
+from hilbert.http import JsonResponse
 
 from raspberryio.project.models import Project, ProjectStep
 from raspberryio.project.forms import ProjectForm, ProjectStepForm
@@ -92,11 +93,11 @@ def project_step_create_edit(request, project_slug, project_step_number=None):
 @login_required
 @ajax_only
 def publish_project(request, project_slug):
+    user = request.user
     project = get_object_or_404(Project, slug=project_slug)
-    if request.user != project.user:
+    if user != project.user and user.is_superuser == False:
         return HttpResponseForbidden('You are not the owner of this project.')
     else:
         project.status = CONTENT_STATUS_PUBLISHED
         project.save()
-    json = simplejson.dumps({})
-    return HttpResponse(json, mimetype='application/json')
+    return JsonResponse({})

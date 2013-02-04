@@ -324,3 +324,47 @@ class ProjectStepCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
         self.assertTrue(expected_url in url,
             "Didn't redirect to {0}, redirected to {1}".format(expected_url, url)
         )
+
+
+class ProjectDetailViewTestCase(ProjectBaseTestCase):
+    url_name = 'publish-project'
+
+    def setUp(self):
+        self.user = self.create_user(data={'password': 'password'})
+        self.project = self.create_project(user=self.user)
+        self.url = reverse('publish-project', args=(self.project.slug,))
+
+    def test_valid_publish(self):
+        self.client.login(username=self.user.username, password='password')
+        self.assertEqual(self.project.status, CONTENT_STATUS_DRAFT)
+        response = self.client.post(self.url, {}, is_ajax=True)
+        project = Project.objects.get(slug=self.project.slug)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(project.status, CONTENT_STATUS_PUBLISHED)
+
+    def test_reject_non_project_user(self):
+        other_user = self.create_user(data={'password': 'password'})
+        self.client.login(username=other_user.username, password='password')
+        self.assertEqual(self.project.status, CONTENT_STATUS_DRAFT)
+        response = self.client.post(self.url, {}, is_ajax=True)
+        project = Project.objects.get(slug=self.project.slug)
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(project.status, CONTENT_STATUS_DRAFT)
+
+    def test_superuser_valid(self):
+        superuser = self.create_superuser({'password': 'password'})
+        self.client.login(username=superuser.username, password='password')
+        self.assertEqual(self.project.status, CONTENT_STATUS_DRAFT)
+        response = self.client.post(self.url, {}, is_ajax=True)
+        project = Project.objects.get(slug=self.project.slug)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(project.status, CONTENT_STATUS_PUBLISHED)
+
+    def test_invalid_slug(self):
+        self.client.login(username=self.user.username, password='password')
+        self.assertEqual(self.project.status, CONTENT_STATUS_DRAFT)
+        url = reverse(self.url_name, args=('bad-project-slug',))
+        response = self.client.post(url, {}, is_ajax=True)
+        project = Project.objects.get(slug=self.project.slug)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(project.status, CONTENT_STATUS_DRAFT)
