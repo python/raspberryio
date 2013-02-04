@@ -47,7 +47,9 @@
                 $publish = $('#publish');
             $publish_project.click(function(){
                 $.post(publish_project_url, function(data) {
-                    $publish.fadeOut();
+                    $publish_project.fadeOut();
+                    $publish.children('h2')
+                            .html('This project is now published');
                 });
             });
         });
