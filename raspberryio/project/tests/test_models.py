@@ -39,6 +39,9 @@ class ProjectTestCase(ProjectBaseTestCase):
             'Should return False if status is "Draft" and publish_date is in the future'
         )
 
+    def test_default_draft(self):
+        self.assertEqual(self.project.status, CONTENT_STATUS_DRAFT)
+
 
 class ProjectStepTestCase(ProjectBaseTestCase):
 

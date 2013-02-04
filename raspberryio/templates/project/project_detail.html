@@ -3,14 +3,16 @@
 
 {% block main %}
     {% if not project.is_published %}
-        {% if request.user == project.user %}
-            This project is saved as a draft.
-            {# TODO: Add a button that makes ajax request to publish project #}
+        {% if request.user == project.user or request.user.is_superuser %}
+            <div id='publish'>
+                <h2>This project is saved as a draft.</h2>
+                <a id='publish-project' href="#">Click here to publish</a>
+            </div>
         {% endif %}
     {% endif %}
-    <h2>
+    <h3>
         {{ project.title }}
-    </h2>
+    </h3>
     Categories
     <ul>
         {% for category in project.categories.all %}
@@ -35,4 +37,21 @@
     {% if request.user == project.user or request.user.is_superuser %}
         <a href="{% url 'project-create-edit' project.slug %}">Edit Project</a>
     {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        var publish_project_url = "{% url 'publish-project' project.slug %}"
+        $(function() {
+            var $publish_project = $('#publish-project'),
+                $publish = $('#publish');
+            $publish_project.click(function(){
+                $.post(publish_project_url, function(data) {
+                    $publish_project.fadeOut();
+                    $publish.children('h2')
+                            .html('This project is now published');
+                });
+            });
+        });
+    </script>
 {% endblock %}

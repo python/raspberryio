@@ -1,7 +1,7 @@
 from django.db import models
 
 from mezzanine.core.models import (Displayable, Ownable, Orderable, RichText,
-    CONTENT_STATUS_PUBLISHED)
+    CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED)
 from mezzanine.core.fields import RichTextField
 from mezzanine.utils.models import AdminThumbMixin, upload_to
 from mezzanine.utils.timezone import now
@@ -33,11 +33,13 @@ class Project(Displayable, Ownable, AdminThumbMixin):
     admin_thumb_field = 'featured_photo'
 
     def save(self, *args, **kwargs):
+        # Set project as draft by default
+        if not self.id:
+            self.status = CONTENT_STATUS_DRAFT
         # Set created and modified datetimes if not provided.
-        if not self.id and not 'created_datetime' in kwargs:
+        if not self.id:
             self.created_datetime = now()
-        if not 'modified_datetime' in kwargs:
-            self.modified_datetime = now()
+        self.modified_datetime = now()
         super(Project, self).save(*args, **kwargs)
 
     @property
