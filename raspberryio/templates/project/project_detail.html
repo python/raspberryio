@@ -43,16 +43,11 @@
     <script type="text/javascript">
         var publish_project_url = "{% url 'publish-project' project.slug %}"
         $(function() {
-            // FIXME: Use the csrf cookie approach, not this.
-            $.ajaxSetup({
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-            });
-            var $publish = $('#publish-project');
-            $publish.click(function(){
-                $.post(publish_project_url, function(data){
-                    $('#publish').fadeOut();
+            var $publish_project = $('#publish-project'),
+                $publish = $('#publish');
+            $publish_project.click(function(){
+                $.post(publish_project_url, function(data) {
+                    $publish.fadeOut();
                 });
             });
         });
