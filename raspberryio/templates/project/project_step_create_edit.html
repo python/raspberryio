@@ -3,7 +3,11 @@
 
 {% block main %}
     <h3>
-        Editing step: {{ project_step.order }} of {{ project.title }}
+        {% if project_step.order != None %}
+            Editing step: {{ project_step.order }} of {{ project.title }}
+        {% else %}
+            Creating a project step for {{ project.title }}
+        {% endif %}
     </h3>
     <form class="project-step-create-edit-form" action="" method="post" accept-charset="utf-8"> {% csrf_token %}
         {{ project_step_form.as_p }}
