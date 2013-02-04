@@ -98,8 +98,10 @@ html, body {
 					}
 				}
 				ul.dropdown-menu {
+					padding: 5px 0;
 					li {
 						padding-right: 0;
+						padding-left: 0;
 						float: none;
 						a {
 							margin-top: 0;
@@ -192,10 +194,14 @@ html, body {
 			  position: relative;
 			  li {
 			  	float: left;
-		  		width: 100%;
 		  		position: relative;
 		  		img {
 		  			width: 100%;
+		  			@media (min-width: 400px) and (max-width: 480px) {
+		  				width: 90%;
+		  				text-align: center;
+		  				margin: auto;
+		  			}
 		  		}
 			  }
 			}
