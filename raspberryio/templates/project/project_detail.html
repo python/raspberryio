@@ -3,7 +3,7 @@
 
 {% block main %}
     {% if not project.is_published %}
-        {% if request.user == project.user %}
+        {% if request.user == project.user or request.user.is_superuser %}
             <div id='publish'>
                 <h2>This project is saved as a draft.</h2>
                 <a id='publish-project' href="#">Click here to publish</a>
