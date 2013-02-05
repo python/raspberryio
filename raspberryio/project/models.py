@@ -3,7 +3,7 @@ from django.db import models
 from mezzanine.core.models import (Displayable, Ownable, Orderable, RichText,
     CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED)
 from mezzanine.core.fields import RichTextField
-from mezzanine.utils.models import AdminThumbMixin, upload_to
+from mezzanine.utils.models import AdminThumbMixin
 from mezzanine.utils.timezone import now
 from mezzanine.galleries.models import Gallery
 from mezzanine.blog.models import BlogCategory
@@ -22,8 +22,8 @@ class Project(Displayable, Ownable, AdminThumbMixin):
         upload_to='images/project_featured_video_thumbnails',
         blank=True, null=True, editable=False
     )
-    tldr = models.TextField('Summary',
-        help_text='A brief summary of your project'
+    tldr = RichTextField('Description',
+        help_text='A description of your project as a whole.'
     )
     categories = models.ManyToManyField(BlogCategory, related_name='projects')
     score = models.IntegerField(default=0)
@@ -75,13 +75,20 @@ class ProjectStep(Orderable, RichText):
         return user.is_superuser or user.id == self.project.user_id
 
     @property
+    def get_steps_count(self):
+        return self.project.steps.count()
+
+    @property
+    def get_order_display(self):
+        return self._order + 1
+
+    @property
     def order(self):
-        """Exposes the step's _order attribute for use in templates"""
         return self._order
 
     @models.permalink
     def get_absolute_url(self):
-        # FIXME: Change to project_step_detail when implemented
+        # FIXME: Change to project_step_detail if/when implemented
         return ('project-detail', [self.project.slug])
 
     def __unicode__(self):
