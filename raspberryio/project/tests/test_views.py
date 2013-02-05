@@ -144,7 +144,26 @@ class ProjectCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
         form_data = {
             'title': 'new-project',
             'tldr': self.get_random_string(),
-            'categories': [self.create_project_category().id]
+            'categories': [self.create_project_category().id],
+            'save': 'value',
+        }
+        response = self.client.post(self.url, form_data, follow=True)
+        new_project = Project.objects.get(slug='new-project')
+        url, status_code = response.redirect_chain[0]
+        expected_url = reverse(
+            'project-detail', args=[new_project.slug]
+        )
+        self.assertEqual(status_code, 302)
+        self.assertTrue(expected_url in url,
+            "Didn't redirect to {0}, redirected to {1}".format(expected_url, url)
+        )
+
+    def test_create_valid_and_add_steps(self):
+        form_data = {
+            'title': 'new-project',
+            'tldr': self.get_random_string(),
+            'categories': [self.create_project_category().id],
+            'save-add-step': 'value',
         }
         response = self.client.post(self.url, form_data, follow=True)
         new_project = Project.objects.get(slug='new-project')
@@ -172,23 +191,7 @@ class ProjectCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
         response = self.client.post(self.get_edit_url(), form_data, follow=True)
         current_project = Project.objects.get(title='current-project')
         url, status_code = response.redirect_chain[0]
-        expected_url = reverse('project-step-create-edit', args=[current_project.slug])
-        self.assertEqual(status_code, 302)
-        self.assertTrue(expected_url in url,
-            "Didn't redirect to {0}, redirected to {1}".format(expected_url, url)
-        )
-
-    def test_edit_valid_form_with_steps(self):
-        # Create a project step, so that redirect goes to project detail view
-        self.create_project_step(project=self.project)
-        form_data = {
-            'title': self.get_random_string(),
-            'tldr': self.get_random_string(),
-            'categories': [self.create_project_category().id]
-        }
-        response = self.client.post(self.get_edit_url(), form_data, follow=True)
-        url, status_code = response.redirect_chain[0]
-        expected_url = reverse('project-detail', args=[self.project.slug])
+        expected_url = reverse('project-detail', args=[current_project.slug])
         self.assertEqual(status_code, 302)
         self.assertTrue(expected_url in url,
             "Didn't redirect to {0}, redirected to {1}".format(expected_url, url)

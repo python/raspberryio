@@ -75,11 +75,30 @@ class ProjectStepTestCase(ProjectBaseTestCase):
             'Superusers should be able to edit any project step',
         )
 
+    def test_get_steps_count_property(self):
+        self.assertEqual(self.project_step.get_steps_count, 1)
+        self.create_project_step(project=self.project)
+        self.assertEqual(self.project_step.get_steps_count, 2)
+        self.create_project_step()
+        self.assertEqual(self.project_step.get_steps_count, 2,
+            "step count shouldn't change when step is added to a different project"
+        )
+
     def test_order_property(self):
         """Assure the order property provides the _order value"""
         self.assertEqual(self.project_step.order, self.project_step._order)
         project_step2 = self.create_project_step(project=self.project)
         self.assertEqual(project_step2.order, project_step2._order)
+
+    def test_get_order_display(self):
+        """Assure the get_order_display method provides the _order value + 1"""
+        self.assertEqual(
+            self.project_step.get_order_display, self.project_step._order + 1
+        )
+        project_step2 = self.create_project_step(project=self.project)
+        self.assertEqual(
+            project_step2.get_order_display, project_step2._order + 1
+        )
 
     def test_order_number(self):
         """
