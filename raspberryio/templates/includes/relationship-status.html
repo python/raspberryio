@@ -1,0 +1,12 @@
+{% load relationship_tags %}
+
+{% if not profile_user == request.user %}
+  {# decide whether or not the current user is following this user #}
+  {% if_relationship request.user profile_user "following" %}
+    {# they are following them, so show a "remove" url #}
+    <a class="unfollow" href="{{ profile_user|remove_relationship_url:"following" }}">Unfollow</a>
+  {% else %}
+    {# they are not following them, so show a link to start following #}
+    <a class="follow" href="{{ profile_user|add_relationship_url:"following" }}">Follow</a>
+  {% endif_relationship %}
+{% endif %}

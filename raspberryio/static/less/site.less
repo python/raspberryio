@@ -6,7 +6,7 @@
 // -- Fonts
 // -- Generic styles
 // -- Homepage
-// -- Account pages 
+// -- Account pages
 
 /* Bootstrap imports
 ==================== */
@@ -70,7 +70,7 @@ html, body {
 		.pull-left;
 		font-family: 'Harabara';
  		font-weight: normal;
- 		letter-spacing: 0.02em; 
+ 		letter-spacing: 0.02em;
  		font-size: 24px;
 	}
 	.right-block {
@@ -134,13 +134,13 @@ html, body {
 	}
 	@media (max-width: 979px) {
 		position: fixed;
-	}	
-	.navbar-inner { 
+	}
+	.navbar-inner {
 	 	text-align: center;
 	 	padding: 0 5px;
 	 	.box-shadow(0 1px 4px @grayLighter);
 	 	border-bottom: 1px solid #CCCCCC;
-	 	
+
 	}
 	.nav,.nav > li {
 	    float: none;
@@ -258,7 +258,7 @@ body#homepage {
         text-align: center;
         hgroup {
             p { .lead; }
-            input { 
+            input {
 	    		padding: 8px 15px 10px 15px;
 	    		.border-radius(20px 0 0 20px);
 	    		font-size: 20px;
@@ -291,7 +291,7 @@ body#homepage {
 		h2 {
 			margin: 0;
 		}
-		p { 
+		p {
 			font-size: 21px;
     		font-weight: 200;
     		line-height: 30px;
@@ -301,7 +301,7 @@ body#homepage {
     	padding: 25px 0;
     	text-align: center;
     	form {
-	    	input { 
+	    	input {
 	    		padding: 8px 15px 10px 15px;
 	    		.border-radius(20px);
 	    		width: 50%;
@@ -318,7 +318,7 @@ body#homepage {
 	    		padding: 10px 0;
 	    	}
     	}
-    } 
+    }
 }
 
 /* Account pages
@@ -399,6 +399,10 @@ body#account {
 			a.follow {
 				.btn;
 				.btn-primary;
+			}
+			a.unfollow {
+				.btn;
+				.btn-warning;
 			}
 		}
 		.stats {

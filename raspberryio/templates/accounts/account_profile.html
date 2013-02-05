@@ -8,13 +8,13 @@
 
 {% block main %}
 <div class="row">
-	<div class="avatar span2">	
+	<div class="avatar span2">
 		<img src="{% gravatar_url profile_user.email 250 %}">
 	</div>
 	<div class="userprofile span6">
 		<h2>
 			{{ profile_user.get_full_name }}
-			{% if not profile_user == request.user %}<a class="follow">Follow</a>{% endif %}
+			{% include 'includes/relationship-status.html' %}
 			<span>{{ profile_user.username }}</span>
 		</h2>
 		{% with profile_user.get_profile as profile %}
@@ -112,7 +112,7 @@
 			<a href="#"><img src="http://placehold.it/250x200&amp;text=+ Add a project"></a>
 		</li>
 	</ul>
-</div>		  
+</div>
 {% endblock %}
 
 {% block extra_js %}
