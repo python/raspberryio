@@ -40,8 +40,8 @@
 		<ul>
 			<li><strong>Public projects:</strong> 1</li>
 			<li><strong>Watched projects:</strong> </li>
-			<li><strong>Followers:</strong> <a href="#">5</a></li>
-			<li><strong>Following:</strong> <a href="#">2</a></li>
+			<li><strong>Followers:</strong> <a id="followers" href="#">5</a></li>
+			<li><strong>Following:</strong> <a id="following" href="#">2</a></li>
 		</ul>
 	</div>
 </div>
@@ -117,6 +117,7 @@
 
 {% block extra_js %}
 <script src="{{ STATIC_URL }}js/libs/swipe.min.js"></script>
+<script src="{{ STATIC_URL }}js/update_relationship.js"></script>
 <script type="text/javascript">
 	$(function(){
 		slider = new Swipe(document.getElementById('slider'), {
