@@ -18,6 +18,9 @@ urlpatterns = patterns('',
     url(r'^projects/', include('raspberryio.project.urls')),
     url(r'^accounts/', include('raspberryio.userprofile.urls')),
 
+    # django-relationships
+    url(r'^relationships/', include('relationships.urls')),
+
     # Mezzanine urls
     url(r'^', include('mezzanine.urls')),
 
