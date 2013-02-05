@@ -75,13 +75,20 @@ class ProjectStep(Orderable, RichText):
         return user.is_superuser or user.id == self.project.user_id
 
     @property
+    def get_steps_count(self):
+        return self.project.steps.count()
+
+    @property
+    def get_order_display(self):
+        return self._order + 1
+
+    @property
     def order(self):
-        """Exposes the step's _order attribute for use in templates"""
         return self._order
 
     @models.permalink
     def get_absolute_url(self):
-        # FIXME: Change to project_step_detail when implemented
+        # FIXME: Change to project_step_detail if/when implemented
         return ('project-detail', [self.project.slug])
 
     def __unicode__(self):

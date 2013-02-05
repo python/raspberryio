@@ -4,9 +4,9 @@
 {% block main %}
     <h3>
         {% if project_step.order != None %}
-            Editing step: {{ project_step.order|add:"1" }} of {{ project.title }}
+            Editing step: {{ project_step.get_order_display }} of {{ project.title }}
         {% else %}
-            Creating project step {{ project.steps.count|add:"1" }} for {{ project.title }}
+            Creating project step {{ project_step.get_steps_count|add:"1" }} for {{ project.title }}
         {% endif %}
     </h3>
     <form class="project-step-create-edit-form" action="" method="post" accept-charset="utf-8"> {% csrf_token %}
