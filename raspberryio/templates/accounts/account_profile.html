@@ -40,8 +40,8 @@
 		<ul>
 			<li><strong>Public projects:</strong> 1</li>
 			<li><strong>Watched projects:</strong> </li>
-			<li><strong>Followers:</strong> <a id="followers" href="#">5</a></li>
-			<li><strong>Following:</strong> <a id="following" href="#">2</a></li>
+			<li><strong>Followers:</strong> <a id="followers" href="{% url 'profile-related' username=profile_user relation='followers' %}">{{ profile_user.relationships.followers.all.count }}</a></li>
+			<li><strong>Following:</strong> <a id="following" href="{% url 'profile-related' username=profile_user relation='following' %}">{{ profile_user.relationships.following.all.count }}</a></li>
 		</ul>
 	</div>
 </div>
