@@ -161,6 +161,7 @@ INSTALLED_APPS = (
     # External apps
     'south',
     'compressor',
+    'django_push.subscriber',
     # Mezzanine
     "mezzanine.boot",
     "mezzanine.conf",
@@ -177,6 +178,7 @@ INSTALLED_APPS = (
     # RaspberryIO apps
     "raspberryio.userprofile",
     "raspberryio.project",
+    "raspberryio.aggregator",
 )
 
 PASSWORD_HASHERS = (
@@ -227,6 +229,12 @@ AUTH_PROFILE_MODULE = "userprofile.Profile"
 
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 
+FEED_APPROVERS_GROUP_NAME = "feed-approver"
+SUPERFEEDR_CREDS = ""  # list of [email,secretkey]
+
+# PubSubHubbub settings
+PUSH_HUB = 'https://superfeedr.com/hubbub'
+PUSH_CREDENTIALS = 'raspberryio.aggregator.utils.push_credentials'
 
 
 ####################

@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 
 from mezzanine.core.views import direct_to_template
+from aggregator.feeds import CommunityAggregatorFeed, CommunityAggregatorFirehoseFeed
 
 admin.autodiscover()
 
@@ -17,6 +18,13 @@ urlpatterns = patterns('',
     # RaspberryIO apps
     url(r'^projects/', include('raspberryio.project.urls')),
     url(r'^accounts/', include('raspberryio.userprofile.urls')),
+    url(r'^community/', include('raspberryio.aggregator.urls')),
+    # Feeds
+    url(r'^rss/community/firehose/$', CommunityAggregatorFirehoseFeed(), name='aggregator-firehose-feed'),
+    url(r'^rss/community/(?P<slug>[\w-]+)/$', CommunityAggregatorFeed(), name='aggregator-feed'),
+
+    # django-push
+    url(r'^subscriber/', include('django_push.subscriber.urls')),
 
     # Mezzanine urls
     url(r'^', include('mezzanine.urls')),

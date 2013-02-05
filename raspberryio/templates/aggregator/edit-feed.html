@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags %}
+
+{% block meta_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block body_id %}community{% endblock %}
+
+{% block main %}
+<h1>Community</h1>
+
+{% if adding %}
+  <h2 class="deck">Add a {{ feed_type }} feed:</h2>
+{% else %}
+  <h2 class="deck">Edit {{ feed }}:</h2>
+{% endif %}
+
+<form method="POST" action="" id="add_feed_form" class="wide">
+  {% csrf_token %}
+  {% for field in form %}
+    <p>
+      <label id="{{ field.auto_id }}">{{ field.label }} - <span class="help">{{ field.help_text }}</label>
+      {% if field.errors %}
+        <p class="errors">{{ field.errors.as_text }}</p>
+      {% endif %}
+      {{ field }}
+    </p>
+  {% endfor %}
+  {% if adding %}
+    <p class="submit"><input type="submit" value="Add Feed"></p>
+  {% else %}
+   <p class="submit"><input type="submit" value="Save"></p>
+  {% endif %}
+</form>
+
+{% endblock %}

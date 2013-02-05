@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags %}
+
+{% block extrahead %}
+{{ block.super }}
+<style type="text/css">
+ul.messages li {
+  font-weight: 600;
+  list-style: none;
+  padding: 20px 0;
+}
+</style>
+{% endblock %}
+
+{% block meta_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block body_id %}community{% endblock %}
+
+{% block main %}
+
+<h1>Community</h1>
+<h2 class="deck">This page, updated regularly, aggregates what's going on in the community.</h2>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% for feedtype in feedtype_list %}
+<div id="{{ feedtype.slug }}" class="module {% cycle "first" "last" %}">
+  <h3 class="header">
+    {{ feedtype.name }}
+    <a class="rss" href="{% url aggregator-feed slug=feedtype.slug %}">RSS</a>
+  </h3>
+  {% for item in feedtype.items|slice:":5" %}
+    <h5><a href="{{ item.link }}">{{ item.title }}</a></h5>
+    <p class="date">{{ item.date_modified|date:"N jS, Y \a\t P" }} by <a href="{{ item.feed.public_url }}">{{ item.feed.title }}</a></p>
+  {% endfor %}
+  <p>
+    {% if feedtype.items|length %}
+      <a href="{% url community-feed-list feedtype.slug %}">View more</a>
+    {% endif %}
+    {% if feedtype.items and feedtype.can_self_add %}
+      or
+    {% endif %}
+    {% if feedtype.can_self_add %}
+      <a href="{% url community-add-feed feedtype.slug %}">Add your feed</a>
+    {% endif %}</p>
+</div>
+{% endfor %}
+{% endblock %}
