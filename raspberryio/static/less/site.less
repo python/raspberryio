@@ -179,6 +179,7 @@ html, body {
 		margin: 25px 0 100px;
 	}
 	.gallery {
+		position: relative;
 		@media (min-width: 320px) and (max-width: 767px) {
 			.show;
 		}
@@ -195,6 +196,9 @@ html, body {
 			  li {
 			  	float: left;
 		  		position: relative;
+		  		&.add {
+					.opacity(50);
+				}
 		  		img {
 		  			width: 100%;
 		  			@media (min-width: 400px) and (max-width: 480px) {
@@ -207,11 +211,47 @@ html, body {
 			}
 		}
 		nav {
-			text-align: center;
-			font-size: 18px;
-			padding-bottom: 10px;
-			em.on {
-				color: @blue;
+			
+			a {
+				@media (min-width: 679px) {
+					font-size: 55px;
+					height: 60px;
+					line-height: 50px;
+					width: 50px;
+				}
+				z-index: 2;
+				background: @gray;
+			    color: #FFFFFF;
+			    font-size: 45px;
+			    font-weight: 100;
+			    height: 50px;
+			    line-height: 40px;
+			    margin-top: -20px;
+			    .opacity(50);
+			    position: absolute;
+			    text-align: center;
+			    top: 45%;
+			    width: 40px;
+    			&#prev {
+    				left: -15px;
+    				right: auto;
+    				.border-radius(23px 0px 0px 23px);
+    				@media (min-width: 679px) {
+    					.border-radius(33px 0px 0px 33px);
+    				}
+    			}	
+    			&#next {
+    				left: auto;
+    				right: -15px;
+    				.border-radius(0 23px 23px 0);
+    				@media (min-width: 679px) {
+    					.border-radius(0 33px 33px 0);
+    				}
+    			}
+    			&:hover {
+    				.opacity(20);
+    				text-decoration: none;
+    			}		
 			}
 		}
 	}
@@ -219,15 +259,16 @@ html, body {
 		@media (max-width: 767px) {
 			.hide;
 		}
-		margin: 0;
 		li {
 			width: 25%;
+			padding-bottom: 15px;
+			text-align: center;
+			@media (max-width: 979px) {
+				padding-bottom: 10px;
+			}
 			.pull-left;
-			overflow: hidden;
 			img {
-				width: 100%;
-				border-left: 1px solid @white;
-				border-bottom: 1px solid @white;
+				width: 95%;
 			}
 			&.add {
 				.opacity(50);
@@ -362,8 +403,6 @@ body#account {
 		}
 		ul {
 			list-style: none;
-			margin: 0;
-			padding: 0;
 		}
 		.avatar {
 			img {
@@ -375,12 +414,19 @@ body#account {
 			}
 		}
 		.userprofile {
+			@media (min-width: 1200px) {
+				margin-left: 35px !important;
+			}
 			p {
 				line-height: 24px;
 				margin-top: 10px;
 				@media (max-width: 767px) {
 					.hide;
 				}
+			}
+			ul {
+				margin: 0;
+				padding: 0;
 			}
 			h2 {
 				text-overflow: ellipsis;
@@ -411,6 +457,10 @@ body#account {
 			background-color: @white;
 			padding: 0 15px 15px;
 			.border-radius(10px);
+			ul {
+				margin: 0;
+				padding: 0;
+			}
 		}
 	}
 }

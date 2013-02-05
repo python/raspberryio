@@ -1,13 +1,70 @@
-{% if projects %}
 <div class="projects-display">
 	<div class="gallery">
 		<nav>
-			<span id="position">
-				{% for project in projects %}
-				<em {% if forloop.first %}class="on"{% endif %}>•</em>
-				{% endfor %}
-			</span>
+			<a onClick="slider.prev();return false;" id="prev" href="#"><</a>
+			<a onClick="slider.next();return false;" id="next" href="#">></a>
 		</nav>
+		<div id="slider" class="swipe">
+		  <ul class="swipe-wrap">
+		    <li>
+		    	<img src="http://placehold.it/300x250&amp;text=Project photo">
+		    </li>
+		    <li>
+		    	<img src="http://placehold.it/300x250&amp;text=Project photo">
+		    </li>
+		    <li>
+		    	<img src="http://placehold.it/300x250&amp;text=Project photo">
+		    </li>
+		    <li>
+		    	<img src="http://placehold.it/300x250&amp;text=Project photo">
+		    </li>
+		    <li>
+		    	<img src="http://placehold.it/300x250&amp;text=Project photo">
+		    </li>
+		    <li>
+		    	<img src="http://placehold.it/300x250&amp;text=Project photo">
+		    </li>
+		    <li>
+		    	<img src="http://placehold.it/300x250&amp;text=Project photo">
+		    </li>
+		    <li class="add">
+		    	<img src="http://placehold.it/300x250&amp;text=Add a project">
+		    </li>
+		  </ul>
+		</div>
+	</div>
+	<ul class="tiled">
+		<li>
+			<a href="#"><img src="http://placehold.it/250x200&amp;text=Project photo"></a>
+		</li>
+		<li>
+			<a href="#"><img src="http://placehold.it/250x200&amp;text=Project photo"></a>
+		</li>
+		<li>
+			<a href="#"><img src="http://placehold.it/250x200&amp;text=Project photo"></a>
+		</li>
+		<li>
+			<a href="#"><img src="http://placehold.it/250x200&amp;text=Project photo"></a>
+		</li>
+		<li>
+			<a href="#"><img src="http://placehold.it/250x200&amp;text=Project photo"></a>
+		</li>
+		<li>
+			<a href="#"><img src="http://placehold.it/250x200&amp;text=Project photo"></a>
+		</li>
+		<li>
+			<a href="#"><img src="http://placehold.it/250x200&amp;text=Project photo"></a>
+		</li>
+		<li class="add">
+			<a href="#"><img src="http://placehold.it/250x200&amp;text=+ Add a project"></a>
+		</li>
+	</ul>
+</div>
+
+{% comment %}
+{% if projects %}
+<div class="projects-display">
+	<div class="gallery">
 		<div id="slider" class="swipe">
 		  <ul class="swipe-wrap">
 		  	{% for project in projects %}
@@ -19,6 +76,10 @@
 		    {% endfor %}
 		  </ul>
 		</div>
+		<nav>
+			<a onClick="slider.prev();return false;" id="prev" href="#">prev</a>
+			<a onClick="slider.next();return false;" id="next" href="#">next</a>
+		</nav>
 	</div>
 	<ul class="tiled">
 		{% for project in projects %}
@@ -33,3 +94,4 @@
 {% else %}
 <h3 class="no-projects">There are no projects :(</h3>
 {% endif %}
+{% endcomment %}
