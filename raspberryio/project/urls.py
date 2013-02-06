@@ -35,4 +35,14 @@ urlpatterns = patterns('raspberryio.project.views',
         r'^publish/(?P<project_slug>[\w-]+)/$', 'publish_project',
         name='publish-project'
     ),
+
+    # Upload/Delete Gallery Images
+    url(
+        r'^add-image/(?P<project_slug>[\w-]+)/(?P<project_step_number>[\d]+)/$',
+        'gallery_image_create', name='upload-image',
+    ),
+    url(
+        r'^delete-image/(?P<pk>\d+)/(?P<project_slug>[\w-]+)/(?P<project_step_number>[\d]+)/$',
+        'gallery_image_delete', name='delete-image',
+    ),
 )

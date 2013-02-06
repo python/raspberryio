@@ -33,8 +33,8 @@ class ProjectCategoryAdmin(admin.ModelAdmin):
     fields = ('title',)
 
 admin.site.register(Project, ProjectAdmin)
-try:
-    admin.site.unregister(BlogCategory)
-except:
-    pass
+#try:
+#    admin.site.unregister(BlogCategory)
+#except:
+#    pass
 admin.site.register(ProjectCategory, ProjectCategoryAdmin)
