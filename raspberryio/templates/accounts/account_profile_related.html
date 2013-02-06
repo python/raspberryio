@@ -4,7 +4,7 @@
 {% block meta_title %}{{ profile_user.username }}{% endblock %}
 {% block title %}{{ profile_user.username }}{% endblock %}
 {% block body_id %}account{% endblock %}
-{% block body_class %}profile{% endblock %}
+{% block body_class %}relationships{% endblock %}
 
 {% block main %}
 <div class="row">
@@ -16,6 +16,7 @@
             <a href="{{ user.get_absolute_url }}">
             <div class="related-user-info">
                 <a href="{{ user.get_absolute_url }}">{{ user.username }}</a>
+                {% include 'includes/relationship-status.html' with profile_user=user %}
             </div>
         </div>
     {% endfor %}
@@ -23,3 +24,6 @@
 </div>
 {% endblock %}
 
+{% block extra_js %}
+<script src="{{ STATIC_URL }}js/update_relationship.js"></script>
+{% endblock %}
