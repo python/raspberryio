@@ -13,3 +13,4 @@ class Profile(models.Model):
         # a ModelForm
         handle = self.cleaned_data.get('twitter_handle', '')
         return handle[1:] if handle and handle[0] == '@' else handle
+

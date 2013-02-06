@@ -161,6 +161,7 @@ INSTALLED_APPS = (
     # External apps
     'south',
     'compressor',
+    'relationships',
     # Mezzanine
     "mezzanine.boot",
     "mezzanine.conf",
