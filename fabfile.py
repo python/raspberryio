@@ -43,7 +43,7 @@ def vagrant():
 def staging():
     env.environment = 'staging'
     env.hosts = ['raspberryio-staging.caktusgroup.com', ]
-    env.branch = 'develop'
+    env.branch = 'master'
     env.server_name = 'raspberryio-staging.caktusgroup.com'
     env.port = 2222
     setup_path()
