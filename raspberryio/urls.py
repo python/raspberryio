@@ -5,6 +5,8 @@ from django.contrib import admin
 
 from mezzanine.core.views import direct_to_template
 
+from raspberryio.userprofile.views import profile_related_list
+
 admin.autodiscover()
 
 
@@ -14,9 +16,14 @@ urlpatterns = patterns('',
     # Static homepage template for now
     url(r"^$", direct_to_template, {"template": "homepage.html"}, name="home"),
 
+    url(r'^users/(?P<username>[\w.\-]+)/(?P<relation>[\w-]+)/$', profile_related_list, name='profile-related'),
+
     # RaspberryIO apps
     url(r'^projects/', include('raspberryio.project.urls')),
     url(r'^accounts/', include('raspberryio.userprofile.urls')),
+
+    # django-relationships
+    url(r'^relationships/', include('relationships.urls')),
 
     # Mezzanine urls
     url(r'^', include('mezzanine.urls')),

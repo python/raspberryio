@@ -4,14 +4,14 @@
 {% block main %}
     <h3>
         {% if project_step.order != None %}
-            Editing step: {{ project_step.order }} of {{ project.title }}
+            Editing step: {{ project_step.get_order_display }} of {{ project.title }}
         {% else %}
-            Creating a project step for {{ project.title }}
+            Creating project step {{ project_step.get_steps_count|add:"1" }} for {{ project.title }}
         {% endif %}
     </h3>
     <form class="project-step-create-edit-form" action="" method="post" accept-charset="utf-8"> {% csrf_token %}
         {{ project_step_form.as_p }}
-        <input type="submit" name="save" id="submit-project-step-create-edit" value="Save and Preview"/>
+        <input type="submit" name="save" id="submit-project-step-create-edit" value="Save and View"/>
         <input type="submit" name="save-add" id="submit-project-step-create-edit-add-another" value="Save and add another" />
     </form>
 

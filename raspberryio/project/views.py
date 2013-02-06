@@ -51,7 +51,7 @@ def project_create_edit(request, project_slug=None):
     project_form = ProjectForm(request.POST or None, instance=project)
     if project_form.is_valid():
         project_form.save()
-        if not project.steps.exists():
+        if 'save-add-step' in request.POST:
             redirect_args = ('project-step-create-edit', project.slug)
         else:
             redirect_args = (project,)

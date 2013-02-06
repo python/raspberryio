@@ -8,13 +8,13 @@
 
 {% block main %}
 <div class="row">
-	<div class="avatar span2">	
+	<div class="avatar span2">
 		<img src="{% gravatar_url profile_user.email 250 %}">
 	</div>
 	<div class="userprofile span6">
 		<h2>
 			{{ profile_user.get_full_name }}
-			{% if not profile_user == request.user %}<a class="follow">Follow</a>{% endif %}
+			{% include 'includes/relationship-status.html' %}
 			<span>{{ profile_user.username }}</span>
 		</h2>
 		{% with profile_user.get_profile as profile %}
@@ -40,97 +40,25 @@
 		<ul>
 			<li><strong>Public projects:</strong> 1</li>
 			<li><strong>Watched projects:</strong> </li>
-			<li><strong>Followers:</strong> <a href="#">5</a></li>
-			<li><strong>Following:</strong> <a href="#">2</a></li>
+			<li><strong>Followers:</strong> <a id="followers" href="{% url 'profile-related' username=profile_user relation='followers' %}">{{ profile_user.relationships.followers.all.count }}</a></li>
+			<li><strong>Following:</strong> <a id="following" href="{% url 'profile-related' username=profile_user relation='following' %}">{{ profile_user.relationships.following.all.count }}</a></li>
 		</ul>
 	</div>
 </div>
-{% endblock %}
 
-{# Waiting until we have more dev work in place to make this work. #}
-{% comment %}
-{% block full_container %}
-    {% include 'includes/project-gallery.html' %}
-{% endblock %}
-{% endcomment %}
-
-{% block full_container %}
-<div class="projects-display">
-	<div class="gallery">
-		<nav>
-			<span id="position">
-				<em class="on">•</em>
-				<em>•</em>
-				<em>•</em>
-				<em>•</em>
-				<em>•</em>
-			</span>
-		</nav>
-		<div id="slider" class="swipe">
-		  <ul class="swipe-wrap">
-		    <li>
-		    	<img src="http://placehold.it/300x250&amp;text=Project photo">
-		    </li>
-		    <li>
-		    	<img src="http://placehold.it/300x250&amp;text=Project photo">
-		    </li>
-		    <li>
-		    	<img src="http://placehold.it/300x250&amp;text=Project photo">
-		    </li>
-		    <li>
-		    	<img src="http://placehold.it/300x250&amp;text=Project photo">
-		    </li>
-		    <li>
-		    	<img src="http://placehold.it/300x250&amp;text=Project photo">
-		    </li>
-		  </ul>
-		</div>
-	</div>
-	<ul class="tiled">
-		<li>
-			<a href="#"><img src="http://placehold.it/250x200&amp;text=Project photo"></a>
-		</li>
-		<li>
-			<a href="#"><img src="http://placehold.it/250x200&amp;text=Project photo"></a>
-		</li>
-		<li>
-			<a href="#"><img src="http://placehold.it/250x200&amp;text=Project photo"></a>
-		</li>
-		<li>
-			<a href="#"><img src="http://placehold.it/250x200&amp;text=Project photo"></a>
-		</li>
-		<li>
-			<a href="#"><img src="http://placehold.it/250x200&amp;text=Project photo"></a>
-		</li>
-		<li>
-			<a href="#"><img src="http://placehold.it/250x200&amp;text=Project photo"></a>
-		</li>
-		<li>
-			<a href="#"><img src="http://placehold.it/250x200&amp;text=Project photo"></a>
-		</li>
-		<li class="add">
-			<a href="#"><img src="http://placehold.it/250x200&amp;text=+ Add a project"></a>
-		</li>
-	</ul>
-</div>		  
+<div class="row">
+	{% include 'includes/project-gallery.html' %}
+</div>
 {% endblock %}
 
 {% block extra_js %}
 <script src="{{ STATIC_URL }}js/libs/swipe.min.js"></script>
+<script src="{{ STATIC_URL }}js/update_relationship.js"></script>
 <script type="text/javascript">
 	$(function(){
 		slider = new Swipe(document.getElementById('slider'), {
 			slide: 600,
-	      	callback: function(e, pos) {
-	        	var i = bullets.length;
-	        	while (i--) {
-	          		bullets[i].className = ' ';
-	        	}
-	        	bullets[pos].className = 'on';
-	      	}
 	    });
-
-	    bullets = document.getElementById('position').getElementsByTagName('em');
 	});
 </script>
 {% endblock %}
