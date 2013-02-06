@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load upload_tags %}
 
 {% block main %}
     <h3>
@@ -20,9 +21,7 @@
 {# FIXME: Terrible boilerplate begins here #}
 <div class="container">
     <!-- The file upload form used as target for the file upload widget -->
-    <form id="fileupload" action="{% url 'upload-image' project.slug project_step.order %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
-        <!-- Redirect browsers with JavaScript disabled to the origin page -->
-        <noscript><input type="hidden" name="redirect" value="http://blueimp.github.com/jQuery-File-Upload/"></noscript>
+    <form id="fileupload" action="{% url 'upload-image' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="row fileupload-buttonbar">
             <div class="span7">
@@ -93,10 +92,87 @@
 {% endblock %}
 
 {% block extra_js %}
-    {% comment %}
-        Using ssi to load the required javascript files for file uploader along
-        with the JS templates that conflict with Django otherwise (no verbatim
-        tag support is available in 1.4 and this seems like a cleaner option)
-    {% endcomment %}
-    {% ssi 'includes/file_upload/js_requirements.html' %}
+    {% upload_js %}
+
+    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/vendor/jquery.ui.widget.js"></script>
+    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/tmpl.min.js"></script>
+    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/load-image.min.js"></script>
+    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/canvas_to_blob.js"></script>
+    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/jquery.iframe-transport.js"></script>
+    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/jquery.fileupload.js"></script>
+    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/jquery.fileupload-fp.js"></script>
+    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/jquery.fileupload-ui.js"></script>
+    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/locale.js"></script>
+
+    <script>
+        var image_upload_url = "{% url 'upload-image' %}";
+
+        $(function () {
+
+            $('#fileupload').fileupload({
+            // Uncomment the following to send cross-domain cookies:
+                xhrFields: {withCredentials: true},
+                url: image_upload_url,
+            });
+
+
+            // Enable iframe cross-domain access via redirect option:
+            $('#fileupload').fileupload(
+                'option',
+                'redirect',
+                window.location.href.replace(
+                    /\/[^\/]*$/,
+                    '/cors/result.html?%s'
+                )
+            );
+
+            $('#fileupload').fileupload('option', {
+                url: image_upload_url,
+                maxFileSize: 5000000,
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                process: [
+                    {
+                        action: 'load',
+                        fileTypes: /^image\/(gif|jpeg|png)$/,
+                        maxFileSize: 10000000 // 10 MB
+                    },
+                    {
+                        action: 'resize',
+                        maxWidth: 1440,
+                        maxHeight: 900
+                    },
+                    {
+                        action: 'save'
+                    }
+                ]
+            });
+
+            // Upload server status check for browsers with CORS support:
+            if ($.support.cors) {
+                $.ajax({
+                    url: image_upload_url,
+                    type: 'HEAD'
+                }).fail(function () {
+                    $('<span class="alert alert-error"/>')
+                        .text('Upload server currently unavailable - ' +
+                                new Date())
+                        .appendTo('#fileupload');
+                });
+            }
+            
+            // Load existing files:
+            $.ajax({
+                // Uncomment the following to send cross-domain cookies:
+                //xhrFields: {withCredentials: true},
+                url: $('#fileupload').fileupload('option', 'url'),
+                dataType: 'json',
+                context: $('#fileupload')[0]
+            }).done(function (result) {
+                $(this).fileupload('option', 'done')
+                    .call(this, null, {result: result});
+            });
+        
+
+        });
+    </script>
 {% endblock %}

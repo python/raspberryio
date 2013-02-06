@@ -8,11 +8,11 @@ from django.conf import settings
 
 from mezzanine.utils.sites import current_site_id
 from mezzanine.core.models import CONTENT_STATUS_PUBLISHED
-from mezzanine.galleries.models import Gallery, GalleryImage
 from hilbert.decorators import ajax_only
 from hilbert.http import JsonResponse
 
-from raspberryio.project.models import Project, ProjectStep
+from raspberryio.project.models import (Project, ProjectStep, ProjectGallery,
+    ProjectImage)
 from raspberryio.project.forms import ProjectForm, ProjectStepForm
 
 
@@ -131,42 +131,31 @@ class AjaxResponse(HttpResponse):
 
 
 @login_required
-def gallery_image_create(request, project_slug, project_step_number):
-    user = request.user
-    project = get_object_or_404(Project, slug=project_slug)
-    if project.user != user and not user.is_superuser:
-        return HttpResponseForbidden('You are not the owner of this project.')
-    project_step = get_object_or_404(
-        ProjectStep, project=project, _order=project_step_number
-    )
-    if request.POST and 'file' in request.FILES:
-        # FIXME: For the sake of all that's holy, use an actual form
-        f = request.FILES.get('file')
-        # Create a gallery for the project step if None exists, otherwise point to it
-        if project_step.gallery:
-            gallery = project_step.gallery
-        else:
-            gallery = Gallery.objects.create()
-            project_step.gallery = gallery
-            project_step.save()
-        gallery_image = GalleryImage.objects.create(gallery=gallery, file=f)
-        data = [{
+def gallery_image_create(request):
+    if request.POST and 'files[]' in request.FILES:
+        # FIXME: For the sake of us all, use an actual form
+        f = request.FILES.get('files[]')
+        project_gallery = ProjectGallery.objects.create()
+        image = ProjectImage.objects.create(
+            project_gallery=project_gallery, file=f
+        )
+        data = {'files': [{
             'name': f.name,
-            'url': settings.MEDIA_URL + "pictures/" + f.name.replace(" ", "_"),
-            'thumbnail_url': settings.MEDIA_URL + "pictures/" + f.name.replace(" ", "_"),
-            'delete_url': reverse('delete-image', args=[gallery_image.id]),
+            'size': f.size,
+            'url': settings.MEDIA_URL + 'images/project_gallery_images/' + f.name.replace(" ", "_"),
+            'thumbnail_url': settings.MEDIA_URL + 'images/project_gallery_images/' + f.name.replace(" ", "_"),
+            'delete_url': reverse('delete-image', args=[image.id]),
             'delete_type': 'DELETE'
-        }]
+        }]}
         return AjaxResponse(request, data)
     return AjaxResponse(request, False)
 
 
 @login_required
-def gallery_image_delete(request, gallery_image_id):
+def gallery_image_delete(request, project_image_id):
     user = request.user
-    gallery_image = get_object_or_404(GalleryImage, id=gallery_image_id)
-    if user != gallery_image.gallery.projectstep.project.user:
-        return HttpResponseForbidden('You are not the owner of this project.')
-    else:
-        gallery_image.delete()
-        return AjaxResponse(request, True)
+    project_image = get_object_or_404(ProjectImage, id=project_image_id)
+    if user != project_image.project_gallery.projectstep.project.user:
+        return HttpResponseForbidden('You are not the owner of this image.')
+    project_image.delete()
+    return AjaxResponse(request, True)

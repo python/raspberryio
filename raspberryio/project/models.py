@@ -61,7 +61,7 @@ class ProjectStep(Orderable, RichText):
     """
 
     project = models.ForeignKey('Project', related_name='steps')
-    gallery = models.OneToOneField(Gallery, blank=True, null=True)
+    gallery = models.OneToOneField('ProjectGallery', blank=True, null=True)
     video = models.URLField(blank=True, default='')
 
     class Meta(object):
@@ -100,3 +100,16 @@ class ProjectStep(Orderable, RichText):
 class ProjectCategory(BlogCategory):
     class Meta(object):
         proxy = True
+
+
+class ProjectGallery(models.Model):
+    project_step = models.ForeignKey('ProjectStep',
+        related_name='project_gallery', blank=True, null=True
+    )
+
+
+class ProjectImage(models.Model):
+    project_gallery = models.ForeignKey('ProjectGallery')
+    file = models.ImageField(
+        upload_to='images/project_gallery_images', editable=False
+    )
