@@ -4,7 +4,7 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-        ('RaspberryIO Team', 'rasperryio-team@caktusgroup.com')
+        ('RaspberryIO Team', 'raspberryio-team@caktusgroup.com')
     )
 
 DATABASES['default']['NAME'] = 'raspberryio_staging'
