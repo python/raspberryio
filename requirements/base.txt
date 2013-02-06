@@ -5,3 +5,4 @@ South==0.7.6
 django_compressor==1.2
 django-appconf==0.5
 BeautifulSoup==3.2.1
+django-hilbert==0.4.2
