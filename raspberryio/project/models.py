@@ -1,4 +1,8 @@
+import urlparse
+
 from django.db import models
+
+from gdata.youtube.service import YouTubeService as yt_service
 
 from mezzanine.core.models import (Displayable, Ownable, Orderable, RichText,
     CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED)
@@ -7,6 +11,15 @@ from mezzanine.utils.models import AdminThumbMixin
 from mezzanine.utils.timezone import now
 from mezzanine.galleries.models import Gallery
 from mezzanine.blog.models import BlogCategory
+
+
+YOUTUBE_SHORT_URL = "youtu.be"
+
+YOUTUBE_DOMAINS = ("www.youtube.com",
+                   "youtube.com",
+                   "m.youtube.com",
+                   YOUTUBE_SHORT_URL
+                   )
 
 
 class Project(Displayable, Ownable, AdminThumbMixin):
@@ -51,6 +64,32 @@ class Project(Displayable, Ownable, AdminThumbMixin):
     def get_absolute_url(self):
         return ('project-detail', [self.slug])
 
+    @property
+    def video_id(self):
+        """HTML5 embed url."""
+        if self.featured_video:
+            data = urlparse.urlparse(self.featured_video)
+            if data.netloc.lower() in YOUTUBE_DOMAINS:
+                query = urlparse.parse_qs(data.query)
+                if data.netloc.lower() != YOUTUBE_SHORT_URL:
+                    vid = query.get('v', '')[0]
+                else:
+                    vid = data.path.split('/')[1]
+                try:
+                    yt_service().GetYouTubeVideoEntry(video_id=vid)
+                except:
+                    pass
+                else:
+                    return vid
+        return None
+
+    @property
+    def embed_url(self):
+        """HTML5 embed url."""
+        if self.video_id:
+            return 'http://www.youtube.com/embed/%s?wmode=transparent' % self.video_id
+        return None
+
     def __unicode__(self):
         return u'Project: {0}'.format(self.title)
 
@@ -90,6 +129,32 @@ class ProjectStep(Orderable, RichText):
     def get_absolute_url(self):
         # FIXME: Change to project_step_detail if/when implemented
         return ('project-detail', [self.project.slug])
+
+    @property
+    def video_id(self):
+        """HTML5 embed url."""
+        if self.video:
+            data = urlparse.urlparse(self.video)
+            if data.netloc.lower() in YOUTUBE_DOMAINS:
+                query = urlparse.parse_qs(data.query)
+                if data.netloc.lower() != YOUTUBE_SHORT_URL:
+                    vid = query.get('v', '')[0]
+                else:
+                    vid = data.path.split('/')[1]
+                try:
+                    yt_service().GetYouTubeVideoEntry(video_id=vid)
+                except:
+                    pass
+                else:
+                    return vid
+        return None
+
+    @property
+    def embed_url(self):
+        """HTML5 embed url."""
+        if self.video_id:
+            return 'http://www.youtube.com/embed/%s?wmode=transparent' % self.video_id
+        return None
 
     def __unicode__(self):
         return u'ProjectStep: Step {0} of project {1}'.format(
