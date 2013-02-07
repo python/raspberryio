@@ -1,8 +1,4 @@
-import urlparse
-
 from django.db import models
-
-from gdata.youtube.service import YouTubeService as yt_service
 
 from mezzanine.core.models import (Displayable, Ownable, Orderable, RichText,
     CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED)
@@ -12,14 +8,7 @@ from mezzanine.utils.timezone import now
 from mezzanine.galleries.models import Gallery
 from mezzanine.blog.models import BlogCategory
 
-
-YOUTUBE_SHORT_URL = "youtu.be"
-
-YOUTUBE_DOMAINS = ("www.youtube.com",
-                   "youtube.com",
-                   "m.youtube.com",
-                   YOUTUBE_SHORT_URL
-                   )
+from raspberryio.project.utils import get_youtube_video_id
 
 
 class Project(Displayable, Ownable, AdminThumbMixin):
@@ -30,7 +19,8 @@ class Project(Displayable, Ownable, AdminThumbMixin):
     featured_photo = models.ImageField(
         upload_to='images/project_featured_photos', blank=True, null=True
     )
-    featured_video = models.URLField(blank=True, default='')
+    featured_video = models.URLField(blank=True, default='',
+                                     help_text='Youtube Video URL')
     featured_video_thumbnail = models.ImageField(
         upload_to='images/project_featured_video_thumbnails',
         blank=True, null=True, editable=False
@@ -60,28 +50,11 @@ class Project(Displayable, Ownable, AdminThumbMixin):
         return (self.publish_date <= now() and
             self.status == CONTENT_STATUS_PUBLISHED)
 
-    @models.permalink
-    def get_absolute_url(self):
-        return ('project-detail', [self.slug])
-
     @property
     def video_id(self):
-        """HTML5 embed url."""
+        """Extract Video ID."""
         if self.featured_video:
-            data = urlparse.urlparse(self.featured_video)
-            if data.netloc.lower() in YOUTUBE_DOMAINS:
-                query = urlparse.parse_qs(data.query)
-                if data.netloc.lower() != YOUTUBE_SHORT_URL:
-                    vid = query.get('v', '')[0]
-                else:
-                    vid = data.path.split('/')[1]
-                try:
-                    yt_service().GetYouTubeVideoEntry(video_id=vid)
-                except:
-                    pass
-                else:
-                    return vid
-        return None
+            return get_youtube_video_id(self.featured_video)
 
     @property
     def embed_url(self):
@@ -89,6 +62,10 @@ class Project(Displayable, Ownable, AdminThumbMixin):
         if self.video_id:
             return 'http://www.youtube.com/embed/%s?wmode=transparent' % self.video_id
         return None
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('project-detail', [self.slug])
 
     def __unicode__(self):
         return u'Project: {0}'.format(self.title)
@@ -101,7 +78,8 @@ class ProjectStep(Orderable, RichText):
 
     project = models.ForeignKey('Project', related_name='steps')
     gallery = models.OneToOneField(Gallery, blank=True, null=True)
-    video = models.URLField(blank=True, default='')
+    video = models.URLField(blank=True, default='',
+                            help_text='Youtube Video URL')
 
     class Meta(object):
         order_with_respect_to = 'project'
@@ -132,22 +110,9 @@ class ProjectStep(Orderable, RichText):
 
     @property
     def video_id(self):
-        """HTML5 embed url."""
+        """Extract Video ID."""
         if self.video:
-            data = urlparse.urlparse(self.video)
-            if data.netloc.lower() in YOUTUBE_DOMAINS:
-                query = urlparse.parse_qs(data.query)
-                if data.netloc.lower() != YOUTUBE_SHORT_URL:
-                    vid = query.get('v', '')[0]
-                else:
-                    vid = data.path.split('/')[1]
-                try:
-                    yt_service().GetYouTubeVideoEntry(video_id=vid)
-                except:
-                    pass
-                else:
-                    return vid
-        return None
+            return get_youtube_video_id(self.video)
 
     @property
     def embed_url(self):
