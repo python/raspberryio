@@ -67,7 +67,7 @@ class ProjectStepForm(forms.ModelForm):
 class ProjectImageForm(forms.ModelForm):
 
     def clean(self):
-        files_data = self.files.get('files', None)
+        files_data = self.files.get('file', None)
         self.data['file'] = files_data if files_data else None
 
     def save(self):

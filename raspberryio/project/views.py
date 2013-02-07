@@ -1,12 +1,7 @@
-from os.path import split as path_split
-
 from django.http import HttpResponseForbidden, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required
-
-from django.core.urlresolvers import reverse
-from django.conf import settings
 
 from mezzanine.utils.sites import current_site_id
 from mezzanine.core.models import CONTENT_STATUS_PUBLISHED
