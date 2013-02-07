@@ -54,10 +54,14 @@
 </div>
 
 <div class="row">
+	{% with profile_user.projects.all as projects %}
 	{% include 'includes/project-gallery.html' %}
+	{% endwith %}
 </div>
 {% endblock %}
 
+
+{% if projects %}
 {% block extra_js %}
 <script src="{{ STATIC_URL }}js/libs/swipe.min.js"></script>
 <script src="{{ STATIC_URL }}js/update_relationship.js"></script>
@@ -69,3 +73,4 @@
 	});
 </script>
 {% endblock %}
+{% endif %}
