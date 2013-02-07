@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags %}
+{% load bootstrap_toolkit %}
 
 {% block meta_title %}{{ title }}{% endblock %}
 {% block title %}{{ title }}{% endblock %}
@@ -9,7 +10,7 @@
 <fieldset>
     <legend>{{ title }} </legend>
     <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
-   	{% fields_for form %}
+   	{{ form|as_bootstrap }}
    	<input class="submit" type="submit" value="{{ title }}">
     </form>
 </fieldset>

@@ -162,6 +162,7 @@ INSTALLED_APPS = (
     'south',
     'compressor',
     'relationships',
+    'bootstrap_toolkit',
     # Mezzanine
     "mezzanine.boot",
     "mezzanine.conf",
@@ -225,6 +226,7 @@ COMPRESS_PRECOMPILERS = (
 )
 
 AUTH_PROFILE_MODULE = "userprofile.Profile"
+ACCOUNTS_PROFILE_FORM_CLASS = "raspberryio.userprofile.forms.UserProfileForm"
 
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 
