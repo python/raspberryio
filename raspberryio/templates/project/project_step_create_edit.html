@@ -10,88 +10,64 @@
             Creating project step {{ project_step.get_steps_count|add:"1" }} for {{ project.title }}
         {% endif %}
     </h3>
-    <form class="project-step-create-edit-form" action="" method="post" accept-charset="utf-8"> {% csrf_token %}
+
+    {# FIXME: Terrible copy pasta begins here #}
+    <div class="container">
+        <label>Gallery Images:</label>
+        <!-- The file upload form used as target for the file upload widget -->
+        <form id="fileupload" action="{% url 'gallery-image-upload' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+            <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+            <div class="row fileupload-buttonbar">
+                <div class="span8">
+                    <!-- The fileinput-button span is used to style the file input field as button -->
+                    <span class="btn btn-success fileinput-button">
+                        <i class="icon-plus icon-white"></i>
+                        <span>Add files...</span>
+                        <input type="file" name="files" multiple>
+                    </span>
+                    <button type="submit" class="btn btn-primary start">
+                        <i class="icon-upload icon-white"></i>
+                        <span>Start upload</span>
+                    </button>
+                    <button type="reset" class="btn btn-warning cancel">
+                        <i class="icon-ban-circle icon-white"></i>
+                        <span>Cancel upload</span>
+                    </button>
+                    <button type="button" class="btn btn-danger delete">
+                        <i class="icon-trash icon-white"></i>
+                        <span>Delete</span>
+                    </button>
+                    <input type="checkbox" class="toggle">
+                </div>
+                <!-- The global progress information -->
+                <div class="span5 fileupload-progress fade">
+                    <!-- The global progress bar -->
+                    <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                        <div class="bar" style="width:0%;"></div>
+                    </div>
+                    <!-- The extended global progress information -->
+                    <div class="progress-extended">&nbsp;</div>
+                </div>
+            </div>
+            <!-- Loading indicator shown during file processing -->
+            <div class="fileupload-loading"></div>
+            <br>
+            <!-- The table listing the files available for upload/download -->
+            <table role="presentation" class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
+        </form>
+        <br>
+    </div>
+    {# Copy pasta ends here #}
+
+    <form id="project-step-form" class="project-step-create-edit-form" action="" method="post" accept-charset="utf-8"> {% csrf_token %}
         {{ project_step_form.as_p }}
         <input type="submit" name="save" id="submit-project-step-create-edit" value="Save and View"/>
         <input type="submit" name="save-add" id="submit-project-step-create-edit-add-another" value="Save and add another" />
     </form>
-
-
-
-{# FIXME: Terrible boilerplate begins here #}
-<div class="container">
-    <!-- The file upload form used as target for the file upload widget -->
-    <form id="fileupload" action="{% url 'upload-image' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
-        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
-        <div class="row fileupload-buttonbar">
-            <div class="span7">
-                <!-- The fileinput-button span is used to style the file input field as button -->
-                <span class="btn btn-success fileinput-button">
-                    <i class="icon-plus icon-white"></i>
-                    <span>Add files...</span>
-                    <input type="file" name="files[]" multiple>
-                </span>
-                <button type="submit" class="btn btn-primary start">
-                    <i class="icon-upload icon-white"></i>
-                    <span>Start upload</span>
-                </button>
-                <button type="reset" class="btn btn-warning cancel">
-                    <i class="icon-ban-circle icon-white"></i>
-                    <span>Cancel upload</span>
-                </button>
-                <button type="button" class="btn btn-danger delete">
-                    <i class="icon-trash icon-white"></i>
-                    <span>Delete</span>
-                </button>
-                <input type="checkbox" class="toggle">
-            </div>
-            <!-- The global progress information -->
-            <div class="span5 fileupload-progress fade">
-                <!-- The global progress bar -->
-                <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                    <div class="bar" style="width:0%;"></div>
-                </div>
-                <!-- The extended global progress information -->
-                <div class="progress-extended">&nbsp;</div>
-            </div>
-        </div>
-        <!-- The loading indicator is shown during file processing -->
-        <div class="fileupload-loading"></div>
-        <br>
-        <!-- The table listing the files available for upload/download -->
-        <table role="presentation" class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
-    </form>
-    <br>
-</div>
-<!-- modal-gallery is the modal dialog used for the image gallery -->
-<div id="modal-gallery" class="modal modal-gallery hide fade" data-filter=":odd" tabindex="-1">
-    <div class="modal-header">
-        <a class="close" data-dismiss="modal">&times;</a>
-        <h3 class="modal-title"></h3>
-    </div>
-    <div class="modal-body"><div class="modal-image"></div></div>
-    <div class="modal-footer">
-        <a class="btn modal-download" target="_blank">
-            <i class="icon-download"></i>
-            <span>Download</span>
-        </a>
-        <a class="btn btn-success modal-play modal-slideshow" data-slideshow="5000">
-            <i class="icon-play icon-white"></i>
-            <span>Slideshow</span>
-        </a>
-        <a class="btn btn-info modal-prev">
-            <i class="icon-arrow-left icon-white"></i>
-            <span>Previous</span>
-        </a>
-        <a class="btn btn-primary modal-next">
-            <span>Next</span>
-            <i class="icon-arrow-right icon-white"></i>
-        </a>
-    </div>
-</div>
 {% endblock %}
 
 {% block extra_js %}
+    {# FIXME: Use a verbatim tag, or possibly ssi to load jquery tmpl templates #}
     {% upload_js %}
 
     <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/vendor/jquery.ui.widget.js"></script>
@@ -103,76 +79,50 @@
     <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/jquery.fileupload-fp.js"></script>
     <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/jquery.fileupload-ui.js"></script>
     <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/locale.js"></script>
+    <script src="{{ STATIC_URL }}js/file_upload.js"></script>
 
     <script>
-        var image_upload_url = "{% url 'upload-image' %}";
+        /*
+        Declare the image upload and download urls. Download url. Call
+        initialize_file_uploader with this data in that order.
+        e.g.: `(upload_url, download_url)`
 
-        $(function () {
+        download_url should be an empty string if there are no images to load
+        initially.
+        */
 
-            $('#fileupload').fileupload({
-            // Uncomment the following to send cross-domain cookies:
-                xhrFields: {withCredentials: true},
-                url: image_upload_url,
-            });
+        (function() {
+            var image_upload_url = "{% url 'gallery-image-upload' %}";
+            var image_download_url = '';
+            {% if project_step.id %}
+                image_download_url =
+                    "{% url 'gallery-image-download' project.slug project_step.order %}";
+            {% endif %}
+            initialize_file_uploader(image_upload_url, image_download_url);
 
+            // Load ids of new image uploads and fill the hidden images field
+            // with a comma separated list of these.
 
-            // Enable iframe cross-domain access via redirect option:
-            $('#fileupload').fileupload(
-                'option',
-                'redirect',
-                window.location.href.replace(
-                    /\/[^\/]*$/,
-                    '/cors/result.html?%s'
-                )
-            );
+            /*
+            FIXME: Find a way to clean this up, especially the hidden field
+            selector
 
-            $('#fileupload').fileupload('option', {
-                url: image_upload_url,
-                maxFileSize: 5000000,
-                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                process: [
-                    {
-                        action: 'load',
-                        fileTypes: /^image\/(gif|jpeg|png)$/,
-                        maxFileSize: 10000000 // 10 MB
-                    },
-                    {
-                        action: 'resize',
-                        maxWidth: 1440,
-                        maxHeight: 900
-                    },
-                    {
-                        action: 'save'
+            */
+            $('#project-step-form').submit(function() {
+                var $this = $(this);
+                var $new_uploads = $('tr.template-download td.preview');
+                var image_ids = '';
+                $.each($new_uploads, function(index, upload){
+                    var upload_id = $(upload).first().data('id');
+                    if (upload_id !== '') {
+                        if (image_ids !== '') {
+                            image_ids += ',';
+                        }
+                        image_ids += upload_id;
                     }
-                ]
-            });
-
-            // Upload server status check for browsers with CORS support:
-            if ($.support.cors) {
-                $.ajax({
-                    url: image_upload_url,
-                    type: 'HEAD'
-                }).fail(function () {
-                    $('<span class="alert alert-error"/>')
-                        .text('Upload server currently unavailable - ' +
-                                new Date())
-                        .appendTo('#fileupload');
                 });
-            }
-            
-            // Load existing files:
-            $.ajax({
-                // Uncomment the following to send cross-domain cookies:
-                //xhrFields: {withCredentials: true},
-                url: $('#fileupload').fileupload('option', 'url'),
-                dataType: 'json',
-                context: $('#fileupload')[0]
-            }).done(function (result) {
-                $(this).fileupload('option', 'done')
-                    .call(this, null, {result: result});
+                $('#project-step-form input:hidden[name=images]').val(image_ids);
             });
-        
-
-        });
+        })();
     </script>
 {% endblock %}

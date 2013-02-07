@@ -11,21 +11,10 @@ class Migration(SchemaMigration):
         # Adding model 'ProjectImage'
         db.create_table('project_projectimage', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('project_gallery', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['project.ProjectGallery'])),
             ('file', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
         ))
         db.send_create_signal('project', ['ProjectImage'])
 
-        # Adding model 'ProjectGallery'
-        db.create_table('project_projectgallery', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('project_step', self.gf('django.db.models.fields.related.ForeignKey')(related_name='project_gallery', to=orm['project.ProjectStep'])),
-        ))
-        db.send_create_signal('project', ['ProjectGallery'])
-
-
-        # Changing field 'Project.tldr'
-        db.alter_column('project_project', 'tldr', self.gf('mezzanine.core.fields.RichTextField')())
         # Deleting field 'ProjectStep.gallery'
         db.delete_column('project_projectstep', 'gallery_id')
 
@@ -34,12 +23,6 @@ class Migration(SchemaMigration):
         # Deleting model 'ProjectImage'
         db.delete_table('project_projectimage')
 
-        # Deleting model 'ProjectGallery'
-        db.delete_table('project_projectgallery')
-
-
-        # Changing field 'Project.tldr'
-        db.alter_column('project_project', 'tldr', self.gf('django.db.models.fields.TextField')())
         # Adding field 'ProjectStep.gallery'
         db.add_column('project_projectstep', 'gallery',
                       self.gf('django.db.models.fields.related.OneToOneField')(to=orm['galleries.Gallery'], unique=True, null=True, blank=True),
@@ -132,16 +115,10 @@ class Migration(SchemaMigration):
             'tldr': ('mezzanine.core.fields.RichTextField', [], {}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'projects'", 'to': "orm['auth.User']"})
         },
-        'project.projectgallery': {
-            'Meta': {'object_name': 'ProjectGallery'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'project_step': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'project_gallery'", 'to': "orm['project.ProjectStep']"})
-        },
         'project.projectimage': {
             'Meta': {'object_name': 'ProjectImage'},
             'file': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'project_gallery': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['project.ProjectGallery']"})
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         'project.projectstep': {
             'Meta': {'ordering': "('_order',)", 'object_name': 'ProjectStep'},

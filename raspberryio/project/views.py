@@ -1,19 +1,20 @@
-from django.http import HttpResponse, HttpResponseForbidden, Http404
+from os.path import split as path_split
+
+from django.http import HttpResponseForbidden, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required
-from django.utils import simplejson
+
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
 from mezzanine.utils.sites import current_site_id
 from mezzanine.core.models import CONTENT_STATUS_PUBLISHED
 from hilbert.decorators import ajax_only
-from hilbert.http import JsonResponse
 
-from raspberryio.project.models import (Project, ProjectStep, ProjectGallery,
-    ProjectImage)
+from raspberryio.project.models import Project, ProjectStep, ProjectImage
 from raspberryio.project.forms import ProjectForm, ProjectStepForm
+from raspberryio.project.utils import AjaxResponse
 
 
 def project_list(request):
@@ -103,59 +104,74 @@ def publish_project(request, project_slug):
     else:
         project.status = CONTENT_STATUS_PUBLISHED
         project.save()
-    return JsonResponse({})
+    return AjaxResponse(request, {})
 
 
 @login_required
 @ajax_only
-def publish_project(request, project_slug):
-    user = request.user
-    project = get_object_or_404(Project, slug=project_slug)
-    if user != project.user and user.is_superuser == False:
-        return HttpResponseForbidden('You are not the owner of this project.')
-    else:
-        project.status = CONTENT_STATUS_PUBLISHED
-        project.save()
-    return JsonResponse({})
-
-
-class AjaxResponse(HttpResponse):
-    """Like JsonResponse but uses text/plain for junky browsers"""
-
-    def __init__(self, request, obj='', *args, **kwargs):
-        content = simplejson.dumps(obj, {})
-        mimetype = 'application/json' \
-            if 'application/json' in request.META['HTTP_ACCEPT'] else 'text/plain'
-        super(AjaxResponse, self).__init__(content, mimetype, *args, **kwargs)
-        self['Content-Disposition'] = 'inline; filename=files.json'
-
-
-@login_required
 def gallery_image_create(request):
-    if request.POST and 'files[]' in request.FILES:
+    if request.POST and 'files' in request.FILES:
         # FIXME: For the sake of us all, use an actual form
-        f = request.FILES.get('files[]')
-        project_gallery = ProjectGallery.objects.create()
-        image = ProjectImage.objects.create(
-            project_gallery=project_gallery, file=f
-        )
+        f = request.FILES.get('files')
+        image = ProjectImage.objects.create(file=f)
         data = {'files': [{
-            'name': f.name,
+            'id': image.id,
+            'name': path_split(f.name)[-1],
             'size': f.size,
             'url': settings.MEDIA_URL + 'images/project_gallery_images/' + f.name.replace(" ", "_"),
             'thumbnail_url': settings.MEDIA_URL + 'images/project_gallery_images/' + f.name.replace(" ", "_"),
-            'delete_url': reverse('delete-image', args=[image.id]),
+            'delete_url': reverse('gallery-image-delete', args=[image.id]),
             'delete_type': 'DELETE'
         }]}
         return AjaxResponse(request, data)
+    # Return False as an error because a post was made without any files
     return AjaxResponse(request, False)
 
 
 @login_required
+@ajax_only
+def gallery_image_download(request, project_slug, project_step_number):
+    # Load and send thumbnails of existing files here
+    project = get_object_or_404(Project, slug=project_slug)
+    if request.user != project.user and not request.user.is_superuser:
+        return HttpResponseForbidden('You are not the owner of this project')
+    project_step = get_object_or_404(
+        ProjectStep, project=project, _order=project_step_number
+    )
+    images = project_step.gallery.all()
+
+    def get_image_data(image):
+        return {
+            'name': path_split(image.file.name)[-1],
+            'size': image.file.size,
+            'url': settings.MEDIA_URL + image.file.name.replace(' ', '_'),
+            'thumbnail_url': settings.MEDIA_URL + image.file.name.replace(" ", "_"),
+            'delete_url': reverse('gallery-image-delete', args=[image.id]),
+            'delete_type': 'DELETE'
+        }
+    image_data = {'files': map(get_image_data, images)}
+    return AjaxResponse(request, image_data)
+
+
+@login_required
+@ajax_only
 def gallery_image_delete(request, project_image_id):
     user = request.user
     project_image = get_object_or_404(ProjectImage, id=project_image_id)
-    if user != project_image.project_gallery.projectstep.project.user:
+    try:
+        project_step = project_image.projectstep_set.all()[0]
+    except IndexError:
+        return AjaxResponse(request, False)
+    else:
+        project_user = project_step.project.user
+    if user != project_user:
         return HttpResponseForbidden('You are not the owner of this image.')
-    project_image.delete()
-    return AjaxResponse(request, True)
+    # Attempt to remove the actual file and then the database record
+    try:
+        project_image.file.delete()
+        success = True
+    except IOError:
+        success = False
+    else:
+        project_image.delete()
+    return AjaxResponse(request, success)

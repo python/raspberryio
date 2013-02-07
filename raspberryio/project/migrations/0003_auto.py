@@ -8,15 +8,18 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'ProjectStep.gallery'
-        db.add_column('project_projectstep', 'gallery',
-                      self.gf('django.db.models.fields.related.OneToOneField')(to=orm['project.ProjectGallery'], unique=True, null=True, blank=True),
-                      keep_default=False)
+        # Adding M2M table for field gallery on 'ProjectStep'
+        db.create_table('project_projectstep_gallery', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('projectstep', models.ForeignKey(orm['project.projectstep'], null=False)),
+            ('projectimage', models.ForeignKey(orm['project.projectimage'], null=False))
+        ))
+        db.create_unique('project_projectstep_gallery', ['projectstep_id', 'projectimage_id'])
 
 
     def backwards(self, orm):
-        # Deleting field 'ProjectStep.gallery'
-        db.delete_column('project_projectstep', 'gallery_id')
+        # Removing M2M table for field gallery on 'ProjectStep'
+        db.delete_table('project_projectstep_gallery')
 
 
     models = {
@@ -105,22 +108,16 @@ class Migration(SchemaMigration):
             'tldr': ('mezzanine.core.fields.RichTextField', [], {}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'projects'", 'to': "orm['auth.User']"})
         },
-        'project.projectgallery': {
-            'Meta': {'object_name': 'ProjectGallery'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'project_step': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'project_gallery'", 'to': "orm['project.ProjectStep']"})
-        },
         'project.projectimage': {
             'Meta': {'object_name': 'ProjectImage'},
             'file': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'project_gallery': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['project.ProjectGallery']"})
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         'project.projectstep': {
             'Meta': {'ordering': "('_order',)", 'object_name': 'ProjectStep'},
             '_order': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
             'content': ('mezzanine.core.fields.RichTextField', [], {}),
-            'gallery': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['project.ProjectGallery']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
+            'gallery': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['project.ProjectImage']", 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'project': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'steps'", 'to': "orm['project.Project']"}),
             'video': ('django.db.models.fields.URLField', [], {'default': "''", 'max_length': '200', 'blank': 'True'})

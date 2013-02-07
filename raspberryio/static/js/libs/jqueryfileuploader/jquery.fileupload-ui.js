@@ -706,7 +706,6 @@
             );
             if (tmpl) {
                 if (options.uploadTemplateId) {
-                    console.log(options.uploadTemplateId);
                     options.uploadTemplate = tmpl(options.uploadTemplateId);
                 }
                 if (options.downloadTemplateId) {
