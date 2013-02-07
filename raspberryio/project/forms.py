@@ -15,13 +15,14 @@ class ProjectForm(forms.ModelForm):
         )
 
     def clean_featured_video(self):
-        data = self.cleaned_data['featured_video']
-        video_id = get_youtube_video_id(data)
-        try:
-            yt_service().GetYouTubeVideoEntry(video_id=video_id)
-        except:
-            msg = "The supplied URL is not a valid Youtube video"
-            raise forms.ValidationError(msg)
+        data = self.cleaned_data.get('featured_video', '')
+        if data:
+            video_id = get_youtube_video_id(data)
+            try:
+                yt_service().GetYouTubeVideoEntry(video_id=video_id)
+            except:
+                msg = "The supplied URL is not a valid Youtube video"
+                raise forms.ValidationError(msg)
         return data
 
 
@@ -34,11 +35,12 @@ class ProjectStepForm(forms.ModelForm):
         )
 
     def clean_video(self):
-        data = self.cleaned_data['video']
-        video_id = get_youtube_video_id(data)
-        try:
-            yt_service().GetYouTubeVideoEntry(video_id=video_id)
-        except:
-            msg = "The supplied URL is not a valid Youtube video"
-            raise forms.ValidationError(msg)
+        data = self.cleaned_data.get('video', '')
+        if data:
+            video_id = get_youtube_video_id(data)
+            try:
+                yt_service().GetYouTubeVideoEntry(video_id=video_id)
+            except:
+                msg = "The supplied URL is not a valid Youtube video"
+                raise forms.ValidationError(msg)
         return data
