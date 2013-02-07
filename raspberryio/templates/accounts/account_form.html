@@ -9,20 +9,18 @@
 {% block main %}
 <fieldset>
     <legend>{{ title }} </legend>
-    <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
+    <form class="registration" method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
    	{{ form|as_bootstrap }}
    	<input class="submit" type="submit" value="{{ title }}">
     </form>
-</fieldset>
 {% endblock %}
 
-
 {% block extra_js %}
-<script type="text/javascript">
-$(document).ready( function() {
-    $('#id_use_gravatar').click(function() {
-      $('.input_id_avatar')[this.checked ? "hide" : "show"]();
-    });
-});
+<script>
+	$(function() {
+	    $('#id_use_gravatar').click(function() {
+	      $('.input_id_avatar')[this.checked ? "hide" : "show"]();
+	    });
+	});
 </script>
 {% endblock %}
