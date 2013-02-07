@@ -17,11 +17,11 @@
 
 
 {% block extra_js %}
-<script type="text/javascript">
-$(document).ready( function() {
-    $('#id_use_gravatar').click(function() {
-      $('.input_id_avatar')[this.checked ? "hide" : "show"]();
-    });
-});
+<script>
+	$(function() {
+	    $('#id_use_gravatar').click(function() {
+	      $('.input_id_avatar')[this.checked ? "hide" : "show"]();
+	    });
+	});
 </script>
 {% endblock %}
