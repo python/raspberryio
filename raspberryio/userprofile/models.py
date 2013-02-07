@@ -12,11 +12,10 @@ class Profile(models.Model):
                                blank=True, null=True,
                                help_text="Upload an avatar")
 
-    def clean_twitter_handle(self):
-        # FIXME: Use a model clean() that calls this, or refactor into
-        # a ModelForm
-        handle = self.cleaned_data.get('twitter_handle', '')
-        return handle[1:] if handle and handle[0] == '@' else handle
+    def clean(self):
+        # strip twitter_id of @ symbol, if present
+        if self.twitter_id.startswith('@'):
+            self.twitter_id = self.twitter_id.lstrip('@')
 
     def __unicode__(self):
         return self.user.username
