@@ -11,53 +11,8 @@
         {% endif %}
     </h3>
 
-    {# FIXME: Terrible copy pasta begins here #}
-    <div class="container">
-        <label>Gallery Images:</label>
-        <!-- The file upload form used as target for the file upload widget -->
-        <form id="fileupload" action="." method="POST" enctype="multipart/form-data">{% csrf_token %}
-            <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
-            <div class="row fileupload-buttonbar">
-                <div class="span8">
-                    <!-- The fileinput-button span is used to style the file input field as button -->
-                    <span class="btn btn-success fileinput-button">
-                        <i class="icon-plus icon-white"></i>
-                        <span>Add files</span>
-                        <input type="file" name="files" multiple>
-                    </span>
-                    <button type="submit" class="btn btn-primary start">
-                        <i class="icon-upload icon-white"></i>
-                        <span>Start upload</span>
-                    </button>
-                    <button type="reset" class="btn btn-warning cancel">
-                        <i class="icon-ban-circle icon-white"></i>
-                        <span>Cancel upload</span>
-                    </button>
-                    <button type="button" class="btn btn-danger delete">
-                        <i class="icon-trash icon-white"></i>
-                        <span>Delete</span>
-                    </button>
-                    <input type="checkbox" class="toggle">
-                </div>
-                <!-- The global progress information -->
-                <div class="span5 fileupload-progress fade">
-                    <!-- The global progress bar -->
-                    <div class="progress progress-success progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-                        <div class="bar" style="width:0%;"></div>
-                    </div>
-                    <!-- The extended global progress information -->
-                    <div class="progress-extended">&nbsp;</div>
-                </div>
-            </div>
-            <!-- Loading indicator shown during file processing -->
-            <div class="fileupload-loading"></div>
-            <br>
-            <!-- The table listing the files available for upload/download -->
-            <table role="presentation" class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
-        </form>
-        <br>
-    </div>
-    {# Copy pasta ends here #}
+    {# Ajax Multifile uploader form #}
+    {% include 'includes/file_upload/uploader_form.html' %}
 
     <form id="project-step-form" class="project-step-create-edit-form" action="" method="post" accept-charset="utf-8"> {% csrf_token %}
         {{ project_step_form.as_p }}
@@ -67,28 +22,15 @@
 {% endblock %}
 
 {% block extra_js %}
-    {# FIXME: Use a verbatim tag, or possibly ssi to load jquery tmpl templates #}
-    {% upload_js %}
 
-    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/vendor/jquery.ui.widget.js"></script>
-    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/tmpl.min.js"></script>
-    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/load-image.min.js"></script>
-    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/canvas_to_blob.js"></script>
-    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/jquery.iframe-transport.js"></script>
-    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/jquery.fileupload.js"></script>
-    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/jquery.fileupload-fp.js"></script>
-    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/jquery.fileupload-ui.js"></script>
-    <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/locale.js"></script>
-    <script src="{{ STATIC_URL }}js/file_upload.js"></script>
+    {# Load jquery file upload JS dependencies and file_upload.js #}
+    {% include 'includes/file_upload/js_requirements.html' %}
 
     <script>
         /*
-        Declare the image upload and download urls. Download url. Call
-        initialize_file_uploader with this data in that order.
-        e.g.: `(upload_url, download_url)`
-
-        download_url should be an empty string if there are no images to load
-        initially.
+        Declare the image upload and download urls. download_url should be an
+        empty string if there are no images to load initially.
+        Provide the jquery selector for the hidden field to bind image_ids to.
         */
 
         (function() {
@@ -98,31 +40,12 @@
                 image_download_url =
                     "{% url 'gallery-image-download' project.slug project_step.order %}";
             {% endif %}
-            initialize_file_uploader(image_upload_url, image_download_url);
+            var $file_field = $('#project-step-form input:hidden[name=images]');
 
-            // Load ids of new image uploads and fill the hidden images field
-            // with a comma separated list of these.
-
-            /*
-            FIXME: Find a way to clean this up, especially the hidden field
-            selector
-
-            */
-            $('#project-step-form').submit(function() {
-                var $this = $(this);
-                var $new_uploads = $('tr.template-download td.preview');
-                var image_ids = '';
-                $.each($new_uploads, function(index, upload){
-                    var upload_id = $(upload).first().data('id');
-                    if (upload_id !== '') {
-                        if (image_ids !== '') {
-                            image_ids += ',';
-                        }
-                        image_ids += upload_id;
-                    }
-                });
-                $('#project-step-form input:hidden[name=images]').val(image_ids);
-            });
+            // initialize file uploader with these three pieces of data.
+            initialize_file_uploader(
+                image_upload_url, image_download_url, $file_field
+            );
         })();
     </script>
 {% endblock %}

@@ -1,14 +1,20 @@
 /*
-    Configuration of jquery file upload.
+    Configuration of jquery file upload. Binds to a hidden field of a form to
+    provide the image upload ids when that form is submitted
 
-    - Load after all other JavaScript includes.
-    - Call initialize_file_uploader within a closure with two arguments:
+    To use, be sure to:
+    1. Load after all other JavaScript includes for jQuery File Upload.
+
+    2. Call initialize_file_uploader within a closure on the page where the
+    form is used and provide 3 arguments:
         the url for image uploads
         the url for image downloads
+        a jquery selector for the hidden field to submit image ids to.
 */
 
 
-var initialize_file_uploader = function(image_upload_url, image_download_url) {
+var initialize_file_uploader = function(
+    image_upload_url, image_download_url, $file_field) {
     // Establish endpoint for uploading images
     $('#fileupload').fileupload({
         url: image_upload_url
@@ -70,4 +76,25 @@ var initialize_file_uploader = function(image_upload_url, image_download_url) {
                 .call(this, null, {result: result});
         });
     }
+
+    /*
+    When the partner form `$form` is submitted, load ids of new image uploads
+    and fill the hidden file field `$file_field` with a comma separated list of
+    these.
+    */
+    var $form = $file_field.parents('form').first();
+    $form.submit(function(e) {
+        var $new_uploads = $('tr.template-download td.preview');
+        var image_ids = '';
+        $.each($new_uploads, function(index, upload){
+            var upload_id = $(upload).first().data('id');
+            if (upload_id !== '') {
+                if (image_ids !== '') {
+                    image_ids += ',';
+                }
+                image_ids += upload_id;
+            }
+        });
+        $file_field.val(image_ids);
+    });
 };
