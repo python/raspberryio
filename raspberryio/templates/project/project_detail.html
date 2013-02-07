@@ -13,6 +13,16 @@
     <h3>
         {{ project.title }}
     </h3>
+    {# Intro Video #}
+    {% if project.featured_video %}
+        <div id="VideoDiv">
+            {# Use if flash not located #}
+            <iframe type="text/html" width="540" height="345"
+                    src="{{ project.embed_url }}"
+                    frameborder="0">
+            </iframe>
+        </div>
+    {% endif %}
     Categories
     <ul>
         {% for category in project.categories.all %}
@@ -21,11 +31,19 @@
             </li>
         {% endfor %}
     </ul>
-    {{ project.tldr }}
+    {{ project.tldr|safe }}
     {% for step in project.steps.all %}
-        {# TODO: Actually embed the video link into a player #}
+        {# hr for quick sanity check on steps #}
+        <hr />
+        <h3>Step {{ forloop.counter }}</h3>
         {% if step.video %}
-            {{ step.video }}
+            <div id="videoDiv{{ forloop.counter}}">
+                {# Use if flash not located #}
+                <iframe type="text/html" width="540" height="345"
+                        src="{{ step.embed_url }}"
+                        frameborder="0">
+                </iframe>
+            </div>
         {% endif %}
         {# TODO: Show the gallery with a nice slideshow "widget" #}
         {% if step.gallery %}
@@ -40,6 +58,33 @@
 {% endblock %}
 
 {% block extra_js %}
+    <script src="{{ STATIC_URL }}js/libs/google_jsapi.js" type="text/javascript"></script>
+    {% if project.featured_video %}
+        <script type="text/javascript">
+            google.load("swfobject", "2.1");
+            function _run() {
+                var videoID = "{{ project.video_id }}";
+                var params = { allowScriptAccess: "always" };
+                var atts = { id: "ytPlayer" };
+                swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "?version=3&enablejsapi=1&playerapiid=player1", "videoDiv", "480", "295", "9", null, null, params, atts);
+            };
+            google.setOnLoadCallback(_run);
+        </script>
+    {% endif %}
+    {% for step in project.steps.all %}
+        {% if step.video %}
+        <script type="text/javascript">
+            google.load("swfobject", "2.1");
+            function _run() {
+                var videoID = "{{ step.video_id }}";
+                var params = { allowScriptAccess: "always" };
+                var atts = { id: "ytPlayer" };
+                swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "?version=3&enablejsapi=1&playerapiid=player1", "videoDiv{{ forloop.counter }}", "480", "295", "9", null, null, params, atts);
+            };
+            google.setOnLoadCallback(_run);
+        </script>
+        {% endif %}
+    {% endfor %}
     <script type="text/javascript">
         var publish_project_url = "{% url 'publish-project' project.slug %}"
         $(function() {

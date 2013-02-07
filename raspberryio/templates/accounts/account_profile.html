@@ -8,8 +8,15 @@
 
 {% block main %}
 <div class="row">
+	{% with profile_user.get_profile as profile %}
 	<div class="avatar span2">
-		<img src="{% gravatar_url profile_user.email 250 %}">
+		{% if profile.use_gravatar %}
+			<img src="{% gravatar_url profile_user.email 250 %}" />
+		{% elif profile.avatar %}
+			<img src="{{ MEDIA_URL }}{% thumbnail profile.avatar.url 250 250 %}" />
+		{% else %}
+			<img src="{{ STATIC_URL }}profile.png" />
+		{% endif %}
 	</div>
 	<div class="userprofile span6">
 		<h2>
@@ -17,7 +24,7 @@
 			{% include 'includes/relationship-status.html' %}
 			<span>{{ profile_user.username }}</span>
 		</h2>
-		{% with profile_user.get_profile as profile %}
+
 		{% if profile.website or profile.twitter_id %}
 		<ul>
 			<li>
@@ -33,8 +40,8 @@
 		</ul>
 		{% endif %}
 		{% if profile.bio %}<p>{{ profile.bio }}</p>{% endif %}
-		{% endwith %}
 	</div>
+	{% endwith %}
 	<div class="stats span3">
 		<h3>Stats</h3>
 		<ul>
@@ -47,10 +54,14 @@
 </div>
 
 <div class="row">
+	{% with profile_user.projects.all as projects %}
 	{% include 'includes/project-gallery.html' %}
+	{% endwith %}
 </div>
 {% endblock %}
 
+
+{% if projects %}
 {% block extra_js %}
 <script src="{{ STATIC_URL }}js/libs/swipe.min.js"></script>
 <script src="{{ STATIC_URL }}js/update_relationship.js"></script>
@@ -62,3 +73,4 @@
 	});
 </script>
 {% endblock %}
+{% endif %}

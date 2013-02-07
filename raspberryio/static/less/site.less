@@ -7,6 +7,7 @@
 // -- Generic styles
 // -- Homepage
 // -- Account pages
+// -- Project list
 
 /* Bootstrap imports
 ==================== */
@@ -214,7 +215,7 @@ html, body {
 			}
 		}
 		nav {
-			
+
 			a {
 				@media (min-width: 679px) {
 					font-size: 55px;
@@ -242,7 +243,7 @@ html, body {
     				@media (min-width: 679px) {
     					.border-radius(33px 0px 0px 33px);
     				}
-    			}	
+    			}
     			&#next {
     				left: auto;
     				right: -15px;
@@ -254,11 +255,12 @@ html, body {
     			&:hover {
     				.opacity(20);
     				text-decoration: none;
-    			}		
+    			}
 			}
 		}
 	}
 	ul.tiled {
+		list-style: none;
 		@media (max-width: 767px) {
 			.hide;
 		}
@@ -303,11 +305,14 @@ body#homepage {
         hgroup {
             p { .lead; }
             input {
-	    		padding: 8px 15px 10px 15px;
+	    		// padding: 8px 15px 10px 15px;
 	    		.border-radius(20px 0 0 20px);
 	    		font-size: 20px;
-	    		@media (max-width: 320px) {
-	    			padding: 10px 10px 8px;
+	    		height: 30px;
+	    		line-height: 24px;
+	    		@media (max-width: 350px) {
+	    			height: 30px;
+	    			line-height: 22px;
 	    			font-size: 16px;
 	    			width: 60%;
 	    		}
@@ -346,10 +351,11 @@ body#homepage {
     	text-align: center;
     	form {
 	    	input {
-	    		padding: 8px 15px 10px 15px;
 	    		.border-radius(20px);
 	    		width: 50%;
 	    		font-size: 24px;
+	    		line-height: 30px;
+	    		height: 30px;
 	    		@media (max-width: 800px) {
 	    			width: 90%;
 	    		}
@@ -387,6 +393,9 @@ body#account {
 				.btn;
 				.btn-primary;
 				.btn-large;
+			}
+			.input_id_avatar {
+				display: none;
 			}
 		}
 	}
@@ -482,17 +491,17 @@ body#account {
 	}
 }
 
-/* Project list page
+/* Project list
 ====================== */
 body#project-list {
 	#content {
 		text-align: center;
 		form {
 			input {
-				padding: 0 20px;
 				.border-radius(30px);
 				font-size: 22px;
-				height: 60px;
+				line-height: 45px;
+				height: 45px;
 				@media (min-width: 767px) {
 					width: 60%;
 				}
@@ -503,3 +512,5 @@ body#project-list {
 		}
 	}
 }
+
+

@@ -49,10 +49,6 @@ class RaspberryIOBaseTestCase(TestCase):
         user.save()
         return user
 
-    def create_user_profile(self, user=None, **kwargs):
-        user = user or self.create_user()
-        return self.create_instance(userprofile.Profile, user=user, **kwargs)
-
     def get_current_site(self):
         return DjangoSite.objects.get(id=current_site_id())
 

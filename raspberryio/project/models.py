@@ -13,6 +13,8 @@ from mezzanine.utils.timezone import now
 from mezzanine.blog.models import BlogCategory
 from mezzanine.core.templatetags.mezzanine_tags import thumbnail
 
+from raspberryio.project.utils import get_youtube_video_id
+
 
 class Project(Displayable, Ownable, AdminThumbMixin):
     """
@@ -22,7 +24,8 @@ class Project(Displayable, Ownable, AdminThumbMixin):
     featured_photo = models.ImageField(
         upload_to='images/project_featured_photos', blank=True, null=True
     )
-    featured_video = models.URLField(blank=True, default='')
+    featured_video = models.URLField(blank=True, default='',
+                                     help_text='Youtube Video URL')
     featured_video_thumbnail = models.ImageField(
         upload_to='images/project_featured_video_thumbnails',
         blank=True, null=True, editable=False
@@ -52,6 +55,19 @@ class Project(Displayable, Ownable, AdminThumbMixin):
         return (self.publish_date <= now() and
             self.status == CONTENT_STATUS_PUBLISHED)
 
+    @property
+    def video_id(self):
+        """Extract Video ID."""
+        if self.featured_video:
+            return get_youtube_video_id(self.featured_video)
+
+    @property
+    def embed_url(self):
+        """HTML5 embed url."""
+        if self.video_id:
+            return 'http://www.youtube.com/embed/%s?wmode=transparent' % self.video_id
+        return None
+
     @models.permalink
     def get_absolute_url(self):
         return ('project-detail', [self.slug])
@@ -67,7 +83,8 @@ class ProjectStep(Orderable, RichText):
 
     project = models.ForeignKey('Project', related_name='steps')
     gallery = models.ManyToManyField('ProjectImage', blank=True, null=True)
-    video = models.URLField(blank=True, default='')
+    video = models.URLField(blank=True, default='',
+                            help_text='Youtube Video URL')
 
     class Meta(object):
         order_with_respect_to = 'project'
@@ -95,6 +112,19 @@ class ProjectStep(Orderable, RichText):
     def get_absolute_url(self):
         # FIXME: Change to project_step_detail if/when implemented
         return ('project-detail', [self.project.slug])
+
+    @property
+    def video_id(self):
+        """Extract Video ID."""
+        if self.video:
+            return get_youtube_video_id(self.video)
+
+    @property
+    def embed_url(self):
+        """HTML5 embed url."""
+        if self.video_id:
+            return 'http://www.youtube.com/embed/%s?wmode=transparent' % self.video_id
+        return None
 
     def __unicode__(self):
         return u'ProjectStep: Step {0} of project {1}'.format(
