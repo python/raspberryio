@@ -1,10 +1,10 @@
 from django import forms
-from raspberryio.project.models import Project, ProjectStep
+from raspberryio.project.models import Project, ProjectStep, ProjectImage
 
 
 class ProjectForm(forms.ModelForm):
 
-    class Meta:
+    class Meta(object):
         model = Project
         fields = (
             'title', 'featured_photo', 'featured_video', 'tldr', 'categories',
@@ -31,8 +31,26 @@ class ProjectStepForm(forms.ModelForm):
             self.instance.gallery.add(*self.images)
         return result
 
-    class Meta:
+    class Meta(object):
         model = ProjectStep
         fields = (
             'content', 'video', 'images'
         )
+
+
+class ProjectImageForm(forms.ModelForm):
+
+    def clean(self):
+        files_data = self.files.get('files', None)
+        self.data['file'] = files_data if files_data else None
+
+    def save(self):
+        file_data = self.data.get('file', None)
+        instance = self.instance
+        if file_data:
+            instance.file = file_data
+            instance.save()
+        return instance
+
+    class Meta(object):
+        model = ProjectImage

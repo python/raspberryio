@@ -1,12 +1,17 @@
+from os.path import split as path_split
+from collections import Iterable
+
 from django.db import models
+from django.conf import settings
+from django.core.urlresolvers import reverse
 
 from mezzanine.core.models import (Displayable, Ownable, Orderable, RichText,
     CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED)
 from mezzanine.core.fields import RichTextField
 from mezzanine.utils.models import AdminThumbMixin
 from mezzanine.utils.timezone import now
-from mezzanine.galleries.models import Gallery
 from mezzanine.blog.models import BlogCategory
+from mezzanine.core.templatetags.mezzanine_tags import thumbnail
 
 
 class Project(Displayable, Ownable, AdminThumbMixin):
@@ -106,3 +111,53 @@ class ProjectImage(models.Model):
     file = models.ImageField(
         upload_to='images/project_gallery_images', editable=False
     )
+
+    def get_filename(self):
+        """The image's filename (without its path)"""
+        return path_split(self.file.name)[-1] if self.file.name else ''
+
+    def get_delete_url(self):
+        """A url to handle deletion of the image and its model via AJAX"""
+        return reverse('gallery-image-delete', args=(self.id,))
+
+    def get_absolute_url(self):
+        """A url that serves the image file"""
+        return settings.MEDIA_URL + self.file.name.replace(' ', '_')
+
+    def get_thumbnail_url(self):
+        """
+        A url that serves the thumbnail of the image (Creates one if none yet
+        exists)
+        """
+        # FIXME: Make the parameters configurable
+        return settings.MEDIA_URL + thumbnail(
+            self.get_absolute_url(), 400, 200
+        )
+
+    def get_image_data(self):
+        """Provide image data needed by jQuery File Upload templates"""
+        return {
+            'id': self.id,
+            'name': self.get_filename(),
+            'size': self.file.size,
+            'url': self.get_absolute_url(),
+            'thumbnail_url': self.get_thumbnail_url(),
+            'delete_url': self.get_delete_url(),
+            'delete_type': 'DELETE'
+        }
+
+    @classmethod
+    def serialize(kls, images):
+        """
+        Given a ProjectImage or an iterable of ProjectImages, return a
+        dictionary of the image(s) files data in the format:
+            {'files': [
+                {
+                    'id': image.id,
+                    'name': image.get_filename, ...
+                }, ...
+            ]}
+        """
+        files_data = [image.get_image_data() for image in images] \
+            if isinstance(images, Iterable) else [images.get_image_data()]
+        return {'files': files_data}

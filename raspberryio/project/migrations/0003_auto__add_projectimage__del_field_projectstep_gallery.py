@@ -17,7 +17,8 @@ class Migration(SchemaMigration):
 
         # Deleting field 'ProjectStep.gallery'
         db.delete_column('project_projectstep', 'gallery_id')
-
+        # Assure tldr is a rich text field
+        db.alter_column('project_project', 'tldr', self.gf('mezzanine.core.fields.RichTextField')())
 
     def backwards(self, orm):
         # Deleting model 'ProjectImage'
@@ -27,7 +28,8 @@ class Migration(SchemaMigration):
         db.add_column('project_projectstep', 'gallery',
                       self.gf('django.db.models.fields.related.OneToOneField')(to=orm['galleries.Gallery'], unique=True, null=True, blank=True),
                       keep_default=False)
-
+        # Make tldr a plain text field
+        db.alter_column('project_project', 'tldr', self.gf('django.db.models.fields.TextField')())
 
     models = {
         'auth.group': {
