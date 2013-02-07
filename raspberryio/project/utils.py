@@ -14,8 +14,8 @@ def get_youtube_video_id(url):
     video_id = ''
     data = urlparse.urlparse(url)
     if data.netloc.lower() in YOUTUBE_DOMAINS:
-        query = urlparse.parse_qs(data.query)
         if data.netloc.lower() != YOUTUBE_SHORT_URL:
+            query = urlparse.parse_qs(data.query)
             video_id = query.get('v', '')[0]
         else:
             video_id = data.path.split('/')[1]
