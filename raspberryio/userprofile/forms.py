@@ -1,18 +1,9 @@
-from django import forms
-
+from mezzanine.accounts.forms import ProfileForm
 from bootstrap_toolkit.widgets import BootstrapTextInput
 
-from raspberryio.userprofile.models import Profile
 
+class UserProfileForm(ProfileForm):
 
-class UserProfileForm(forms.ModelForm):
-    # Custom fields
-    twitter_id = forms.CharField(max_length=100,
-        widget=BootstrapTextInput(prepend='@'),
-    )
-
-    class Meta:
-        model = Profile
-        fields = (
-            'website', 'bio',  # Other fields
-        )
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        self.fields['twitter_id'].widget = BootstrapTextInput(prepend='@')
