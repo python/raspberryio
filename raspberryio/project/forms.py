@@ -37,8 +37,7 @@ class ProjectStepForm(forms.ModelForm):
             image_pks = [int(pk) for pk in image_pks]
         except ValueError:
             image_pks = []
-        else:
-            self.images = image_pks
+        self.images = image_pks
 
     def clean_video(self):
         data = self.cleaned_data.get('video', '')

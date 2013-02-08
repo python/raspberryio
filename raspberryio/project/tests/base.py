@@ -88,3 +88,11 @@ class ProjectBaseTestCase(RaspberryIOBaseTestCase):
         temp_file = ContentFile(content)
         temp_file.name = filename
         return temp_file
+
+    def create_project_image(self, **kwargs):
+        defaults = {
+            'file': kwargs.pop('file', self.create_file()),
+        }
+        return self.create_instance(
+            project.ProjectImage, defaults=defaults, **kwargs
+        )
