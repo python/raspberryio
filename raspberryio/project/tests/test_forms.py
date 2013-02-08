@@ -113,6 +113,12 @@ class ProjectImageFormTestCase(ProjectBaseTestCase):
         else:
             self.fail('Form should be valid')
 
+    def test_invalid_upload(self):
+        request = self.request_factory.post('/', {'filez': self.create_file()})
+        request.is_ajax = True
+        form = ProjectImageForm(request.POST or None, request.FILES or None)
+        self.assertFalse(form.is_valid())
+
     def test_no_file(self):
         request = self.request_factory.post('/', {})
         request.is_ajax = True

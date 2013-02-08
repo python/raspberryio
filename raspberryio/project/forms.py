@@ -67,10 +67,12 @@ class ProjectImageForm(forms.ModelForm):
 
     def clean(self):
         files_data = self.files.get('file', None)
-        self.data['file'] = files_data if files_data else None
+        if not files_data:
+            raise forms.ValidationError('No file data present')
+        self.data['file'] = files_data
 
     def save(self):
-        file_data = self.data.get('file', None)
+        file_data = self.data['file']
         instance = self.instance
         if file_data:
             instance.file = file_data
