@@ -16,11 +16,17 @@
 {% endblock %}
 
 {% block extra_js %}
-<script>
-	$(function() {
-	    $('#id_use_gravatar').click(function() {
-	      $('.input_id_avatar')[this.checked ? "hide" : "show"]();
-	    });
-	});
+<script type="text/javascript">
+    $(function() {
+        var $use_gravatar = $('#id_use_gravatar');
+
+        var toggle_avatar;
+        (toggle_avatar = function() {
+            var use_gravatar = $use_gravatar[0].checked;
+            $('#id_avatar').parent()[use_gravatar ? "hide" : "show"]();
+        })();
+
+        $use_gravatar.click(toggle_avatar);
+    });
 </script>
 {% endblock %}
