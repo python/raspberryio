@@ -6,7 +6,23 @@ from raspberryio.project.models import Project, ProjectStep, ProjectImage
 from raspberryio.project.utils import get_youtube_video_id
 
 
-class ProjectForm(forms.ModelForm):
+class PlaceHolderMixin(object):
+    """
+    Mixin that sets text input placeholder's to their label's value and removes
+    the label.
+    """
+    def __init__(self, *args, **kwargs):
+        super(PlaceHolderMixin, self).__init__(*args, **kwargs)
+        for name, field in self.fields.iteritems():
+            is_textarea = 'cols' in field.widget.attrs
+            if hasattr(field.widget, 'input_type') or is_textarea:
+                placeholder = field.label if field.label else name
+                placeholder = placeholder.replace('_', ' ')
+                field.widget.attrs.update({'placeholder': placeholder.title()})
+                field.label = ''
+
+
+class ProjectForm(PlaceHolderMixin, forms.ModelForm):
 
     class Meta(object):
         model = Project
@@ -26,7 +42,7 @@ class ProjectForm(forms.ModelForm):
         return data
 
 
-class ProjectStepForm(forms.ModelForm):
+class ProjectStepForm(PlaceHolderMixin, forms.ModelForm):
 
     images = forms.CharField(required=False, widget=forms.HiddenInput)
 

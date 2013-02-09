@@ -1,21 +1,7 @@
 from mezzanine.accounts.forms import ProfileForm
 from bootstrap_toolkit.widgets import BootstrapTextInput
 
-
-class PlaceHolderMixin(object):
-    """
-    Mixin that sets text input placeholder's to their label's value and removes
-    the label.
-    """
-    def __init__(self, *args, **kwargs):
-        super(PlaceHolderMixin, self).__init__(*args, **kwargs)
-        for name, field in self.fields.iteritems():
-            is_textarea = 'cols' in field.widget.attrs
-            if hasattr(field.widget, 'input_type') or is_textarea:
-                placeholder = field.label if field.label else name
-                placeholder = placeholder.replace('_', ' ')
-                field.widget.attrs.update({'placeholder': placeholder.title()})
-                field.label = ''
+from raspberryio.project.forms import PlaceHolderMixin
 
 
 class UserProfileForm(PlaceHolderMixin, ProfileForm):
