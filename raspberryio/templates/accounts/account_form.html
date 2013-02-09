@@ -1,24 +1,32 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags %}
+{% load bootstrap_toolkit %}
 
 {% block meta_title %}{{ title }}{% endblock %}
 {% block title %}{{ title }}{% endblock %}
 {% block body_id %}account{% endblock %}
 
 {% block main %}
-    <h2>{{ title }}</h2>
+<fieldset>
+    <legend>{{ title }} </legend>
     <form class="registration" method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
-   	{% fields_for form %}
+   	{{ form|as_bootstrap }}
    	<input class="submit" type="submit" value="{{ title }}">
     </form>
 {% endblock %}
 
 {% block extra_js %}
-<script>
-	$(function() {
-	    $('#id_use_gravatar').click(function() {
-	      $('.input_id_avatar')[this.checked ? "hide" : "show"]();
-	    });
-	});
+<script type="text/javascript">
+    $(function() {
+        var $use_gravatar = $('#id_use_gravatar');
+
+        var toggle_avatar;
+        (toggle_avatar = function() {
+            var use_gravatar = $use_gravatar[0].checked;
+            $('#id_avatar').parent()[use_gravatar ? "hide" : "show"]();
+        })();
+
+        $use_gravatar.click(toggle_avatar);
+    });
 </script>
 {% endblock %}
