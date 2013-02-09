@@ -34,11 +34,17 @@
         */
 
         (function() {
-            var image_upload_url = "{% url 'gallery-image-upload' %}";
-            var image_download_url = '';
+            var image_upload_url,
+                image_download_url;
             {% if project_step.id %}
+                // If editing an existing project step
+                image_upload_url = "{% url 'gallery-image-upload' project.slug project_step.order %}";
                 image_download_url =
                     "{% url 'gallery-image-download' project.slug project_step.order %}";
+            {% else %}
+                // New project steps have a generic upload and no download
+                image_upload_url = "{% url 'gallery-image-upload' %}";
+                image_download_url = '';
             {% endif %}
             var $file_field = $('#project-step-form input:hidden[name=images]');
 

@@ -105,10 +105,22 @@ def publish_project(request, project_slug):
 
 @login_required
 @ajax_only
-def gallery_image_create(request):
+def gallery_image_create(request, project_slug=None, project_step_number=None):
+    project_step = None
+    if project_slug and project_step_number:
+        project = get_object_or_404(Project, slug=project_slug)
+        project_step = get_object_or_404(
+            ProjectStep, project=project, _order=project_step_number
+        )
+        if request.user != project.user and not request.user.is_superuser:
+            return HttpResponseForbidden(
+                'You are not the owner of this project.'
+            )
     form = ProjectImageForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         image = form.save()
+        if project_step is not None:
+            project_step.gallery.add(image)
         return AjaxResponse(request, ProjectImage.serialize(image))
     # A post was made without any files, just return False
     return AjaxResponse(request, False)

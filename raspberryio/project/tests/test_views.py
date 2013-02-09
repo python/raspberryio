@@ -382,6 +382,9 @@ class ProjectImageCreateViewTestCase(ProjectBaseTestCase):
         self.client.login(username=self.user.username, password='password')
         self.url = reverse(self.url_name)
 
+    def get_edit_url(self, project_slug, project_step_number):
+        return reverse(self.url_name, args=(project_slug, project_step_number))
+
     def test_login_required(self):
         self.client.logout()
         response = self.client.get(self.url, is_ajax=True)
@@ -409,6 +412,61 @@ class ProjectImageCreateViewTestCase(ProjectBaseTestCase):
             'file': f,
         }
         response = self.client.post(self.url, send_data, is_ajax=True)
+        response_data = json.loads(response.content)
+        response_image_data = response_data['files'][0]
+        image = ProjectImage.objects.get(id=response_image_data['id'])
+        self.assertEqual(response_image_data, image.get_image_data())
+        self.assertEqual(filename, image.get_filename())
+
+    def test_send_file_existing_step(self):
+        filename = self.get_random_string()
+        f = self.create_file(filename=filename)
+        send_data = {
+            'file': f,
+        }
+        project = self.create_project(user=self.user)
+        project_step = self.create_project_step(project=project)
+        url = self.get_edit_url(project.slug, project_step._order)
+        response = self.client.post(url, send_data, is_ajax=True)
+        response_data = json.loads(response.content)
+        response_image_data = response_data['files'][0]
+        image = ProjectImage.objects.get(id=response_image_data['id'])
+        self.assertEqual(response_image_data, image.get_image_data())
+        self.assertEqual(filename, image.get_filename())
+        self.assertEqual(list(project_step.gallery.all()), [image])
+
+    def test_send_file_no_project(self):
+        project_step = self.create_project_step()
+        url = self.get_edit_url('bad_slug', project_step._order)
+        response = self.client.post(url, {}, is_ajax=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_send_file_no_project_step(self):
+        project_step = self.create_project_step()
+        url = self.get_edit_url(project_step.project.slug, 9999)
+        response = self.client.post(url, {}, is_ajax=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_send_file_not_owner(self):
+        other_user = self.create_user()
+        project = self.create_project(user=other_user)
+        project_step = self.create_project_step(project=project)
+        url = self.get_edit_url(project.slug, project_step._order)
+        response = self.client.post(url, {}, is_ajax=True)
+        self.assertEqual(response.status_code, 403)
+
+    def test_superuser_edit(self):
+        superuser = self.create_superuser(data={'password': 'password'})
+        self.client.login(username=superuser.username, password='password')
+        project = self.create_project(user=self.user)
+        project_step = self.create_project_step(project=project)
+        url = self.get_edit_url(project.slug, project_step._order)
+        filename = self.get_random_string()
+        f = self.create_file(filename=filename)
+        send_data = {
+            'file': f,
+        }
+        response = self.client.post(url, send_data, is_ajax=True)
         response_data = json.loads(response.content)
         response_image_data = response_data['files'][0]
         image = ProjectImage.objects.get(id=response_image_data['id'])
