@@ -1,9 +1,9 @@
 from django.contrib.sites.models import Site as DjangoSite
+from django.core.files.base import ContentFile
 
 from hilbert.test import TestCase
 from mezzanine.utils.sites import current_site_id
 
-from raspberryio.userprofile import models as userprofile
 from raspberryio.project import models as project
 
 
@@ -81,3 +81,22 @@ class ProjectBaseTestCase(RaspberryIOBaseTestCase):
         return self.create_instance(
             project.ProjectCategory, defaults=defaults, **kwargs
         )
+
+    def create_file(self, **kwargs):
+        filename = kwargs.pop('filename', 'test.jpg')
+        content = kwargs.pop('content', self.get_random_string())
+        temp_file = ContentFile(content)
+        temp_file.name = filename
+        return temp_file
+
+    def create_project_image(self, **kwargs):
+        defaults = {
+            'file': kwargs.pop('file', self.create_file()),
+        }
+        project_step = kwargs.pop('project_step', None)
+        project_image = self.create_instance(
+            project.ProjectImage, defaults=defaults, **kwargs
+        )
+        if project_step:
+            project_step.gallery.add(project_image)
+        return project_image
