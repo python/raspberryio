@@ -6,7 +6,23 @@ from raspberryio.project.models import Project, ProjectStep, ProjectImage
 from raspberryio.project.utils import get_youtube_video_id
 
 
-class ProjectForm(forms.ModelForm):
+class PlaceHolderMixin(object):
+    """
+    Mixin that sets text input placeholder's to their label's value and removes
+    the label.
+    """
+    def __init__(self, *args, **kwargs):
+        super(PlaceHolderMixin, self).__init__(*args, **kwargs)
+        for name, field in self.fields.iteritems():
+            is_textarea = 'cols' in field.widget.attrs
+            if hasattr(field.widget, 'input_type') or is_textarea:
+                placeholder = field.label if field.label else name
+                placeholder = placeholder.replace('_', ' ')
+                field.widget.attrs.update({'placeholder': placeholder.title()})
+                field.label = ''
+
+
+class ProjectForm(PlaceHolderMixin, forms.ModelForm):
 
     class Meta(object):
         model = Project
@@ -26,7 +42,7 @@ class ProjectForm(forms.ModelForm):
         return data
 
 
-class ProjectStepForm(forms.ModelForm):
+class ProjectStepForm(PlaceHolderMixin, forms.ModelForm):
 
     images = forms.CharField(required=False, widget=forms.HiddenInput)
 
@@ -37,8 +53,7 @@ class ProjectStepForm(forms.ModelForm):
             image_pks = [int(pk) for pk in image_pks]
         except ValueError:
             image_pks = []
-        else:
-            self.images = image_pks
+        self.images = image_pks
 
     def clean_video(self):
         data = self.cleaned_data.get('video', '')
@@ -68,10 +83,12 @@ class ProjectImageForm(forms.ModelForm):
 
     def clean(self):
         files_data = self.files.get('file', None)
-        self.data['file'] = files_data if files_data else None
+        if not files_data:
+            raise forms.ValidationError('No file data present')
+        self.data['file'] = files_data
 
     def save(self):
-        file_data = self.data.get('file', None)
+        file_data = self.data['file']
         instance = self.instance
         if file_data:
             instance.file = file_data

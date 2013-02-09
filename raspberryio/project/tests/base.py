@@ -88,3 +88,15 @@ class ProjectBaseTestCase(RaspberryIOBaseTestCase):
         temp_file = ContentFile(content)
         temp_file.name = filename
         return temp_file
+
+    def create_project_image(self, **kwargs):
+        defaults = {
+            'file': kwargs.pop('file', self.create_file()),
+        }
+        project_step = kwargs.pop('project_step', None)
+        project_image = self.create_instance(
+            project.ProjectImage, defaults=defaults, **kwargs
+        )
+        if project_step:
+            project_step.gallery.add(project_image)
+        return project_image
