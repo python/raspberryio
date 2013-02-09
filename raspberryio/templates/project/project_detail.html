@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load mezzanine_tags %}
 {% load url from future %}
 
 {% block main %}
@@ -47,7 +48,9 @@
         {% endif %}
         {# TODO: Show the gallery with a nice slideshow "widget" #}
         {% if step.gallery %}
-            {{ step.gallery }}
+            {% for photo in step.gallery.all %}
+                <img src="{{ MEDIA_URL }}{% thumbnail photo.file.url 250 250 %}" />
+            {% endfor %}
         {% endif %}
         {# FIXME: Determine the whitelist of html tags and assure this won't break the page #}
         {{ step.content|safe }}
