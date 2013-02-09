@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load i18n future mezzanine_tags %}
+
+{% block meta_title %}{{ profile_user.username }}{% endblock %}
+{% block title %}{{ profile_user.username }}{% endblock %}
+{% block body_id %}account{% endblock %}
+{% block body_class %}stream{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="span12">
+        {% include 'includes/relationship-status.html' with profile_user=user %}
+        <ul>
+        {% for action in actions %}
+            <li>{% include 'includes/account_action.html' %}</li>
+        {% empty %}
+        {% trans "No actions yet" %}
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ STATIC_URL }}js/update_relationship.js"></script>
+{% endblock %}

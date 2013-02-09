@@ -236,7 +236,6 @@ ACTSTREAM_SETTINGS = {
     'MODELS': ('auth.user', 'project.project', 'project.projectstep'),
     'FETCH_RELATIONS': True,
     'USE_PREFETCH': True,
-    'GFK_FETCH_DEPTH': 1,
 }
 
 ####################

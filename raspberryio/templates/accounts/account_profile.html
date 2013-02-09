@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n future mezzanine_tags %}
+{% load relationship_tags %}
 
 {% block meta_title %}{{ profile_user.username }}{% endblock %}
 {% block title %}{{ profile_user.username }}{% endblock %}
@@ -40,6 +41,7 @@
 		</ul>
 		{% endif %}
 		{% if profile.bio %}<p>{{ profile.bio }}</p>{% endif %}
+		<a href="{% url 'profile-actions' profile_user.username %}">Activity Stream</a>
 	</div>
 	{% endwith %}
 	<div class="stats span3">
@@ -47,8 +49,8 @@
 		<ul>
 			<li><strong>Public projects:</strong> 1</li>
 			<li><strong>Watched projects:</strong> </li>
-			<li><strong>Followers:</strong> <a id="followers" href="{% url 'profile-related' username=profile_user relation='followers' %}">1</a></li>
-			<li><strong>Following:</strong> <a id="following" href="{% url 'profile-related' username=profile_user relation='following' %}">1</a></li>
+			<li><strong>Followers:</strong> <a id="followers" href="{% url 'profile-related' username=profile_user relation='followers' %}">{{ profile_user.username|followers }}</a></li>
+			<li><strong>Following:</strong> <a id="following" href="{% url 'profile-related' username=profile_user relation='following' %}">{{ profile_user.username|following }}</a></li>
 		</ul>
 	</div>
 </div>
