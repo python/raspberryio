@@ -1,6 +1,8 @@
+from django.core.urlresolvers import reverse
+
 from raspberryio.project.tests.base import RaspberryIOBaseTestCase
 
-from django.core.urlresolvers import reverse
+from actstream.actions import follow
 
 
 class RelationshipTestCase(RaspberryIOBaseTestCase):
@@ -17,29 +19,28 @@ class RelationshipTestCase(RaspberryIOBaseTestCase):
         url = self.get_url_args(self.user, 'followers')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        related_users = response.context['related_users'].count()
-        self.assertEqual(related_users, self.user.relationships.followers().count())
+        related_users = len(response.context['related_users'])
+        self.assertEqual(related_users, self.user.follow_set.all().count())
 
     def test_not_following(self):
         url = self.get_url_args(self.user, 'following')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        related_users = response.context['related_users'].count()
-        self.assertEqual(related_users, self.user.relationships.following().count())
+        related_users = len(response.context['related_users'])
+        self.assertEqual(related_users, self.user.follow_set.all().count())
 
     def test_followers(self):
-        self.user1.relationships.add(self.user)
+        follow(self.user1, self.user)
         url = self.get_url_args(self.user, 'followers')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        related_users = response.context['related_users'].count()
-        self.assertEqual(related_users, self.user.relationships.followers().count())
+        related_users = len(response.context['related_users'])
+        self.assertEqual(related_users, self.user1.follow_set.all().count())
 
     def test_following(self):
-        self.user.relationships.add(self.user1)
+        follow(self.user, self.user1)
         url = self.get_url_args(self.user, 'following')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        related_users = response.context['related_users'].count()
-        self.assertEqual(related_users, self.user.relationships.following().count())
-
+        related_users = len(response.context['related_users'])
+        self.assertEqual(related_users, self.user.follow_set.all().count())

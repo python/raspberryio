@@ -1,8 +1,9 @@
-from django.http import HttpResponse, HttpResponseForbidden, Http404
+from django.http import HttpResponseForbidden, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required
-from django.utils import simplejson
+
+from actstream import action
 
 from mezzanine.utils.sites import current_site_id
 from mezzanine.core.models import CONTENT_STATUS_PUBLISHED
@@ -48,6 +49,8 @@ def project_create_edit(request, project_slug=None):
     project_form = ProjectForm(request.POST or None, instance=project)
     if project_form.is_valid():
         project_form.save()
+        if project.is_published:
+            action.send(user, verb='updated', target=project)
         if 'save-add-step' in request.POST:
             redirect_args = ('project-step-create-edit', project.slug)
         else:
@@ -76,6 +79,8 @@ def project_step_create_edit(request, project_slug, project_step_number=None):
     )
     if project_step_form.is_valid():
         project_step_form.save()
+        if project.is_published:
+            action.send(user, verb='updated', action_object=project_step, target=project)
         # User clicked "save and add another"
         if 'save-add' in request.POST:
             redirect_args = ('project-step-create-edit', project.slug)

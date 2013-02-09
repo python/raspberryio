@@ -130,3 +130,5 @@ class ProjectStep(Orderable, RichText):
 class ProjectCategory(BlogCategory):
     class Meta(object):
         proxy = True
+
+

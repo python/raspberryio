@@ -161,7 +161,7 @@ INSTALLED_APPS = (
     # External apps
     'south',
     'compressor',
-    'relationships',
+    'actstream',
     # Mezzanine
     "mezzanine.boot",
     "mezzanine.conf",
@@ -231,6 +231,13 @@ ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 # Supply the custom TinyMCE JavaScript
 TINYMCE_SETUP_JS = os.path.join('js', 'libs', 'tinymce_setup.js')
 
+# activity stream settings
+ACTSTREAM_SETTINGS = {
+    'MODELS': ('auth.user', 'project.project', 'project.projectstep'),
+    'FETCH_RELATIONS': True,
+    'USE_PREFETCH': True,
+    'GFK_FETCH_DEPTH': 1,
+}
 
 ####################
 # DYNAMIC SETTINGS #

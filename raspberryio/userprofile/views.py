@@ -1,12 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
-from relationships.views import get_relationship_status_or_404
+from actstream import models
 
 from raspberryio.userprofile.models import Profile
 
 
 def profile_related_list(request, username, relation):
-    status = get_relationship_status_or_404(relation)
 
     profile = get_object_or_404(Profile, user__username__iexact=username)
     if profile.user.username != username:
@@ -14,11 +13,10 @@ def profile_related_list(request, username, relation):
     user = profile.user
 
     # get a queryset of users described by this relationship
-    if status.from_slug == relation:
-        related_users = user.relationships.get_relationships(status=status)
-    else:
-        related_users = user.relationships.get_related_to(status=status)
-
+    if relation == 'followers':
+        related_users = models.followers(user)
+    elif relation == 'following':
+        related_users = models.following(user)
     return render(request, "accounts/account_profile_related.html", {
         'user': user,
         'profile': profile,
