@@ -382,6 +382,15 @@ class ProjectImageCreateViewTestCase(ProjectBaseTestCase):
         self.client.login(username=self.user.username, password='password')
         self.url = reverse(self.url_name)
 
+    def test_login_required(self):
+        self.client.logout()
+        response = self.client.get(self.url, is_ajax=True)
+        self.assertEqual(response.status_code, 302)
+
+    def test_ajax_required(self):
+        response = self.client.get(self.url, is_ajax=False)
+        self.assertEqual(response.status_code, 400)
+
     def test_no_data(self):
         response = self.client.post(self.url, {}, is_ajax=True)
         self.assertEqual(response.content, 'false')
@@ -405,3 +414,158 @@ class ProjectImageCreateViewTestCase(ProjectBaseTestCase):
         image = ProjectImage.objects.get(id=response_image_data['id'])
         self.assertEqual(response_image_data, image.get_image_data())
         self.assertEqual(filename, image.get_filename())
+
+
+class ProjectImageDownloadViewTestCase(ProjectBaseTestCase):
+    url_name = 'gallery-image-download'
+
+    def setUp(self):
+        self.user = self.create_user(data={'password': 'password'})
+        self.client.login(username=self.user.username, password='password')
+        self.project = self.create_project()
+        self.project_step = self.create_project_step(project=self.project)
+        url_args = (
+            self.project.slug, self.project_step._order
+        )
+        self.url = reverse(self.url_name, args=url_args)
+
+    def test_login_required(self):
+        self.client.logout()
+        response = self.client.get(self.url, is_ajax=True)
+        self.assertEqual(response.status_code, 302)
+
+    def test_ajax_required(self):
+        response = self.client.get(self.url, is_ajax=False)
+        self.assertEqual(response.status_code, 400)
+
+    def test_invalid_project_slug(self):
+        url_args = ('bad_slug', self.project_step._order)
+        url = reverse(self.url_name, args=url_args)
+        response = self.client.get(url, is_ajax=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_invalid_project_step_number(self):
+        url_args = (self.project.slug, 999)
+        url = reverse(self.url_name, args=url_args)
+        response = self.client.get(url, is_ajax=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_empty_images(self):
+        response = self.client.get(self.url, is_ajax=True)
+        response_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response_data['files'], [])
+
+    def test_other_image(self):
+        self.create_project_image()
+        response = self.client.get(self.url, is_ajax=True)
+        response_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response_data['files'], [],
+            'image should not return because it is not associated with this project step'
+        )
+
+    def test_one_image(self):
+        project_image = self.create_project_image(
+            project_step=self.project_step
+        )
+        response = self.client.get(self.url, is_ajax=True)
+        response_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response_data['files'], [project_image.get_image_data()],
+            'Response should contain the image data for one image'
+        )
+
+    def test_multiple_images(self):
+        project_image1 = self.create_project_image(
+            project_step=self.project_step
+        )
+        project_image2 = self.create_project_image(
+            project_step=self.project_step
+        )
+        project_image3 = self.create_project_image(
+            project_step=self.project_step
+        )
+        project_images = (project_image1, project_image2, project_image3)
+        response = self.client.get(self.url, is_ajax=True)
+        response_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response_data, ProjectImage.serialize(project_images),
+            'Response should contain the image data for images 1-3'
+        )
+
+
+class ProjectImageDeleteViewTestCase(ProjectBaseTestCase):
+    url_name = 'gallery-image-delete'
+
+    def setUp(self):
+        self.user = self.create_user(data={'password': 'password'})
+        self.client.login(username=self.user.username, password='password')
+        self.project_image = self.create_project_image()
+        self.url = reverse(self.url_name, args=(self.project_image.id,))
+
+    def test_login_required(self):
+        self.client.logout()
+        response = self.client.get(self.url, is_ajax=True)
+        self.assertEqual(response.status_code, 302)
+
+    def test_ajax_required(self):
+        response = self.client.get(self.url, is_ajax=False)
+        self.assertEqual(response.status_code, 400)
+
+    def test_wrong_user(self):
+        project = self.create_project()
+        project_step = self.create_project_step(project=project)
+        project_step.gallery.add(self.project_image)
+        other_user = self.create_user(data={'password': 'password'})
+        self.client.login(username=other_user.username, password='password')
+        response = self.client.get(self.url, is_ajax=True)
+        self.assertEqual(response.status_code, 403)
+
+    def test_wrong_user_no_project_step(self):
+        other_user = self.create_user(data={'password': 'password'})
+        self.client.login(username=other_user.username, password='password')
+        response = self.client.get(self.url, is_ajax=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, 'true')
+
+    def test_bad_id(self):
+        url = reverse(self.url_name, args=(999,))
+        response = self.client.get(url, is_ajax=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_no_image(self):
+        self.project_image.delete()
+        response = self.client.get(self.url, is_ajax=True)
+        self.assertEqual(response.status_code, 404)
+
+    def test_has_project_step_other_user(self):
+        other_user = self.create_user()
+        project = self.create_project(user=other_user)
+        project_step = self.create_project_step(project=project)
+        project_step.gallery.add(self.project_image)
+        response = self.client.get(self.url, is_ajax=True)
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(
+            list(ProjectImage.objects.all()), [self.project_image]
+        )
+
+    def test_has_project_step_current_user(self):
+        project = self.create_project(user=self.user)
+        project_step = self.create_project_step(project=project)
+        project_step.gallery.add(self.project_image)
+        response = self.client.get(self.url, is_ajax=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, 'true')
+        self.assertEqual(list(project_step.gallery.all()), [])
+        self.assertEqual(list(ProjectImage.objects.all()), [])
+
+    def test_no_project_step(self):
+        project = self.create_project(user=self.user)
+        project_step = self.create_project_step(project=project)
+        response = self.client.get(self.url, is_ajax=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, 'true')
+        self.assertEqual(list(project_step.gallery.all()), [])
+        self.assertEqual(list(ProjectImage.objects.all()), [])

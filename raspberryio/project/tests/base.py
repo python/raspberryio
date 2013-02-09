@@ -93,6 +93,10 @@ class ProjectBaseTestCase(RaspberryIOBaseTestCase):
         defaults = {
             'file': kwargs.pop('file', self.create_file()),
         }
-        return self.create_instance(
+        project_step = kwargs.pop('project_step', None)
+        project_image = self.create_instance(
             project.ProjectImage, defaults=defaults, **kwargs
         )
+        if project_step:
+            project_step.gallery.add(project_image)
+        return project_image

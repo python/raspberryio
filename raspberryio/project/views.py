@@ -141,12 +141,7 @@ def gallery_image_delete(request, project_image_id):
         project_user = project_step.project.user
         if user != project_user:
             return HttpResponseForbidden('You are not the owner of this image.')
-    # Attempt to remove the actual file and then the database record
-    try:
-        project_image.file.delete()
-        success = True
-    except IOError:
-        success = False
-    else:
-        project_image.delete()
-    return AjaxResponse(request, success)
+    # Remove the actual file, then the database record and return True
+    project_image.file.delete()
+    project_image.delete()
+    return AjaxResponse(request, True)
