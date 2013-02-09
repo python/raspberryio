@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% load url from future %}
+{% load bootstrap_toolkit %}
 
 {% block main %}
     <form class="project-create-edit-form" action="" method="post" accept-charset="utf-8"> {% csrf_token %}
-        {{ project_form.as_p }}
+        {{ project_form|as_bootstrap }}
         <input type="submit" id="submit-project-create-edit" name="save" value="Save" />
             {% if not project.id %}
                 <input type="submit" id="submit-project-create-edit" name="save-add-step" value="Save and add project steps" />

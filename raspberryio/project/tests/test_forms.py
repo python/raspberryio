@@ -1,7 +1,7 @@
 from django.test.client import RequestFactory
 
 from raspberryio.project.tests.base import ProjectBaseTestCase
-from raspberryio.project.forms import ProjectImageForm
+from raspberryio.project.forms import ProjectImageForm, ProjectStepForm
 
 
 class ProjectFormTestCase(ProjectBaseTestCase):
@@ -17,15 +17,82 @@ class ProjectStepFormTestCase(ProjectBaseTestCase):
         self.project = self.create_project()
         self.project_step = self.create_project_step(project=self.project)
 
+    def test_no_content(self):
+        request = self.request_factory.post('/', {})
+        form = ProjectStepForm(request.POST, instance=self.project_step)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.errors['content'], ['This field is required.'])
+
     def test_images_empty(self):
-        pass
+        post_data = {
+            'content': self.get_random_string(),
+            'images': []
+        }
+        request = self.request_factory.post('/', post_data)
+        form = ProjectStepForm(request.POST, instance=self.project_step)
+        if form.is_valid():
+            project_step = form.save()
+            self.assertEqual(project_step.gallery.count(), 0)
+        else:
+            self.fail('Form should be valid')
 
     def test_images_bad_format(self):
-        pass
+        self.create_project_image()
+        post_data = {
+            'content': self.get_random_string(),
+            'images': ['not']
+        }
+        request = self.request_factory.post('/', post_data)
+        form = ProjectStepForm(request.POST, instance=self.project_step)
+        if form.is_valid():
+            project_step = form.save()
+            self.assertEqual(list(project_step.gallery.all()), [])
+        else:
+            self.fail('Form should be valid')
+
+    def test_images_bad_ids(self):
+        self.create_project_image()
+        post_data = {
+            'content': self.get_random_string(),
+            'images': ['99,100']
+        }
+        request = self.request_factory.post('/', post_data)
+        form = ProjectStepForm(request.POST, instance=self.project_step)
+        if form.is_valid():
+            project_step = form.save()
+            self.assertEqual(list(project_step.gallery.all()), [])
+        else:
+            self.fail('Form should be valid')
 
     def test_images_valid(self):
+        project_image = self.create_project_image()
+        post_data = {
+            'content': self.get_random_string(),
+            'images': [str(project_image.id)]
+        }
+        request = self.request_factory.post('/', post_data)
+        form = ProjectStepForm(request.POST, instance=self.project_step)
+        if form.is_valid():
+            project_step = form.save()
+            self.assertEqual(list(project_step.gallery.all()), [project_image])
+        else:
+            self.fail('Form should be valid')
 
-        request = self.request_factory.post('/', {'images': [1]})
+    def test_multiple_images_valid(self):
+        project_image1 = self.create_project_image()
+        project_image2 = self.create_project_image()
+        project_images = (project_image1, project_image2)
+        post_data = {
+            'content': self.get_random_string(),
+            'images': ','.join([str(image.id) for image in project_images])
+        }
+        request = self.request_factory.post('/', post_data)
+        form = ProjectStepForm(request.POST, instance=self.project_step)
+        if form.is_valid():
+            project_step = form.save()
+            self.assertEqual(tuple(project_step.gallery.all()), project_images)
+        else:
+            self.fail('Form should be valid')
 
 
 class ProjectImageFormTestCase(ProjectBaseTestCase):
@@ -39,10 +106,18 @@ class ProjectImageFormTestCase(ProjectBaseTestCase):
         f = self.create_file(filename=filename)
         request = self.request_factory.post('/', {'file': f})
         request.is_ajax = True
-        form = ProjectImageForm(request.POST or None, request.FILES or None)
+        form = ProjectImageForm(request.POST, request.FILES)
         if form.is_valid():
             instance = form.save()
             self.assertEqual(instance.get_filename(), filename)
+        else:
+            self.fail('Form should be valid')
+
+    def test_invalid_upload(self):
+        request = self.request_factory.post('/', {'filez': self.create_file()})
+        request.is_ajax = True
+        form = ProjectImageForm(request.POST or None, request.FILES or None)
+        self.assertFalse(form.is_valid())
 
     def test_no_file(self):
         request = self.request_factory.post('/', {})
