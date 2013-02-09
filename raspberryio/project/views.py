@@ -8,10 +8,11 @@ from actstream import action
 from mezzanine.utils.sites import current_site_id
 from mezzanine.core.models import CONTENT_STATUS_PUBLISHED
 from hilbert.decorators import ajax_only
-from hilbert.http import JsonResponse
 
-from raspberryio.project.models import Project, ProjectStep
-from raspberryio.project.forms import ProjectForm, ProjectStepForm
+from raspberryio.project.models import Project, ProjectStep, ProjectImage
+from raspberryio.project.forms import (ProjectForm, ProjectStepForm,
+    ProjectImageForm)
+from raspberryio.project.utils import AjaxResponse
 
 
 def project_list(request):
@@ -105,4 +106,53 @@ def publish_project(request, project_slug):
     else:
         project.status = CONTENT_STATUS_PUBLISHED
         project.save()
-    return JsonResponse({})
+    return AjaxResponse(request, {})
+
+
+@login_required
+@ajax_only
+def gallery_image_create(request):
+    form = ProjectImageForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        image = form.save()
+        return AjaxResponse(request, ProjectImage.serialize(image))
+    # A post was made without any files, just return False
+    return AjaxResponse(request, False)
+
+
+@login_required
+@ajax_only
+def gallery_image_download(request, project_slug, project_step_number):
+    # Load and send thumbnails of existing files
+    project = get_object_or_404(Project, slug=project_slug)
+    project_step = get_object_or_404(
+        ProjectStep, project=project, _order=project_step_number
+    )
+    images = project_step.gallery.all()
+    return AjaxResponse(request, ProjectImage.serialize(images))
+
+
+@login_required
+@ajax_only
+def gallery_image_delete(request, project_image_id):
+    user = request.user
+    project_image = get_object_or_404(ProjectImage, id=project_image_id)
+    try:
+        project_step = project_image.projectstep_set.all()[0]
+    except IndexError:
+        # If the image doesn't belong to a project step, no need to check for
+        # permission (and it isn't possible)
+        pass
+    else:
+        project_user = project_step.project.user
+        if user != project_user:
+            return HttpResponseForbidden('You are not the owner of this image.')
+    # Attempt to remove the actual file and then the database record
+    try:
+        project_image.file.delete()
+        success = True
+    except IOError:
+        success = False
+    else:
+        project_image.delete()
+    return AjaxResponse(request, success)

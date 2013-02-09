@@ -1,5 +1,9 @@
 import urlparse
 
+from django.http import HttpResponse
+from django.utils import simplejson
+
+
 YOUTUBE_SHORT_URL = "youtu.be"
 
 YOUTUBE_DOMAINS = ("www.youtube.com",
@@ -20,3 +24,15 @@ def get_youtube_video_id(url):
         else:
             video_id = data.path.split('/')[1]
     return video_id
+
+
+class AjaxResponse(HttpResponse):
+    """Like hilbert.JsonResponse but uses text/plain for junky browsers"""
+
+    def __init__(self, request, obj='', *args, **kwargs):
+        content = simplejson.dumps(obj, {})
+        http_accept = request.META.get('HTTP_ACCEPT', 'application/json')
+        mimetype = 'application/json' \
+            if 'application/json' in http_accept else 'text/plain'
+        super(AjaxResponse, self).__init__(content, mimetype, *args, **kwargs)
+        self['Content-Disposition'] = 'inline; filename=files.json'
