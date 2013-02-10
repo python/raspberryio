@@ -63,14 +63,13 @@
 
 {% if projects %}
 {% block extra_js %}
-<script src="{{ STATIC_URL }}js/libs/swipe.min.js"></script>
-<script src="{{ STATIC_URL }}js/update_relationship.js"></script>
-<script type="text/javascript">
-	$(function(){
-		slider = new Swipe(document.getElementById('slider'), {
-			slide: 600,
-	    });
-	});
-</script>
+	<script src="{{ STATIC_URL }}js/update_relationship.js"></script>
+    <script src="{{ STATIC_URL }}js/libs/swipe.js"></script>
+    <script>
+
+    $('#slider').Swipe();
+    window.mySwipe = $('#slider').data('Swipe');
+
+    </script>
 {% endblock %}
 {% endif %}
