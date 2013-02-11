@@ -144,6 +144,7 @@ html, body {
 	 	padding: 0 5px;
 	 	.box-shadow(0 1px 4px @grayLighter);
 	 	border-bottom: 1px solid #CCCCCC;
+	 	min-height: auto;
 
 	}
 	.nav,.nav > li {
@@ -153,11 +154,42 @@ html, body {
 	    *zoom: 1; /* hasLayout ie7 trigger */
 	    vertical-align: top;
 	}
-	.nav > li {
-		border-left: 1px solid @grayLighter;
-		&:last-child { border-right: 1px solid @grayLighter; }
-		> a {
-	    	padding: 15px 20px;
+	.nav {
+		position: relative;
+		> li {
+			border-left: 1px solid @grayLighter;
+			&:last-child { 
+				border-right: 1px solid @grayLighter; 
+				}
+			> a {
+		    	padding: 15px 20px;
+			}
+			&.about {
+
+				a {
+					#gradient > .vertical(@navbarBackgroundHighlight, @navbarBackground);
+					border-top: 1px solid #d4d4d4;
+					border-right: 1px solid #d4d4d4;
+					border-left: 1px solid #d4d4d4;
+					.border-radius(50px 50px 0 0);
+					position: absolute;
+					top: -46px;
+					color: @white;
+					text-shadow: none;
+					padding: 15px 25px 10px 25px;
+					img {
+						margin-top: 10px;
+					}
+					&:hover {
+						padding: 15px 25px 15px 25px;
+						top: -51px;
+					}
+				}
+			}
+			&.learn {
+				border-left: 0 none;
+				margin-left: 100px;
+			}
 		}
 	}
 	footer {
