@@ -47,7 +47,9 @@ def project_create_edit(request, project_slug=None):
         project = Project(user=user, site=site)
     if project.user != user and not user.is_superuser:
         return HttpResponseForbidden('You are not the owner of this project.')
-    project_form = ProjectForm(request.POST or None, instance=project)
+    project_form = ProjectForm(
+        request.POST or None, request.FILES or None, instance=project
+    )
     if project_form.is_valid():
         project_form.save()
         if project.is_published:

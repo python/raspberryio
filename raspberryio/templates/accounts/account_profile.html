@@ -56,9 +56,15 @@
 </div>
 
 <div class="row">
-	{% with profile_user.projects.all as projects %}
-	{% include 'includes/project-gallery.html' %}
-	{% endwith %}
+    {% if request.user == profile_user %}
+        {% with profile_user.projects.all as projects %}
+            {% include 'includes/project-gallery.html' %}
+        {% endwith %}
+    {% else %}
+        {% with profile_user.projects.published as projects %}
+            {% include 'includes/project-gallery.html' %}
+        {% endwith %}
+    {% endif %}
 </div>
 {% endblock %}
 
