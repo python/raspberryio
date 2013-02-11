@@ -10,7 +10,10 @@
 <fieldset>
     <legend>{{ title }} </legend>
     <form class="registration" method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
-   	{{ form|as_bootstrap }}
+        {{ form|as_bootstrap }}
+        <div id="change_gravatar">
+            <a href="http://gravatar.com" target="_blank">Change your avatar at Gravatar</a>
+        </div>
    	<input class="submit" type="submit" value="{{ title }}">
     </form>
 {% endblock %}
@@ -24,6 +27,7 @@
         (toggle_avatar = function() {
             var use_gravatar = $use_gravatar[0].checked;
             $('#id_avatar').parent()[use_gravatar ? "hide" : "show"]();
+            $('#change_gravatar')[use_gravatar ? "show" : "hide"]();
         })();
 
         $use_gravatar.click(toggle_avatar);

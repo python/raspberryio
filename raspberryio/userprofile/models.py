@@ -6,8 +6,7 @@ class Profile(models.Model):
     bio = models.TextField(blank=True, default='')
     website = models.URLField(blank=True, default='')
     twitter_id = models.CharField(max_length=200, blank=True, default='')
-    use_gravatar = models.BooleanField(default=True,
-                                       help_text="Select to use your Gravatar")
+    use_gravatar = models.BooleanField(default=True)
     avatar = models.ImageField(upload_to="images/avatars",
                                blank=True, null=True,
                                help_text="Upload an avatar")

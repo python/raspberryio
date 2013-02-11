@@ -11,12 +11,12 @@
     <div class="span12">
     <p><a class="{% if "following" in request.get_full_path %}active{% endif %}" href="{% url 'profile-related' username=request.user relation='following' %}"><span>Following</span></a></p>
     <p><a class="{% if "followers" in request.get_full_path %}active{% endif %}" href="{% url 'profile-related' username=request.user relation='followers' %}"><span>Followers</span></a></p>
-    {% for user in related_users %}
+    {% for related_user in related_users %}
         <div class="related-users">
-            <a href="{{ user.get_absolute_url }}">
+            <a href="{{ related_user.get_absolute_url }}">
             <div class="related-user-info">
-                <a href="{{ user.get_absolute_url }}">{{ user.username }}</a>
-                {% include 'includes/relationship-status.html' with profile_user=user %}
+                <a href="{{ related_user.get_absolute_url }}">{{ related_user.username }}</a>
+                {% include 'includes/relationship-status.html' with profile_user=related_user %}
             </div>
         </div>
     {% endfor %}

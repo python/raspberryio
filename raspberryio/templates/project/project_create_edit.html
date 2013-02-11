@@ -3,7 +3,7 @@
 {% load bootstrap_toolkit %}
 
 {% block main %}
-    <form class="project-create-edit-form" action="" method="post" accept-charset="utf-8"> {% csrf_token %}
+    <form class="project-create-edit-form" action="" method="post" accept-charset="utf-8" enctype="multipart/form-data"> {% csrf_token %}
         {{ project_form|as_bootstrap }}
         <input type="submit" id="submit-project-create-edit" name="save" value="Save" />
             {% if not project.id %}

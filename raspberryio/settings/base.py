@@ -161,7 +161,7 @@ INSTALLED_APPS = (
     # External apps
     'south',
     'compressor',
-    'relationships',
+    'actstream',
     'bootstrap_toolkit',
     # Mezzanine
     "mezzanine.boot",
@@ -229,10 +229,17 @@ AUTH_PROFILE_MODULE = "userprofile.Profile"
 ACCOUNTS_PROFILE_FORM_CLASS = "raspberryio.userprofile.forms.UserProfileForm"
 
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
+LOGIN_REDIRECT_URL = 'raspberryio.userprofile.views.profile_dashboard'
 
 # Supply the custom TinyMCE JavaScript
 TINYMCE_SETUP_JS = os.path.join('js', 'libs', 'tinymce_setup.js')
 
+# activity stream settings
+ACTSTREAM_SETTINGS = {
+    'MODELS': ('auth.user', 'project.project', 'project.projectstep'),
+    'FETCH_RELATIONS': True,
+    'USE_PREFETCH': True,
+}
 
 ####################
 # DYNAMIC SETTINGS #
