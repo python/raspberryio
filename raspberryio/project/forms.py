@@ -6,16 +6,21 @@ from raspberryio.project.models import Project, ProjectStep, ProjectImage
 from raspberryio.project.utils import get_youtube_video_id
 
 
+PLACEHOLDER_WIDGET_TYPES = (
+    'TextInput', 'PasswordInput', 'Textarea',
+)
+
+
 class PlaceHolderMixin(object):
     """
-    Mixin that sets text input placeholder's to their label's value and removes
+    Mixin that sets the placeholders of fields to their label's value and removes
     the label.
     """
     def __init__(self, *args, **kwargs):
         super(PlaceHolderMixin, self).__init__(*args, **kwargs)
         for name, field in self.fields.iteritems():
-            is_textarea = 'cols' in field.widget.attrs
-            if hasattr(field.widget, 'input_type') or is_textarea:
+            widget_type = field.widget.__class__.__name__
+            if widget_type in PLACEHOLDER_WIDGET_TYPES:
                 placeholder = field.label if field.label else name
                 placeholder = placeholder.replace('_', ' ')
                 field.widget.attrs.update({'placeholder': placeholder.title()})
