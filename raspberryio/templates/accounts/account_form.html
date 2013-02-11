@@ -9,7 +9,7 @@
 {% block main %}
 <fieldset>
     <legend>{{ title }} </legend>
-    <form class="registration" method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
+    <form class="registration"  method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
         {{ form|as_bootstrap }}
         <div id="change_gravatar">
             <a href="http://gravatar.com" target="_blank">Change your avatar at Gravatar</a>
