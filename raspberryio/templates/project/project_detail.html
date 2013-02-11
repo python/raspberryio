@@ -19,6 +19,7 @@
             {{ project.title }}
             {% if request.user == project.user or request.user.is_superuser %}
                 <a href="{% url 'project-create-edit' project.slug %}"><i class="icon-edit"></i> Edit Project</a>
+                <a href="{% url 'project-step-create-edit' project.slug %}"><i class="icon-plus"></i> Add Step</a>
             {% endif %}
             {# Leaving in here for now. This is slated for Phase II work. #}
             {% comment %}
@@ -36,7 +37,7 @@
                 {% else %}
                     <img src="{{ STATIC_URL }}images/no-profile.png" alt="project.user.username"/>
                 {% endif %}
-            </a> Written by:  
+            </a> Written by:
             <a href="{% url 'profile' project.user.username %}">{{ project.user.username }}</a>
         </div>
         {% endwith %}
