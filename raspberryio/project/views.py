@@ -106,6 +106,7 @@ def publish_project(request, project_slug):
     else:
         project.status = CONTENT_STATUS_PUBLISHED
         project.save()
+        action.send(user, verb='published', target=project)
     return AjaxResponse(request, {})
 
 
