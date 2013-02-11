@@ -1,25 +1,25 @@
 {% extends "base.html" %}
 {% load i18n future mezzanine_tags %}
 
-{% block meta_title %}{{ profile_user.username }}{% endblock %}
-{% block title %}{{ profile_user.username }}{% endblock %}
+{% block meta_title %}Site Users{% endblock %}
+{% block title %}Site Users{% endblock %}
 {% block body_id %}account{% endblock %}
-{% block body_class %}users{% endblock %}
+{% block body_class %}user-listing{% endblock %}
 
 {% block main %}
+{% for user in users %}
 <div class="row">
-    <div class="span12">
-    {% for user in users %}
-        <div class="users">
-            <a href="{{ user.get_absolute_url }}">
-            <div class="user-info">
-                <a href="{{ user.get_absolute_url }}">{{ user.username }}</a>
-                {% include 'includes/relationship-status.html' with profile_user=user %}
-            </div>
+    <div class="span2">
+        {% with user.get_profile as profile %}
+        {% include 'includes/profile-picture.html' %}
+        {% endwith %}
+        <div class="user-info">
+            <a href="{{ user.get_absolute_url }}">{{ user.username }}</a>
+            {% include 'includes/relationship-status.html' with profile_user=user %}
         </div>
-    {% endfor %}
     </div>
 </div>
+{% endfor %}
 {% endblock %}
 
 {% block extra_js %}

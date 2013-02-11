@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 from raspberryio.project.tests.base import ProjectBaseTestCase, RaspberryIOBaseTestCase
@@ -76,3 +77,25 @@ class DashboardTestCase(ProjectBaseTestCase):
     def test_login_required(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 302)
+
+
+class ActiveUsersTestCase(RaspberryIOBaseTestCase):
+    url_name = 'profile-users'
+
+    def setUp(self):
+        self.user = self.create_user(data={'username': 'test', 'password': 'pwd'})
+        self.user1 = self.create_user(data={'username': 'test1', 'password': 'pwd'})
+        self.user2 = self.create_user(data={'username': 'test2', 'password': 'pwd'})
+        self.url = reverse(self.url_name)
+
+    def test_active_users(self):
+        response = self.client.get(self.url)
+        users = response.context['users']
+        self.assertEqual(users.count(), User.objects.all().count())
+
+    def test_inactive_users(self):
+        self.user.is_active = False
+        self.user.save()
+        response = self.client.get(self.url)
+        users = response.context['users']
+        self.assertEqual(users.count(), User.objects.filter(is_active=True).count())

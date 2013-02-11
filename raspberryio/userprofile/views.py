@@ -55,7 +55,7 @@ def profile_dashboard(request):
 
 def profile_users(request):
     """Returns the list of active site users"""
-    users = User.objects.filter(is_active=True)
+    users = User.objects.filter(is_active=True).order_by('username')
     return render(request, "accounts/activeusers.html", {
         'users': users
     })
