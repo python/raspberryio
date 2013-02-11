@@ -1,21 +1,38 @@
 {% extends "base.html" %}
 {% load i18n future mezzanine_tags %}
 
-{% block meta_title %}{{ profile_user.username }} Dashboard{% endblock %}
-{% block title %}{{ profile_user.username }} Dashboard{% endblock %}
+{% block meta_title %}{{ user.username }} Dashboard{% endblock %}
+{% block title %}{{ user.username }} Dashboard{% endblock %}
 {% block body_id %}account{% endblock %}
-{% block body_class %}dashboard{% endblock %}
+{% block body_class %}profile dashboard{% endblock %}
 
 {% block main %}
 <div class="row">
-    <div class="span12">
-        <h3>Dashboard</h3>
+    {% with user as profile_user %}
+    {% include 'includes/account_profile_placard.html' %}
+    {% endwith %}
+</div>
+<div class="row">
+    <div class="span8">
+        <h3>Following</h3>
         <ul>
         {% for action in actions %}
             <li>{% include 'includes/account_action.html' %}</li>
         {% empty %}
-        {% trans "No actions yet" %}
+        {% trans "You are not following anyone yet." %}
         {% endfor %}
+        </ul>
+    </div>
+    <div class="span4">
+        <h3>My Projects</h3>
+        <ul>
+        {% with user.projects.all as projects %}
+        {% for project in projects %}
+            <li><a href="{% url 'project-detail' project.slug %}">{{ project.title }}</a></li>
+        {% empty %}
+            <a href="{% url 'project-create-edit' %}"><i class="icon-plus"></i> Create Project</a>
+        {% endfor %}
+        {% endwith %}
         </ul>
     </div>
 </div>

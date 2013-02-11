@@ -1,0 +1,45 @@
+{% load i18n future mezzanine_tags %}
+{% load relationship_tags %}
+
+<div class="avatar span2">
+    {% if profile.use_gravatar %}
+        <img src="{% gravatar_url profile_user.email 250 %}" alt="{{ profile_user.username }}" />
+    {% elif profile.avatar %}
+        <img src="{{ MEDIA_URL }}{% thumbnail profile.avatar.url 250 250 %}" alt="{{ profile_user.username }}"/>
+    {% else %}
+        <img src="{{ STATIC_URL }}images/no-profile.png" alt="{{ profile_user.username }}" />
+    {% endif %}
+</div>
+<div class="userprofile span6">
+    <h2>
+        {{ profile_user.get_full_name }}
+        {% include 'includes/relationship-status.html' %}
+        <span>{{ profile_user.username }}</span>
+    </h2>
+
+    {% if profile.website or profile.twitter_id %}
+    <ul>
+        <li>
+            <a href="{{ profile_user.get_profile.website }}">
+                {{ profile_user.get_profile.website }}
+            </a>
+        </li>
+        <li>
+            <a href="http://twitter.com/{{ profile_user.get_profile.twitter_id }}">
+                @{{ profile_user.get_profile.twitter_id }}
+            </a>
+        </li>
+    </ul>
+    {% endif %}
+    {% if profile.bio %}<p>{{ profile.bio }}</p>{% endif %}
+    <a href="{% url 'profile-actions' profile_user.username %}">Activity Stream</a>
+</div>
+<div class="stats span3">
+    <h3>Stats</h3>
+    <ul>
+        <li><strong>Public projects:</strong> {{ profile_user.projects.published.count }}</li>
+        <li><strong>Watched projects:</strong> </li>
+        <li><strong>Followers:</strong> <a id="followers" href="{% url 'profile-related' username=profile_user relation='followers' %}">{{ profile_user.username|followers }}</a></li>
+        <li><strong>Following:</strong> <a id="following" href="{% url 'profile-related' username=profile_user relation='following' %}">{{ profile_user.username|following }}</a></li>
+    </ul>
+</div>
