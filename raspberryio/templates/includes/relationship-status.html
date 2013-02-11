@@ -1,13 +1,11 @@
-{% load relationship_tags %}
+{% load activity_tags %}
 
 {% if request.user.is_authenticated and request.user != profile_user %}
-  {% if_relationship request.user profile_user "following" %}
     <div class="follow-btn">
-        <a class="unfollow" href="{{ profile_user|remove_relationship_url:"following" }}">Unfollow</a>
+    {% if request.user|is_following:profile_user %}
+        <a class="unfollow" href="{% follow_url profile_user %}">Unfollow</a>
+    {% else %}
+        <a class="follow" href="{% follow_url profile_user %}">Follow</a>
+    {% endif %}
     </div>
-  {% else %}
-    <div class="follow-btn">
-        <a class="follow" href="{{ profile_user|add_relationship_url:"following" }}">Follow</a>
-    </div>
-  {% endif_relationship %}
 {% endif %}

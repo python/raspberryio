@@ -49,10 +49,24 @@ class Migration(SchemaMigration):
             ('content', self.gf('mezzanine.core.fields.RichTextField')()),
             ('_order', self.gf('django.db.models.fields.IntegerField')(null=True)),
             ('project', self.gf('django.db.models.fields.related.ForeignKey')(related_name='steps', to=orm['project.Project'])),
-            ('gallery', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['galleries.Gallery'], unique=True, null=True, blank=True)),
             ('video', self.gf('django.db.models.fields.URLField')(default='', max_length=200, blank=True)),
         ))
         db.send_create_signal('project', ['ProjectStep'])
+
+        # Adding M2M table for field gallery on 'ProjectStep'
+        db.create_table('project_projectstep_gallery', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('projectstep', models.ForeignKey(orm['project.projectstep'], null=False)),
+            ('projectimage', models.ForeignKey(orm['project.projectimage'], null=False))
+        ))
+        db.create_unique('project_projectstep_gallery', ['projectstep_id', 'projectimage_id'])
+
+        # Adding model 'ProjectImage'
+        db.create_table('project_projectimage', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('file', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
+        ))
+        db.send_create_signal('project', ['ProjectImage'])
 
 
     def backwards(self, orm):
@@ -65,8 +79,28 @@ class Migration(SchemaMigration):
         # Deleting model 'ProjectStep'
         db.delete_table('project_projectstep')
 
+        # Removing M2M table for field gallery on 'ProjectStep'
+        db.delete_table('project_projectstep_gallery')
+
+        # Deleting model 'ProjectImage'
+        db.delete_table('project_projectimage')
+
 
     models = {
+        'actstream.action': {
+            'Meta': {'ordering': "('-timestamp',)", 'object_name': 'Action'},
+            'action_object_content_type': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'action_object'", 'null': 'True', 'to': "orm['contenttypes.ContentType']"}),
+            'action_object_object_id': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'actor_content_type': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'actor'", 'to': "orm['contenttypes.ContentType']"}),
+            'actor_object_id': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'public': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'target_content_type': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'target'", 'null': 'True', 'to': "orm['contenttypes.ContentType']"}),
+            'target_object_id': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'timestamp': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
+            'verb': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+        },
         'auth.group': {
             'Meta': {'object_name': 'Group'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -110,12 +144,6 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        'galleries.gallery': {
-            'Meta': {'ordering': "('_order',)", 'object_name': 'Gallery', '_ormbases': ['pages.Page']},
-            'content': ('mezzanine.core.fields.RichTextField', [], {}),
-            'page_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['pages.Page']", 'unique': 'True', 'primary_key': 'True'}),
-            'zip_import': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'})
-        },
         'generic.assignedkeyword': {
             'Meta': {'ordering': "('_order',)", 'object_name': 'AssignedKeyword'},
             '_order': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
@@ -130,29 +158,6 @@ class Migration(SchemaMigration):
             'site': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['sites.Site']"}),
             'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '500'})
-        },
-        'pages.page': {
-            'Meta': {'ordering': "('titles',)", 'object_name': 'Page'},
-            '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
-            '_order': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
-            'content_model': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True'}),
-            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'expiry_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'in_menus': ('mezzanine.pages.fields.MenusField', [], {'default': '[1, 2, 3]', 'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': "orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
-            'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
-            'login_required': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'parent': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': "orm['pages.Page']"}),
-            'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'short_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
-            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['sites.Site']"}),
-            'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
-            'status': ('django.db.models.fields.IntegerField', [], {'default': '2'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
-            'titles': ('django.db.models.fields.CharField', [], {'max_length': '1000', 'null': 'True'})
         },
         'project.project': {
             'Meta': {'object_name': 'Project'},
@@ -180,11 +185,16 @@ class Migration(SchemaMigration):
             'tldr': ('mezzanine.core.fields.RichTextField', [], {}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'projects'", 'to': "orm['auth.User']"})
         },
+        'project.projectimage': {
+            'Meta': {'object_name': 'ProjectImage'},
+            'file': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        },
         'project.projectstep': {
             'Meta': {'ordering': "('_order',)", 'object_name': 'ProjectStep'},
             '_order': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
             'content': ('mezzanine.core.fields.RichTextField', [], {}),
-            'gallery': ('django.db.models.fields.related.OneToOneField', [], {'to': "orm['galleries.Gallery']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
+            'gallery': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['project.ProjectImage']", 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'project': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'steps'", 'to': "orm['project.Project']"}),
             'video': ('django.db.models.fields.URLField', [], {'default': "''", 'max_length': '200', 'blank': 'True'})
