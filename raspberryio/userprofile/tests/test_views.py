@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 
-from raspberryio.project.tests.base import RaspberryIOBaseTestCase
+from raspberryio.project.tests.base import ProjectBaseTestCase, RaspberryIOBaseTestCase
 
 from actstream.actions import follow
 
@@ -46,7 +46,7 @@ class RelationshipTestCase(RaspberryIOBaseTestCase):
         self.assertEqual(related_users, self.user.follow_set.all().count())
 
 
-class DashboardTestCase(RaspberryIOBaseTestCase):
+class DashboardTestCase(ProjectBaseTestCase):
     url_name = 'profile-dashboard'
 
     def setUp(self):
