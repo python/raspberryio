@@ -229,6 +229,7 @@ AUTH_PROFILE_MODULE = "userprofile.Profile"
 ACCOUNTS_PROFILE_FORM_CLASS = "raspberryio.userprofile.forms.UserProfileForm"
 
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
+LOGIN_REDIRECT_URL = 'raspberryio.userprofile.views.profile_dashboard'
 
 # Supply the custom TinyMCE JavaScript
 TINYMCE_SETUP_JS = os.path.join('js', 'libs', 'tinymce_setup.js')

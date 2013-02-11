@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
 
 from actstream import models
@@ -34,4 +36,18 @@ def profile_actions(request, username):
         'user': user,
         'profile': profile,
         'actions': models.actor_stream(user),
+    })
+
+
+@login_required
+def profile_dashboard(request):
+    """
+    Landing page for logged in users. Renders the activity stream of followed
+    users.
+    """
+    user = get_object_or_404(User, id=request.user.id)
+    return render(request, "accounts/account_dashboard.html", {
+        'user': user,
+        'profile': user.get_profile(),
+        'actions': models.user_stream(user),
     })
