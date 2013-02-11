@@ -26,6 +26,7 @@
         var toggle_avatar;
         (toggle_avatar = function() {
             var use_gravatar = $use_gravatar[0].checked;
+            $('label[for=id_avatar]')[use_gravatar ? "hide" : "show"]();
             $('#id_avatar').parent()[use_gravatar ? "hide" : "show"]();
             $('#change_gravatar')[use_gravatar ? "show" : "hide"]();
         })();
