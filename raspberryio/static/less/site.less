@@ -169,7 +169,8 @@ html, body {
 	}
 }
 
-.projects-display{
+.gallery-display{
+	margin-top: 25px;
 	@media (min-width: 1200px) {
 		margin: 25px 0 800px;
 	}
@@ -190,6 +191,11 @@ html, body {
 		@media (min-width: 767px) {
 			.hide;
 		}
+		.no-swipe {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
 		.swipe {
 		  overflow: hidden;
 		  visibility: hidden;
@@ -197,6 +203,9 @@ html, body {
 		  .swipe-wrap {
 			  overflow: hidden;
 			  position: relative;
+			  list-style: none;
+			  padding: 0;
+			  margin: 0;
 			  li {
 			  	float: left;
 		  		position: relative;
@@ -205,17 +214,11 @@ html, body {
 				}
 		  		img {
 		  			width: 100%;
-		  			@media (min-width: 400px) and (max-width: 480px) {
-		  				width: 90%;
-		  				text-align: center;
-		  				margin: auto;
-		  			}
 		  		}
 			  }
 			}
 		}
 		nav {
-
 			a {
 				@media (min-width: 679px) {
 					font-size: 55px;
@@ -375,7 +378,6 @@ body#homepage {
 ================= */
 body#account {
 	h2 {
-		border-bottom: 1px solid @grayLight;
 		padding-bottom: 9px;
 		margin: 0 0 30px 0;
 	}
@@ -506,6 +508,91 @@ body#project-list {
 				@media (max-width: 767px) {
 					width: 80%;
 				}
+			}
+		}
+	}
+}
+
+/* Project detail
+====================== */
+body#project-detail {
+	#content {
+			margin-bottom: 100px;
+	}
+	#publish {
+		a {
+			.btn;
+		}
+	}
+	header {
+		h2 {
+			a {
+				.btn;
+			}
+		}
+		.userinfo {
+			img {
+				border: 3px solid @white;
+			}
+			font-size: 18px;
+			margin-bottom: 20px;
+		}
+	}
+	.steps-timeline {
+		position: relative;
+		width: 100%;
+		padding-bottom: 20px;
+		hr {
+			padding: 2px 0;
+			border: none;
+			background-color: @gray;
+		}
+		ul {
+			position: absolute;
+			width: 90%;
+			top: 10px;
+			left: 10px;
+			list-style: none;
+			.clearfix;
+			z-index: 1;
+			li {
+				.pull-left;
+				text-align: center;
+				font-size: 18px;
+				line-height: 24px;
+				padding-right: 20px;
+				&:last-child {
+					padding-right: 0;
+				}
+				a {
+					color: @white;
+					background-color: @grayLight;
+					.border-radius(30px);
+					padding: 5px 10px;
+					&:hover {
+						background-color: @gray;
+						text-decoration: none;
+					}
+				}
+			}
+		}
+	}
+	.steps {
+		.photo {
+			margin-bottom: 25px;
+		}
+	}
+	.gallery-display {
+		ul.tiled {
+			li {
+				width: 50%;
+			}
+		}
+		.swipe-wrap {
+			padding: 0;
+			margin: 0;
+			li {
+				padding-bottom: 25px;
 			}
 		}
 	}

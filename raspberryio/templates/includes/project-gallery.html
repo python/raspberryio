@@ -1,6 +1,6 @@
 {% load url from future %}
 
-<div class="projects-display">
+<div class="gallery-display">
 	{% if projects %}
 	<div class="gallery">
 		<div id="slider" class="swipe">
@@ -19,8 +19,8 @@
 		  </ul>
 		</div>
 		<nav>
-			<a onClick="slider.prev();return false;" id="prev" href="#">prev</a>
-			<a onClick="slider.next();return false;" id="next" href="#">next</a>
+			<a onclick="mySwipe.prev()" id="prev" href="javascript:void(0)"><</a>
+            <a onclick="mySwipe.next()" id="next" href="javascript:void(0)">></a>
 		</nav>
 	</div>
 	<ul class="tiled">

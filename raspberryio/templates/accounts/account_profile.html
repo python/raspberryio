@@ -12,11 +12,11 @@
 	{% with profile_user.get_profile as profile %}
 	<div class="avatar span2">
 		{% if profile.use_gravatar %}
-			<img src="{% gravatar_url profile_user.email 250 %}" />
+			<img src="{% gravatar_url profile_user.email 250 %}" alt="{{ profile_user.username }}" />
 		{% elif profile.avatar %}
-			<img src="{{ MEDIA_URL }}{% thumbnail profile.avatar.url 250 250 %}" />
+			<img src="{{ MEDIA_URL }}{% thumbnail profile.avatar.url 250 250 %}" alt="{{ profile_user.username }}"/>
 		{% else %}
-			<img src="{{ STATIC_URL }}profile.png" />
+			<img src="{{ STATIC_URL }}images/no-profile.png" alt="{{ profile_user.username }}" />
 		{% endif %}
 	</div>
 	<div class="userprofile span6">
@@ -65,14 +65,13 @@
 
 {% if projects %}
 {% block extra_js %}
-<script src="{{ STATIC_URL }}js/libs/swipe.min.js"></script>
-<script src="{{ STATIC_URL }}js/update_relationship.js"></script>
-<script type="text/javascript">
-	$(function(){
-		slider = new Swipe(document.getElementById('slider'), {
-			slide: 600,
-	    });
-	});
-</script>
+	<script src="{{ STATIC_URL }}js/update_relationship.js"></script>
+    <script src="{{ STATIC_URL }}js/libs/swipe.js"></script>
+    <script>
+
+    $('#slider').Swipe();
+    window.mySwipe = $('#slider').data('Swipe');
+
+    </script>
 {% endblock %}
 {% endif %}
