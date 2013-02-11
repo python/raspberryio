@@ -110,12 +110,20 @@
                 <ul class="nav">
                     <li class="create"><a href="{% url 'project-create-edit' %}">Create</a></li>
                     <li class="explore"><a href="{% url 'project-list' %}">Explore</a></li>
-                    {% comment %}
-                     <li class="about"><a href="#"><img src="http://placehold.it/50x60" alt="About Raspberry IO"></a></li>
-                     {% endcomment %}
+                    <li class="about">
+                        <div class="tabWrapper">
+                            <a class="tab" href="#">
+                                <img src="http://placehold.it/50x60" alt="About Raspberry IO">
+                            </a>
+                            <div class="tabContent">
+                                <h4>About Raspberry I/O</h4>
+                                This is where there will be text that talks about what Raspberry IO is about, what it's focus is and what the goals are.
+                            </div>
+                        </div>
+                    </li>
                     <li class="learn"><a href="#">Learn</a></li>
                     {# Link below goes to forums and contests #}
-                    <li><a href="#">Community</a></li>
+                    <li class="community"><a href="#">Community</a></li>
                 </ul>
             </div>
         </div> 
@@ -133,8 +141,6 @@
     {% include "includes/footer_scripts.html" %}
 
     <script src="{{ STATIC_URL }}js/libs/bootstrap.min.js"></script>
-    <script src="{{ STATIC_URL }}js/libs/jquery.fittext.js"></script>
-
 
     {% compress js %}
     <script src="{{ STATIC_URL }}js/site.js"></script>

@@ -148,14 +148,14 @@ html, body {
 
 	}
 	.nav,.nav > li {
-	    float: none;
+		float: none;
 	    display: inline-block;
 	    *display: inline; /* ie7 fix */
 	    *zoom: 1; /* hasLayout ie7 trigger */
 	    vertical-align: top;
 	}
 	.nav {
-		position: relative;
+		text-align: center;
 		> li {
 			border-left: 1px solid @grayLighter;
 			&:last-child { 
@@ -163,32 +163,71 @@ html, body {
 				}
 			> a {
 		    	padding: 15px 20px;
+		    	@media (min-width: 480px) and (max-width: 600px) {
+		    		padding: 10px;
+		    		font-size: 14px;
+		    	}
+		    	@media (min-width: 320px) and (max-width: 480px) {
+		    		padding: 5px 0 5px 5px;
+		    		font-size: 12px;
+		    		&:last-child {
+		    			padding: 5px;
+		    		}
+		    	}
 			}
 			&.about {
-				a {
-					#gradient > .vertical(@navbarBackgroundHighlight, @navbarBackground);
-					border-top: 1px solid #d4d4d4;
-					border-right: 1px solid #d4d4d4;
-					border-left: 1px solid #d4d4d4;
-					.border-radius(50px 50px 0 0);
+				z-index: 1;
+				border-left: 0 none;
+				.tabWrapper {
 					position: absolute;
-					top: -46px;
-					color: @white;
-					text-shadow: none;
-					padding: 15px 25px 10px 25px;
-					img {
-						margin-top: 10px;
+					top: 0;
+					a.tab {
+						#gradient > .vertical(@navbarBackgroundHighlight, @navbarBackground);
+						border-top: 1px solid #d4d4d4;
+						border-right: 1px solid #d4d4d4;
+						border-left: 1px solid #d4d4d4;
+						.border-radius(50px 50px 0 0);
+						padding: 35px 25px 35px 25px;
+						@media (min-width: 320px) and (max-width: 400px) { 
+							padding: 35px 15px;
+						}
 					}
-					&:hover {
-						padding: 15px 25px 15px 25px;
-						top: -51px;
+					.tabContent {
+						#gradient > .vertical(@navbarBackgroundHighlight, @navbarBackground);
+						border-top: 1px solid #d4d4d4;
+						border-right: 1px solid #d4d4d4;
+						border-left: 1px solid #d4d4d4;
+						position: absolute;
+						right: -165px;
+						width: 400px;
+						padding: 15px 15px 30px 15px;
+						font-size: 13px;
+						font-weight: 300;
+						@media (min-width: 480px) and (max-width: 600px) {
+							width: 350px;
+							right: -150px;
+							padding-top: 3px;
+						}
+						@media (min-width: 400px) and (max-width: 480px) {
+							width: 350px;
+							right: -150px;
+							padding-top: 3px;
+						}
+						@media (min-width: 320px) and (max-width: 400px) {
+							width: 275px;
+							right: -125px;
+							padding-top: 3px;
+						}
 					}
 				}
 			}
-			// &.learn {
-			// 	border-left: 0 none;
-			// 	margin-left: 100px;
-			// }
+			&.learn {
+				border-left: 0 none;
+				margin-left: 100px;
+				@media (max-width: 355px) {
+					margin-left: 75px;
+				}
+			}
 		}
 	}
 	footer {
@@ -197,6 +236,8 @@ html, body {
 		color: @white;
 		padding: 10px 0;
 		background-color: @grayDark;
+		position: relative;
+		z-index: 2;
 	}
 }
 

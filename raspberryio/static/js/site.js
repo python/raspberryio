@@ -13,13 +13,27 @@ $(function() {
     $('.middleinput:text, textarea').addClass('xlarge');
     $('.control-group label').addClass('control-label');
 
-    $(".userinfo h2").fitText(1.2, { minFontSize: '28px', maxFontSize: '30px' });
+    // "About Raspberry IO" tab on bottom nav
+    $('.tab').click(function(e) {
+        if ($(this).hasClass('open')) {
+            $(this).removeClass('open');
+            $('.tabWrapper').animate({
+                top: '0'
+            }, 250 );
+        } else {
+            $(this).addClass('open');
+            $('.tabWrapper').animate({
+                top: '-130px'
+            }, 250 );
+        }
+        e.preventDefault();
+    });
 
     // Make jQuery POST requests exempt from CSRF if they're from same origin.
     $(document).ajaxSend(function(event, xhr, settings) {
         function getCookie(name) {
             var cookieValue = null;
-            if (document.cookie && document.cookie != '') {
+            if (document.cookie && document.cookie !== '') {
                 var cookies = document.cookie.split(';');
                 for (var i = 0; i < cookies.length; i++) {
                     var cookie = jQuery.trim(cookies[i]);
