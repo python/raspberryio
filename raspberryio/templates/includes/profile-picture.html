@@ -1,0 +1,9 @@
+{% load mezzanine_tags %}
+
+{% if profile.use_gravatar %}
+    <img class="profile" src="{% gravatar_url profile_user.email 50 %}" alt="{{ profile_user.username }}" />
+{% elif profile.avatar %}
+    <img class="profile" src="{{ MEDIA_URL }}{% thumbnail profile.avatar.url 50 50 %}" alt="{{ profile_user.username }}"/>
+{% else %}
+    <img class="profile" src="{{ STATIC_URL }}images/no-profile.png" alt="{{ profile_user.username }}" />
+{% endif %}
