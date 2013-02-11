@@ -111,10 +111,22 @@ def publish_project(request, project_slug):
 
 @login_required
 @ajax_only
-def gallery_image_create(request):
+def gallery_image_create(request, project_slug=None, project_step_number=None):
+    project_step = None
+    if project_slug and project_step_number:
+        project = get_object_or_404(Project, slug=project_slug)
+        project_step = get_object_or_404(
+            ProjectStep, project=project, _order=project_step_number
+        )
+        if request.user != project.user and not request.user.is_superuser:
+            return HttpResponseForbidden(
+                'You are not the owner of this project.'
+            )
     form = ProjectImageForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         image = form.save()
+        if project_step is not None:
+            project_step.gallery.add(image)
         return AjaxResponse(request, ProjectImage.serialize(image))
     # A post was made without any files, just return False
     return AjaxResponse(request, False)
@@ -147,12 +159,7 @@ def gallery_image_delete(request, project_image_id):
         project_user = project_step.project.user
         if user != project_user:
             return HttpResponseForbidden('You are not the owner of this image.')
-    # Attempt to remove the actual file and then the database record
-    try:
-        project_image.file.delete()
-        success = True
-    except IOError:
-        success = False
-    else:
-        project_image.delete()
-    return AjaxResponse(request, success)
+    # Remove the actual file, then the database record and return True
+    project_image.file.delete()
+    project_image.delete()
+    return AjaxResponse(request, True)
