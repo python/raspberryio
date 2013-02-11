@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 
 from actstream import models
@@ -50,4 +51,23 @@ def profile_dashboard(request):
         'user': user,
         'profile': user.get_profile(),
         'actions': models.user_stream(user),
+    })
+
+
+def profile_users(request):
+    """Returns the list of active site users"""
+    users = User.objects.filter(is_active=True).order_by('username')
+    paginator = Paginator(users, 20)
+
+    page = request.GET.get('page')
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        users = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        users = paginator.page(paginator.num_pages)
+    return render(request, "accounts/activeusers.html", {
+        'users': users
     })

@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r"^$", direct_to_template, {"template": "homepage.html"}, name="home"),
 
     # RaspberryIO apps
+    url(r'^users/$', 'raspberryio.userprofile.views.profile_users', name='profile-users'),
     url(r'^dashboard/$', 'raspberryio.userprofile.views.profile_dashboard', name='profile-dashboard'),
     url(r'^projects/', include('raspberryio.project.urls')),
     url(r'^accounts/', include('raspberryio.userprofile.urls')),

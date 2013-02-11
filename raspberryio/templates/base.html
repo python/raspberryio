@@ -57,6 +57,7 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">My Profile<b class="caret"></b></a>
                         <ul class="dropdown-menu">
+                            <li><a href="{% url 'profile-dashboard' %}">Dashboard</a></li>
                             <li><a href="{% url 'profile' user.username %}">View Profile</a></li>
                             <li><a href="{% url 'profile_update' %}">Edit Profile</a></li>
                             <li><a href="{% url 'project-create-edit' %}">Create Project</a></li>
@@ -87,8 +88,8 @@
             {% endfor %}
             {% endnevercache %}
             <h1>{% block title %}{% endblock %}</h1>
-        </div>  
-    {% endblock %}    
+        </div>
+    {% endblock %}
     </header>
     {% endif %}
 
@@ -126,7 +127,7 @@
                     <li class="community"><a href="#">Community</a></li>
                 </ul>
             </div>
-        </div> 
+        </div>
         <footer>
             {% block footer %}
             &copy;{% now "Y" %} <a href="http://www.python.org/psf/">Python Software Foundation</a>
@@ -145,7 +146,7 @@
     {% compress js %}
     <script src="{{ STATIC_URL }}js/site.js"></script>
     {% endcompress %}
-   
+
     {% block extra_js %}{% endblock %}
 
 </body>

@@ -1,21 +1,28 @@
-{% extends "accounts/account_form.html" %}
+{% extends "base.html" %}
 {% load i18n future %}
+{% load bootstrap_toolkit %}
 
 {% block body_class %}login{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block body_id %}account{% endblock %}
 
 {% block main %}
 
-{% if request.user.is_authenticated %}
-    <p>{% trans "You're already logged in." %}</p>
-{% else %}
-    {{ block.super }}
-    <div class="extra">
-    	{% url "signup" as signup_url %}
-	    <p>{% blocktrans with request.GET.next as next %}If you don't have an account you can <a href="{{ signup_url }}?next={{ next }}">sign up</a> for one now.{% endblocktrans %}</p>
-	    {% url "mezzanine_password_reset" as password_reset_url %}
-	    {% url "profile_update" as profile_update_url %}
-	    <p>{% blocktrans %}You can also <a href="{{ password_reset_url }}?next={{ profile_update_url }}">reset your password</a> if you've forgotten it.{% endblocktrans %}</p>
-	</div>
-{% endif %}
+    {% if request.user.is_authenticated %}
+        <p>{% trans "You're already logged in." %}</p>
+    {% else %}
+        <legend>{{ title }} </legend>
+        <form class="registration"  method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
+            {{ form|as_bootstrap }}
+        <input class="submit" type="submit" value="{{ title }}">
+        </form>
+        <div class="extra">
+            {% url "signup" as signup_url %}
+            <p>{% blocktrans with request.GET.next as next %}If you don't have an account you can <a href="{{ signup_url }}?next={{ next }}">sign up</a> for one now.{% endblocktrans %}</p>
+            {% url "mezzanine_password_reset" as password_reset_url %}
+            {% url "profile_update" as profile_update_url %}
+            <p>{% blocktrans %}You can also <a href="{{ password_reset_url }}?next={{ profile_update_url }}">reset your password</a> if you've forgotten it.{% endblocktrans %}</p>
+        </div>
+    {% endif %}
 
 {% endblock %}

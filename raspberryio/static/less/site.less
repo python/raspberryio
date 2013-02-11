@@ -158,8 +158,8 @@ html, body {
 		text-align: center;
 		> li {
 			border-left: 1px solid @grayLighter;
-			&:last-child { 
-				border-right: 1px solid @grayLighter; 
+			&:last-child {
+				border-right: 1px solid @grayLighter;
 				}
 			> a {
 		    	padding: 15px 20px;
@@ -551,7 +551,15 @@ body#account {
 			}
 		}
 	}
-	&.relationships {
+	&.user-listing {
+		.row {
+			margin: 10px 0;
+			.span2 {
+				background-color: @white;
+				padding: 15px 10px;
+				.border-radius(10px);
+			}
+		}
 		a.follow {
 			.btn;
 			.btn-primary;
@@ -559,6 +567,10 @@ body#account {
 		a.unfollow {
 			.btn;
 			.btn-warning;
+		}
+		img.profile {
+			float: left;
+			padding-right: 10px;
 		}
 	}
 }

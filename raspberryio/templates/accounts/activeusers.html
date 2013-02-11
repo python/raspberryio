@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load i18n future mezzanine_tags %}
+
+{% block meta_title %}Site Users{% endblock %}
+{% block title %}Site Users{% endblock %}
+{% block body_id %}account{% endblock %}
+{% block body_class %}user-listing{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="pagination">
+        <span class="step-links">
+            {% if users.has_previous %}
+                <a href="?page={{ users.previous_page_number }}"><i class="icon-chevron-left"></i></a>
+            {% endif %}
+
+            <span class="current">
+                {{ users.number }} of {{ users.paginator.num_pages }}
+            </span>
+
+            {% if users.has_next %}
+                <a href="?page={{ users.next_page_number }}"><i class="icon-chevron-right"></i></a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% for user in users %}
+<div class="row">
+    <div class="span2">
+        {% with user.get_profile as profile %}
+        {% include 'includes/profile-picture.html' %}
+        {% endwith %}
+        <div class="user-info">
+            <a href="{{ user.get_absolute_url }}">{{ user.username }}</a>
+            {% include 'includes/relationship-status.html' with profile_user=user %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+<div class="row">
+    <div class="pagination">
+        <span class="step-links">
+            {% if users.has_previous %}
+                <a href="?page={{ users.previous_page_number }}"><i class="icon-chevron-left"></i></a>
+            {% endif %}
+
+            <span class="current">
+                {{ users.number }} of {{ users.paginator.num_pages }}
+            </span>
+
+            {% if users.has_next %}
+                <a href="?page={{ users.next_page_number }}"><i class="icon-chevron-right"></i></a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ STATIC_URL }}js/update_relationship.js"></script>
+{% endblock %}
