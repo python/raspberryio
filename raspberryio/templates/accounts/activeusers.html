@@ -7,6 +7,23 @@
 {% block body_class %}user-listing{% endblock %}
 
 {% block main %}
+<div class="row">
+    <div class="pagination">
+        <span class="step-links">
+            {% if users.has_previous %}
+                <a href="?page={{ users.previous_page_number }}"><i class="icon-chevron-left"></i></a>
+            {% endif %}
+
+            <span class="current">
+                {{ users.number }} of {{ users.paginator.num_pages }}
+            </span>
+
+            {% if users.has_next %}
+                <a href="?page={{ users.next_page_number }}"><i class="icon-chevron-right"></i></a>
+            {% endif %}
+        </span>
+    </div>
+</div>
 {% for user in users %}
 <div class="row">
     <div class="span2">
@@ -20,6 +37,23 @@
     </div>
 </div>
 {% endfor %}
+<div class="row">
+    <div class="pagination">
+        <span class="step-links">
+            {% if users.has_previous %}
+                <a href="?page={{ users.previous_page_number }}"><i class="icon-chevron-left"></i></a>
+            {% endif %}
+
+            <span class="current">
+                {{ users.number }} of {{ users.paginator.num_pages }}
+            </span>
+
+            {% if users.has_next %}
+                <a href="?page={{ users.next_page_number }}"><i class="icon-chevron-right"></i></a>
+            {% endif %}
+        </span>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
