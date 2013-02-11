@@ -6,7 +6,6 @@ django_compressor==1.2
 django-appconf==0.5
 BeautifulSoup==3.2.1
 django-hilbert==0.4.2
-django-relationships==0.3.2
 gdata==2.0.17
 django-activity-stream==0.4.4
 django-bootstrap-toolkit==2.8.0
