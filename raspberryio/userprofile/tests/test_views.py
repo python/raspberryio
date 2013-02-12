@@ -91,11 +91,11 @@ class ActiveUsersTestCase(RaspberryIOBaseTestCase):
     def test_active_users(self):
         response = self.client.get(self.url)
         users = response.context['users']
-        self.assertEqual(users.count(), User.objects.all().count())
+        self.assertEqual(len(users), User.objects.all().count())
 
     def test_inactive_users(self):
         self.user.is_active = False
         self.user.save()
         response = self.client.get(self.url)
         users = response.context['users']
-        self.assertEqual(users.count(), User.objects.filter(is_active=True).count())
+        self.assertEqual(len(users), User.objects.filter(is_active=True).count())
