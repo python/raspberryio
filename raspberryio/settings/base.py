@@ -105,6 +105,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
    "django.core.context_processors.tz",
     "mezzanine.conf.context_processors.settings",
+    'sekizai.context_processors.sekizai',
 )
 
 MIDDLEWARE_CLASSES = (
