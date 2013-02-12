@@ -21,6 +21,11 @@ forwarding if it is not already by adding ``ForwardAgent yes`` to your SSH confi
 Getting Started
 ------------------------
 
+First, download the code from github:
+
+    git clone git@github.com:caktus/raspberryio.git
+    cd raspberryio
+
 To setup your local environment you should create a virtualenv and install the
 necessary requirements::
 
@@ -36,8 +41,8 @@ Then create a local settings file and set your ``DJANGO_SETTINGS_MODULE`` to use
 Exit the virtualenv, add the project directory to the virtualenv and reactivate
 it to activate the settings just changed::
 
+    add2virtualenv .
     deactivate
-    add2virtualenv ../
     workon raspberryio
 
 Create the Postgres database::
@@ -67,7 +72,7 @@ Server Provisioning
 The first step in creating a new server is to create users on the remote server. You
 will need root user access with passwordless sudo. How you specify this user will vary
 based on the hosting provider. EC2 and Vagrant use a private key file. Rackspace and
-Linode use a user/password combination. 
+Linode use a user/password combination.
 
 1. For each developer, put a file in the ``conf/users`` directory
     containing their public ssh key, and named exactly the same as the
@@ -79,7 +84,7 @@ Linode use a user/password combination.
 
         fab -H <fresh-server-ip> -u <root-user> create_users
 
-    This will create a project user and users for all the developers. 
+    This will create a project user and users for all the developers.
 
 3. Lock down SSH connections: disable password login and move
     the default port from 22 to ``env.ssh_port``::
