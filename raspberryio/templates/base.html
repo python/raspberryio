@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load pages_tags mezzanine_tags i18n future %}
+{% load pages_tags mezzanine_tags sekizai_tags i18n future %}
 <html lang="en">
 <head>
 
@@ -21,6 +21,9 @@
             <link rel="stylesheet" type="text/less" media="all" href="{{ STATIC_URL }}less/site.less">
         {% endcompress %}
     {% endif %}
+
+    {# FIXME: consolidate sekizai render_block needed for wiki with above css #}
+    {% render_block "css" %}
 
     <!--[if lt IE 9]>
     <script src="{{ STATIC_URL }}js/html5shiv.js"></script>
@@ -148,6 +151,6 @@
     {% endcompress %}
 
     {% block extra_js %}{% endblock %}
-
+    {% render_block "js" %}
 </body>
 </html>
