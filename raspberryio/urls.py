@@ -3,6 +3,8 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
+from django_notify.urls import get_pattern as get_notify_pattern
+from wiki.urls import get_pattern as get_wiki_pattern
 from mezzanine.core.views import direct_to_template
 
 admin.autodiscover()
@@ -24,6 +26,9 @@ urlpatterns = patterns('',
     # django-activity-streams
     url('^activity/', include('actstream.urls')),
 
+    # wiki
+    url(r'^wiki/notify/', get_notify_pattern()),
+    url(r'wiki/', get_wiki_pattern()),
     # Mezzanine urls
     url(r'^', include('mezzanine.urls')),
 

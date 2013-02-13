@@ -9,3 +9,4 @@ django-hilbert==0.4.2
 gdata==2.0.17
 django-activity-stream==0.4.4
 django-bootstrap-toolkit==2.8.0
+wiki==0.0.15
