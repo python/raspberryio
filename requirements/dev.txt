@@ -8,3 +8,4 @@ argyle==0.2.1
 # Testing
 coverage==3.5.1
 pylint==0.25.1
+mock==1.0.1
