@@ -82,7 +82,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
-    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -92,7 +91,6 @@ SECRET_KEY = 'yv!hkvt&amp;k8dn^$*$&amp;lif)#ydw8zvk4iz93s8m+$x%eyg-!$n69'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-    #'django.template.loaders.eggs.Loader',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -116,7 +114,6 @@ MIDDLEWARE_CLASSES = (
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "mezzanine.core.request.CurrentRequestMiddleware",
     "mezzanine.core.middleware.TemplateForDeviceMiddleware",
     "mezzanine.core.middleware.TemplateForHostMiddleware",
