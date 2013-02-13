@@ -179,6 +179,7 @@ INSTALLED_APPS = (
     # RaspberryIO apps
     "raspberryio.userprofile",
     "raspberryio.project",
+    "raspberryio.search",
 )
 
 PASSWORD_HASHERS = (
@@ -240,6 +241,13 @@ ACTSTREAM_SETTINGS = {
     'FETCH_RELATIONS': True,
     'USE_PREFETCH': True,
 }
+
+# Models to use in Mezzanine Search
+SEARCH_MODEL_CHOICES = (
+    'project.project',
+    'userprofile.raspberryiouser',
+    #'project.project_step', 'userprofile.profile'
+)
 
 ####################
 # DYNAMIC SETTINGS #
