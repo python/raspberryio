@@ -246,7 +246,7 @@ TINYMCE_SETUP_JS = os.path.join('js', 'libs', 'tinymce_setup.js')
 
 # activity stream settings
 ACTSTREAM_SETTINGS = {
-    'MODELS': ('auth.user', 'project.project', 'project.projectstep'),
+    'MODELS': ('auth.user', 'project.project', 'project.projectstep', 'wiki.article'),
     'FETCH_RELATIONS': True,
     'USE_PREFETCH': True,
 }

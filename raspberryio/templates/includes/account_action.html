@@ -9,6 +9,7 @@
 
 {% if action.target %}
     {% if action.target.get_absolute_url %}<a href="{{ action.target.get_absolute_url }}">{{ action.target }}</a>
+    {% elif action.target.urlpath_set.get.get_absolute_url %}<a href="{{ action.target.urlpath_set.get.get_absolute_url }}">{{ action.target }}</a>
     {% else %}<a href="{{ action.target_url }}">{{ action.target }}</a>{% endif %}
 {% endif %}
 {{ action.timestamp|timesince }} {% trans "ago" %}
