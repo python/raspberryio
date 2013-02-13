@@ -40,7 +40,7 @@ class CommunityAggregatorFeed(BaseCommunityAggregatorFeed):
         return qs[:25]
 
     def title(self, obj):
-        return "Django community aggregator: %s" % obj.name
+        return "Community aggregator: %s" % obj.name
 
     def link(self, obj):
         return urlresolvers.reverse('aggregator-feed', args=[obj.slug])
