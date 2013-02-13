@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags %}
+{% load bootstrap_toolkit %}
 
 {% block meta_title %}{{ title }}{% endblock %}
 {% block title %}{{ title }}{% endblock %}
@@ -8,17 +9,29 @@
 {% block main %}
 <fieldset>
     <legend>{{ title }} </legend>
-    <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
-    {% for field in form %}
-        <div class="fieldWrapper {{ field.html_name }}">
-            {{ field.errors }}
-            {{ field.label_tag }}{{ field }}
+    <form class="registration"  method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
+        {{ form|as_bootstrap }}
+        <div id="change_gravatar">
+            <a href="http://gravatar.com" target="_blank">Change your avatar at Gravatar</a>
         </div>
-    {% endfor %}
    	<input class="submit" type="submit" value="{{ title }}">
     </form>
-</fieldset>
 {% endblock %}
 
+{% block extra_js %}
+<script type="text/javascript">
+    $(function() {
+        var $use_gravatar = $('#id_use_gravatar');
 
+        var toggle_avatar;
+        (toggle_avatar = function() {
+            var use_gravatar = $use_gravatar[0].checked;
+            $('label[for=id_avatar]')[use_gravatar ? "hide" : "show"]();
+            $('#id_avatar').parent()[use_gravatar ? "hide" : "show"]();
+            $('#change_gravatar')[use_gravatar ? "show" : "hide"]();
+        })();
 
+        $use_gravatar.click(toggle_avatar);
+    });
+</script>
+{% endblock %}

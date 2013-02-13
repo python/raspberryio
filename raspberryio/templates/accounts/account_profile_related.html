@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load i18n future mezzanine_tags %}
+
+{% block meta_title %}{{ profile_user.username }}{% endblock %}
+{% block title %}{{ profile_user.username }}{% endblock %}
+{% block body_id %}account{% endblock %}
+{% block body_class %}user-listing{% endblock %}
+
+{% block main %}
+<div class="row">
+    <div class="span12">
+        <p><a class="{% if "following" in request.get_full_path %}active{% endif %}" href="{% url 'profile-related' username=request.user relation='following' %}"><span>Following</span></a></p>
+        <p><a class="{% if "followers" in request.get_full_path %}active{% endif %}" href="{% url 'profile-related' username=request.user relation='followers' %}"><span>Followers</span></a></p>
+    </div>
+</div>
+{% for related_user in related_users %}
+<div class="row">
+    <div class="span2">
+        {% with related_user.get_profile as profile %}
+        {% include 'includes/profile-picture.html' %}
+        {% endwith %}
+        <div class="user-info">
+            <a href="{{ related_user.get_absolute_url }}">{{ related_user.username }}</a>
+            {% include 'includes/relationship-status.html' with profile_user=related_user %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ STATIC_URL }}js/update_relationship.js"></script>
+{% endblock %}

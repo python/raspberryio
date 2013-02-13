@@ -115,7 +115,7 @@ MIDDLEWARE_CLASSES = (
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "mezzanine.core.request.CurrentRequestMiddleware",
     "mezzanine.core.middleware.TemplateForDeviceMiddleware",
     "mezzanine.core.middleware.TemplateForHostMiddleware",
@@ -162,6 +162,8 @@ INSTALLED_APPS = (
     'south',
     'compressor',
     'django_push.subscriber',
+    'actstream',
+    'bootstrap_toolkit',
     # Mezzanine
     "mezzanine.boot",
     "mezzanine.conf",
@@ -226,8 +228,10 @@ COMPRESS_PRECOMPILERS = (
 )
 
 AUTH_PROFILE_MODULE = "userprofile.Profile"
+ACCOUNTS_PROFILE_FORM_CLASS = "raspberryio.userprofile.forms.UserProfileForm"
 
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
+LOGIN_REDIRECT_URL = 'raspberryio.userprofile.views.profile_dashboard'
 
 FEED_APPROVERS_GROUP_NAME = "feed-approver"
 SUPERFEEDR_CREDS = ""  # list of [email,secretkey]
@@ -236,6 +240,15 @@ SUPERFEEDR_CREDS = ""  # list of [email,secretkey]
 PUSH_HUB = 'https://superfeedr.com/hubbub'
 PUSH_CREDENTIALS = 'raspberryio.aggregator.utils.push_credentials'
 
+# Supply the custom TinyMCE JavaScript
+TINYMCE_SETUP_JS = os.path.join('js', 'libs', 'tinymce_setup.js')
+
+# activity stream settings
+ACTSTREAM_SETTINGS = {
+    'MODELS': ('auth.user', 'project.project', 'project.projectstep'),
+    'FETCH_RELATIONS': True,
+    'USE_PREFETCH': True,
+}
 
 ####################
 # DYNAMIC SETTINGS #

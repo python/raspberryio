@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load bootstrap_toolkit %}
+
+{% block main %}
+    <form class="project-create-edit-form" action="" method="post" accept-charset="utf-8" enctype="multipart/form-data"> {% csrf_token %}
+        {{ project_form|as_bootstrap }}
+        <input type="submit" id="submit-project-create-edit" name="save" value="Save" />
+            {% if not project.id %}
+                <input type="submit" id="submit-project-create-edit" name="save-add-step" value="Save and add project steps" />
+            {% endif %}
+    </form>
+    {% if project.id %}
+        {% for step in project.steps.all %}
+            <a href="{% url 'project-step-create-edit' project.slug step.order %}">
+                Edit step {{ step.order|add:"1" }}
+            </a>
+            <br>
+        {% endfor %}
+        <a href="{% url 'project-step-create-edit' project.slug %}">
+            Create a new project step
+        </a>
+    {% endif %}
+    {% comment %}
+        FIXME: Remove these br tags. Used temporarily because the above links
+        were being hidden by the bottom nav.
+    {% endcomment %}
+    <br>
+    <br>
+    <br>
+{% endblock %}

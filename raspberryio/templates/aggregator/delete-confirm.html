@@ -1,22 +1,17 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags %}
 
-{% block meta_title %}{{ title }}{% endblock %}
-{% block title %}{{ title }}{% endblock %}
+{% block meta_title %}Community{% endblock %}
+{% block title %}Community{% endblock %}
 {% block body_id %}community{% endblock %}
 
 {% block main %}
-<h1>Community</h1>
+    <h3>Community: really delete {{ feed }}?</h3>
 
-<h2 class="deck">Really delete {{ feed }}?</h2>
+    <div class="alert">All items in the aggregator will be deleted, too.</div>
 
-<p>
-  All items in the aggregator will be deleted, too. Because Jacob's
-  lazy, there's no "undo"!
-</p>
-
-<form class="wide" action="." method="post">
-  {% csrf_token %}
-  <p class="submit"><input type="submit" value="Yes, delete the feed."></p>
-</form>
+    <form action="." method="post">
+      {% csrf_token %}
+      <p class="submit"><input type="submit" value="Yes, delete the feed."></p>
+    </form>
 {% endblock %}

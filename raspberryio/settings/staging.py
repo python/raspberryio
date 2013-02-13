@@ -3,6 +3,11 @@ from raspberryio.settings.base import *
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+ADMINS = (
+        ('RaspberryIO Team', 'raspberryio-team@caktusgroup.com'),
+    )
+MANAGERS = ADMINS
+
 DATABASES['default']['NAME'] = 'raspberryio_staging'
 
 INSTALLED_APPS += (

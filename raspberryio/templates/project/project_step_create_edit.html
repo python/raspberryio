@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load bootstrap_toolkit %}
+
+{% block main %}
+    <h3>
+        {% if project_step.order != None %}
+            Editing step: {{ project_step.get_order_display }} of {{ project.title }}
+        {% else %}
+            Creating project step {{ project_step.get_steps_count|add:"1" }} for {{ project.title }}
+        {% endif %}
+    </h3>
+
+    {# Ajax Multifile uploader form #}
+    {% include 'includes/file_upload/uploader_form.html' %}
+
+    <form id="project-step-form" class="project-step-create-edit-form" action="" method="post" accept-charset="utf-8">
+        {% csrf_token %}
+        {{ project_step_form|as_bootstrap }}
+        <input type="submit" name="save" id="submit-project-step-create-edit" value="Save and View"/>
+        <input type="submit" name="save-add" id="submit-project-step-create-edit-add-another" value="Save and add another" />
+    </form>
+{% endblock %}
+
+{% block extra_js %}
+
+    {# Load jquery file upload JS dependencies and file_upload.js #}
+    {% include 'includes/file_upload/js_requirements.html' %}
+
+    <script>
+        /*
+        Declare the image upload and download urls. download_url should be an
+        empty string if there are no images to load initially.
+        Provide the jquery selector for the hidden field to bind image_ids to.
+        */
+
+        (function() {
+            var image_upload_url,
+                image_download_url;
+            {% if project_step.id %}
+                // If editing an existing project step
+                image_upload_url = "{% url 'gallery-image-upload' project.slug project_step.order %}";
+                image_download_url =
+                    "{% url 'gallery-image-download' project.slug project_step.order %}";
+            {% else %}
+                // New project steps have a generic upload and no download
+                image_upload_url = "{% url 'gallery-image-upload' %}";
+                image_download_url = '';
+            {% endif %}
+            var $file_field = $('#project-step-form input:hidden[name=images]');
+
+            // initialize file uploader with these three pieces of data.
+            initialize_file_uploader(
+                image_upload_url, image_download_url, $file_field
+            );
+        })();
+    </script>
+{% endblock %}

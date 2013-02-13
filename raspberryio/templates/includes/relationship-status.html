@@ -1,0 +1,11 @@
+{% load activity_tags %}
+
+{% if not request.user.is_anonymous and request.user != profile_user %}
+    <div class="follow-btn">
+    {% if request.user|is_following:profile_user %}
+        <a class="unfollow" href="{% follow_url profile_user %}">Unfollow</a>
+    {% else %}
+        <a class="follow" href="{% follow_url profile_user %}">Follow</a>
+    {% endif %}
+    </div>
+{% endif %}

@@ -1,6 +1,18 @@
+from django import forms
 from django.contrib import admin
-from raspberryio.project.models import Project, ProjectStep
-from raspberryio.project.forms import ProjectForm
+
+from raspberryio.project.models import Project, ProjectStep, ProjectCategory
+from mezzanine.blog.models import BlogCategory
+
+
+class ProjectAdminForm(forms.ModelForm):
+
+    class Meta:
+        model = Project
+        fields = (
+            'title', 'status', 'publish_date', 'user', 'featured_photo',
+            'featured_video', 'tldr', 'categories'
+        )
 
 
 class ProjectStepInline(admin.TabularInline):
@@ -10,9 +22,15 @@ class ProjectStepInline(admin.TabularInline):
 
 class ProjectAdmin(admin.ModelAdmin):
     model = Project
-    form = ProjectForm
+    form = ProjectAdminForm
     list_display = ('title', 'created_datetime', 'admin_thumb')
     inlines = (ProjectStepInline,)
     raw_id_fields = ('user',)
 
+
+class ProjectCategoryAdmin(admin.ModelAdmin):
+    model = ProjectCategory
+    fields = ('title',)
+
 admin.site.register(Project, ProjectAdmin)
+admin.site.register(ProjectCategory, ProjectCategoryAdmin)

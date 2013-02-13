@@ -28,7 +28,19 @@
 
     <script src="{{ STATIC_URL }}js/libs/modernizr-2.5.3.js"></script>
 
-    {# This is where Google Analytics can go. #}
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-38295988-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
 
 </head>
 
@@ -40,13 +52,24 @@
         <div class="container">
             <a class="brand" href="/">{{ settings.SITE_TITLE }}</a>
             <div class="right-block">
-                {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}">Log Out</a>
-                {% else %}
-                <a href="{% url 'login' %}">Log In</a>
-                {% endif %}
+                <ul class="nav">
+                    {% if user.is_authenticated %}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">My Profile<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'profile-dashboard' %}">Dashboard</a></li>
+                            <li><a href="{% url 'profile' user.username %}">View Profile</a></li>
+                            <li><a href="{% url 'profile_update' %}">Edit Profile</a></li>
+                            <li><a href="{% url 'project-create-edit' %}">Create Project</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{% url 'logout' %}">Log Out</a></li>
+                    {% else %}
+                    <li><a href="{% url 'login' %}">Log In</a></li>
+                    {% endif %}
+                </ul>
                 <form class="navbar-search">
-                    <input type="text" class="search-query" placeholder="Search">
+                   <input type="text" class="search-query" placeholder="Search">
                 </form>
             </div>
         </div>
@@ -65,8 +88,8 @@
             {% endfor %}
             {% endnevercache %}
             <h1>{% block title %}{% endblock %}</h1>
-        </div>  
-    {% endblock %}    
+        </div>
+    {% endblock %}
     </header>
     {% endif %}
 
@@ -76,6 +99,7 @@
             {% block main %}{% endblock %}
             </div>
         </div>
+        {% block full_container %}{% endblock %}
     {% endblock %}
 
     <div id="push"></div>
@@ -85,18 +109,25 @@
         <div class="navbar-inner">
             <div class="container">
                 <ul class="nav">
-                    <li>
-                        {% if user.is_authenticated %}
-                        <a href="{% url 'profile' user.username %}">Your Profile</a>
-                        {% else %}
-                        <a href="{% url 'login' %}">Log In</a>
-                        {% endif %}
+                    <li class="create"><a href="{% url 'project-create-edit' %}">Create</a></li>
+                    <li class="explore"><a href="{% url 'project-list' %}">Explore</a></li>
+                    <li class="about">
+                        <div class="tabWrapper">
+                            <a class="tab" href="#">
+                                <img src="http://placehold.it/50x60" alt="About Raspberry IO">
+                            </a>
+                            <div class="tabContent">
+                                <h4>About Raspberry I/O</h4>
+                                This is where there will be text that talks about what Raspberry IO is about, what it's focus is and what the goals are.
+                            </div>
+                        </div>
                     </li>
-                    <li class="home"><a href="#">Home</a></li>
-                    <li><a href="#">Projects</a></li>
+                    <li class="learn"><a href="#">Learn</a></li>
+                    {# Link below goes to forums and contests #}
+                    <li class="community"><a href="{% url 'community-index' %}">Community</a></li>
                 </ul>
             </div>
-        </div> 
+        </div>
         <footer>
             {% block footer %}
             &copy;{% now "Y" %} <a href="http://www.python.org/psf/">Python Software Foundation</a>
@@ -111,14 +142,12 @@
     {% include "includes/footer_scripts.html" %}
 
     <script src="{{ STATIC_URL }}js/libs/bootstrap.min.js"></script>
-    <script src="{{ STATIC_URL }}js/libs/jquery.fittext.js"></script>
-
 
     {% compress js %}
     <script src="{{ STATIC_URL }}js/site.js"></script>
     {% endcompress %}
-   
-    {% block extra-js %}{% endblock %}
+
+    {% block extra_js %}{% endblock %}
 
 </body>
 </html>

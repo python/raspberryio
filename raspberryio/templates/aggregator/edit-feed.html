@@ -1,35 +1,21 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags %}
+{% load bootstrap_toolkit %}
 
-{% block meta_title %}{{ title }}{% endblock %}
-{% block title %}{{ title }}{% endblock %}
+{% block meta_title %}Community{% endblock %}
+{% block title %}Community{% endblock %}
 {% block body_id %}community{% endblock %}
 
 {% block main %}
-<h1>Community</h1>
-
-{% if adding %}
-  <h2 class="deck">Add a {{ feed_type }} feed:</h2>
-{% else %}
-  <h2 class="deck">Edit {{ feed }}:</h2>
-{% endif %}
-
-<form method="POST" action="" id="add_feed_form" class="wide">
-  {% csrf_token %}
-  {% for field in form %}
-    <p>
-      <label id="{{ field.auto_id }}">{{ field.label }} - <span class="help">{{ field.help_text }}</label>
-      {% if field.errors %}
-        <p class="errors">{{ field.errors.as_text }}</p>
-      {% endif %}
-      {{ field }}
-    </p>
-  {% endfor %}
   {% if adding %}
-    <p class="submit"><input type="submit" value="Add Feed"></p>
+    <h3>Community: add a {{ feed_type }} feed</h3>
   {% else %}
-   <p class="submit"><input type="submit" value="Save"></p>
+    <h3>Community: edit {{ feed }}</h3>
   {% endif %}
-</form>
 
+  <form method="POST" action="" id="add_feed_form" class="wide">
+    {% csrf_token %}
+    {{ form|as_bootstrap }}
+      <input type="submit" value="{% if adding %}Add Feed{% else %}Save{% endif %}">
+  </form>
 {% endblock %}

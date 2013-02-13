@@ -16,6 +16,8 @@ urlpatterns = patterns('',
     url(r"^$", direct_to_template, {"template": "homepage.html"}, name="home"),
 
     # RaspberryIO apps
+    url(r'^users/$', 'raspberryio.userprofile.views.profile_users', name='profile-users'),
+    url(r'^dashboard/$', 'raspberryio.userprofile.views.profile_dashboard', name='profile-dashboard'),
     url(r'^projects/', include('raspberryio.project.urls')),
     url(r'^accounts/', include('raspberryio.userprofile.urls')),
     url(r'^community/', include('raspberryio.aggregator.urls')),
@@ -25,6 +27,9 @@ urlpatterns = patterns('',
 
     # django-push
     url(r'^subscriber/', include('django_push.subscriber.urls')),
+
+    # django-activity-streams
+    url('^activity/', include('actstream.urls')),
 
     # Mezzanine urls
     url(r'^', include('mezzanine.urls')),

@@ -1,7 +1,24 @@
 {% extends "base.html" %}
+{% load url from future %}
+
+{% block body_id %}project-list{% endblock %}
 
 {% block main %}
-    {% for project in projects %}
-        {{ project }}
-    {% endfor %}
+	<form class="search form-search">{% csrf_token %}
+    	<input type="text" class="search-query" placeholder="Find projects">
+    </form>
+
+    <div class="row">
+	{% include 'includes/project-gallery.html' %}
+	</div>	
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{{ STATIC_URL }}js/libs/swipe.js"></script>
+    <script>
+
+    $('#slider').Swipe();
+    window.mySwipe = $('#slider').data('Swipe');
+
+    </script>
 {% endblock %}
