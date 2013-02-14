@@ -63,7 +63,21 @@ class SearchViewTestCase(ViewTestMixin, ProjectBaseTestCase):
         self.assertEqual(len(results), 3)
         self.assertEqual(set(result_urls), expected_results)
 
-    def test_query_bad_type(self):
+    def test_query_type_malformed(self):
+        project2 = self.create_project(title='project2', user=self.user)
+        user2 = self.create_user(data={'username': 'PRoJect'})
+        query = self.get_query_params('project', 'asdfasdfasdf')
+        response = self.client.get(self.url + query)
+        results = response.context['results'].object_list
+        result_urls = [result.get_absolute_url() for result in results]
+        expected_results = set(map(lambda i: i.get_absolute_url(), [
+            self.project, project2, user2
+        ]))
+        # Everything returns because the given 'type' is invalid
+        self.assertEqual(len(results), 3)
+        self.assertEqual(set(result_urls), expected_results)
+
+    def test_query_unregistered_model(self):
         project2 = self.create_project(title='project2', user=self.user)
         user2 = self.create_user(data={'username': 'PRoJect'})
         query = self.get_query_params('project', 'project.projectimage')

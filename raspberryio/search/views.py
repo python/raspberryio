@@ -18,10 +18,12 @@ def search(request):
     # Determine query to make
     use_everything = False
     try:
-        search_model = get_model(*request.GET.get("type", "").split(".", 1))
-        if not hasattr(search_model.objects, 'search'):
+        raw_type_query = request.GET.get("type", "")
+        type_query = raw_type_query.split(".", 1)
+        if not raw_type_query in settings.SEARCH_MODEL_CHOICES:
             raise TypeError
-    except (TypeError, AttributeError):
+        search_model = get_model(*type_query)
+    except TypeError:
         use_everything = True
     else:
         search_type = search_model._meta.verbose_name_plural.capitalize()
