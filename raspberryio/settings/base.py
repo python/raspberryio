@@ -213,10 +213,6 @@ LOGGING = {
         }
     },
     'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
@@ -265,6 +261,9 @@ ACTSTREAM_SETTINGS = {
 # Models to use in Mezzanine SearchManager. These models have proxy models
 # dynamically defined for them that subclass Searchable in
 # raspberryio.search.models
+# Expected format:
+# {'appname.modelname': {'field': weight, 'field': weight}, ...}
+
 SEARCH_MODEL_INDEXES = {
     'auth.user': {
         'username': 5, 'first_name': 10, 'last_name': 5,
