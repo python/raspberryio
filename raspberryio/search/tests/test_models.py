@@ -11,7 +11,7 @@ class SearchModelIndexeUtilsTestCase(ProjectBaseTestCase):
         FIXME: This test depends on the current settings, which has auth.user
         in the SEARCH_MODEL_INDEXES setting.
         """
-        pass
+        self.index_settings = settings.SEARCH_MODEL_INDEXES
 
     def test_load_search_model_indexes_valid(self):
         search_proxy_model = load_search_model_indexes()[0]

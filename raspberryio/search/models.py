@@ -17,4 +17,4 @@ class Searchable(models.Model):
     class Meta():
         abstract = True
 
-load_search_model_indexes()
+searchable_models = load_search_model_indexes()
