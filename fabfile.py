@@ -284,7 +284,7 @@ def upload_secrets(secrets_filepath):
     """Upload a settings.ini file to the server"""
     require('environment')
     destination_file = os.path.join(env.root, 'settings.ini')
-    put(secrets_filepath, destination_file)
+    put(secrets_filepath, destination_file, use_sudo=True)
     sudo('chown %s:%s %s' % (env.project_user, env.project_user, destination_file))
 
 
