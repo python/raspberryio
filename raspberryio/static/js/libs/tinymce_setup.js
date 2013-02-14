@@ -29,7 +29,7 @@ if (typeof tinyMCE != 'undefined') {
 
         // general settings
         width: '100%',
-        height: '350',
+        height: '200',
         indentation : '10px',
         fix_list_elements : true,
         relative_urls: false,

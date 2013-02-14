@@ -2,14 +2,16 @@
 {% load url from future %}
 {% load bootstrap_toolkit %}
 
+{% block body_id %}project-step-create-edit{% endblock %}
+
 {% block main %}
-    <h3>
+    <h2>
         {% if project_step.order != None %}
-            Editing step: {{ project_step.get_order_display }} of {{ project.title }}
+            Editing Step: {{ project_step.get_order_display }} of {{ project.title }}
         {% else %}
-            Creating project step {{ project_step.get_steps_count|add:"1" }} for {{ project.title }}
+            Creating Step {{ project_step.get_steps_count|add:"1" }} for {{ project.title }}
         {% endif %}
-    </h3>
+    </h2>
 
     {# Ajax Multifile uploader form #}
     {% include 'includes/file_upload/uploader_form.html' %}
@@ -17,8 +19,8 @@
     <form id="project-step-form" class="project-step-create-edit-form" action="" method="post" accept-charset="utf-8">
         {% csrf_token %}
         {{ project_step_form|as_bootstrap }}
-        <input type="submit" name="save" id="submit-project-step-create-edit" value="Save and View"/>
-        <input type="submit" name="save-add" id="submit-project-step-create-edit-add-another" value="Save and add another" />
+        <input type="submit" name="save" id="submit-project-step-create-edit" value="Save & view"/>
+        <input type="submit" name="save-add" id="submit-project-step-create-edit-add-another" value="Save &amp; add a step" />
     </form>
 {% endblock %}
 

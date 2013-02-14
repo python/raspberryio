@@ -84,7 +84,7 @@ class ProjectStep(Orderable, RichText):
     project = models.ForeignKey('Project', related_name='steps')
     gallery = models.ManyToManyField('ProjectImage', blank=True, null=True)
     video = models.URLField(blank=True, default='',
-                            help_text='Youtube Video URL')
+                            help_text='Enter a valid Youtube URL')
 
     class Meta(object):
         order_with_respect_to = 'project'

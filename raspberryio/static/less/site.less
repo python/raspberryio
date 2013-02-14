@@ -157,7 +157,6 @@ h1 {
 	letter-spacing: 0.06em;
 	font-weight: normal;
 	font-size: 30px;
-	margin-top: 0;
 	margin-bottom: 30px;
 }
 
@@ -399,7 +398,7 @@ h1 {
 	background-image: url('../img/glyphicons-halflings-white.png')
 }
 // Generic form styles
-form.registration, form.login, form.project-create-edit-form {
+form.registration, form.login, form.project-create-edit-form, form.project-step-create-edit-form  {
 	.help-inline {
 		color: @white;
 		font-style: italic;
@@ -407,6 +406,7 @@ form.registration, form.login, form.project-create-edit-form {
 	input[type="submit"] {
 		.btn;
 		.btn-large;
+		.btn-success;
 		font-weight: bold;
 	}
 	input[type="text"], input[type="password"], textarea  { 
@@ -426,6 +426,14 @@ form.registration, form.login, form.project-create-edit-form {
 		.alert;
 		.alert-error;
 	}
+	.control-group.error {
+		.control-label {
+			color: @white;
+		}
+		.help-block {
+			margin-top: 25px;
+		}
+	}
 }
 
 /* Homepage
@@ -434,24 +442,15 @@ body#homepage {
 	header {
         padding: 25px 0;
         text-align: center;
-        hgroup {
+        h1 {
+        	padding-bottom: 0;
+        }
+        .container {
             p { .lead; }
-            input {
-	    		// padding: 8px 15px 10px 15px;
-	    		.border-radius(20px 0 0 20px);
-	    		font-size: 20px;
-	    		height: 30px;
-	    		line-height: 24px;
-	    		@media (max-width: 350px) {
-	    			height: 30px;
-	    			line-height: 22px;
-	    			font-size: 16px;
-	    			width: 60%;
-	    		}
-	    	}
-	    	.btn {
-	    		padding: 9px 12px;
-	    		.border-radius(0 20px 20px 0);
+	    	a {
+	    		.btn;
+	    		.btn-success;
+	    		.btn-large;
 	    	}
         }
     }
@@ -826,3 +825,107 @@ body#dashboard {
 		}
 	}
 }
+
+/* Dashboard
+========================= */
+body#project-step-create-edit {
+	h2 {
+		.page-header;
+	}
+	form {
+		&#fileupload {
+			.fileupload-buttonbar {
+				input[type="checkbox"] {
+					margin-top: -4px;
+				}
+				.fileinput-button {
+					.btn;
+					.btn-success;
+					float: left;
+				    margin-right: 4px;
+				    overflow: hidden;
+				    position: relative;
+					input {
+						cursor: pointer;
+					    direction: ltr;
+					    font-size: 23px;
+					    margin: 0;
+					    opacity: 0;
+					    position: absolute;
+					    right: 0;
+					    top: 0;
+					    transform: translate(-300px, 0px) scale(4);
+					}
+					@media (max-width: 505px) {
+						.btn-small;
+					}
+				}
+				.start {
+					.btn;
+					.btn-primary;
+					@media (max-width: 505px) {
+						.btn-small;
+					}
+				}
+				.delete {
+					.btn;
+					.btn-danger;
+					@media (max-width: 505px) {
+						.btn-small;
+					}
+				}
+				.cancel {
+					.btn;
+					.btn-warning;
+					@media (max-width: 505px) {
+						.btn-small;
+					}
+					@media (max-width: 480px) {
+						.hide;
+					}
+				}
+				.select-all {
+					float: right;
+					@media (max-width: 580px) {
+						float: none;
+						margin-top: 15px;
+						display: block;
+					}
+				}
+			}
+			.fileupload-loading {
+			    background: url("../img/loading.gif") no-repeat scroll center center transparent;
+			    display: none;
+			    height: 128px;
+			    left: 50%;
+			    position: absolute;
+			    width: 128px;
+			}
+			table {
+				background-color: @white;
+				margin-top: 20px;
+				color: @gray;
+				.border-radius(8px);
+				tbody {
+					padding: 25px;
+					tr {
+						padding: 15px;
+						&:first-child {
+							td {
+								border-top: 0 none;
+							}
+						}
+						td {
+							padding: 15px;
+							border-top: 2px solid #DDDDDD;
+						}
+					}
+				}
+				.files .progress {
+				    width: 200px;
+				}
+			}
+		}
+	}
+}
+
