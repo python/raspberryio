@@ -266,8 +266,8 @@ ACTSTREAM_SETTINGS = {
 # dynamically defined for them that subclass Searchable in
 # raspberryio.search.models
 SEARCH_MODEL_INDEXES = {
-    'userprofile.profile': {
-        'bio': 5, 'twitter_id': 5,
+    'auth.user': {
+        'username': 5, 'first_name': 10, 'last_name': 5,
     },
     'project.project': {
         'title': 10, 'tldr': 5,
