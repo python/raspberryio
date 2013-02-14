@@ -82,7 +82,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -92,7 +91,6 @@ SECRET_KEY = 'yv!hkvt&amp;k8dn^$*$&amp;lif)#ydw8zvk4iz93s8m+$x%eyg-!$n69'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -103,8 +101,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.core.context_processors.i18n',
     'django.core.context_processors.static',
-   "django.core.context_processors.tz",
+    "django.core.context_processors.tz",
     "mezzanine.conf.context_processors.settings",
+    'sekizai.context_processors.sekizai',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -115,7 +114,6 @@ MIDDLEWARE_CLASSES = (
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "mezzanine.core.request.CurrentRequestMiddleware",
     "mezzanine.core.middleware.TemplateForDeviceMiddleware",
     "mezzanine.core.middleware.TemplateForHostMiddleware",
@@ -153,6 +151,7 @@ INSTALLED_APPS = (
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
+    "django.contrib.humanize",
     "django.contrib.redirects",
     "django.contrib.sessions",
     "django.contrib.sites",
@@ -161,8 +160,17 @@ INSTALLED_APPS = (
     # External apps
     'south',
     'compressor',
+    'django_push.subscriber',
     'actstream',
     'bootstrap_toolkit',
+    'django_notify',
+    'mptt',
+    'sekizai',
+    'sorl.thumbnail',
+    'wiki',
+    'wiki.plugins.attachments',
+    'wiki.plugins.notifications',
+    'wiki.plugins.images',
     # Mezzanine
     "mezzanine.boot",
     "mezzanine.conf",
@@ -179,6 +187,7 @@ INSTALLED_APPS = (
     # RaspberryIO apps
     "raspberryio.userprofile",
     "raspberryio.project",
+    "raspberryio.aggregator",
 )
 
 PASSWORD_HASHERS = (
@@ -222,7 +231,7 @@ LOGGING = {
 SKIP_SOUTH_TESTS = True
 
 COMPRESS_PRECOMPILERS = (
-   ('text/less', 'lessc {infile} {outfile}'),
+    ('text/less', 'lessc {infile} {outfile}'),
 )
 
 AUTH_PROFILE_MODULE = "userprofile.Profile"
@@ -231,12 +240,19 @@ ACCOUNTS_PROFILE_FORM_CLASS = "raspberryio.userprofile.forms.UserProfileForm"
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 LOGIN_REDIRECT_URL = 'raspberryio.userprofile.views.profile_dashboard'
 
+FEED_APPROVERS_GROUP_NAME = "feed-approver"
+SUPERFEEDR_CREDS = ""  # list of [email,secretkey]
+
+# PubSubHubbub settings
+PUSH_HUB = 'https://superfeedr.com/hubbub'
+PUSH_CREDENTIALS = 'raspberryio.aggregator.utils.push_credentials'
+
 # Supply the custom TinyMCE JavaScript
 TINYMCE_SETUP_JS = os.path.join('js', 'libs', 'tinymce_setup.js')
 
 # activity stream settings
 ACTSTREAM_SETTINGS = {
-    'MODELS': ('auth.user', 'project.project', 'project.projectstep'),
+    'MODELS': ('auth.user', 'project.project', 'project.projectstep', 'wiki.article'),
     'FETCH_RELATIONS': True,
     'USE_PREFETCH': True,
 }

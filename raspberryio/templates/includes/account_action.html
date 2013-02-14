@@ -1,5 +1,4 @@
-{% load i18n %}
-
+{% load i18n future%}
 
 {% if action.actor.get_absolute_url %}
 	<a href="{{ action.actor.get_absolute_url }}">{{ action.actor }}</a>
@@ -23,8 +22,10 @@
 {% if action.target %}
     {% if action.target.get_absolute_url %}
     	<a href="{{ action.target.get_absolute_url }}">{{ action.target|truncatechars:"50" }}</a>
+    {% elif action.target.urlpath_set %}
+        <a href="{% url 'wiki:get' action.target.id %}">{{ action.target|truncatechars:"50" }}</a>
     {% else %}
-    	<a href="{{ action.target_url }}">{{ action.target|truncatechars:"50" }}</a>
+        <a href="{{ action.target_url }}">{{ action.target|truncatechars:"50" }}</a>
     {% endif %}
 {% endif %}
 

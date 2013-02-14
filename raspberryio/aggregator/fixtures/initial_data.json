@@ -1,0 +1,19 @@
+[
+    {
+        "pk": 1,
+        "model": "aggregator.feedtype",
+        "fields": {
+            "can_self_add": true,
+            "name": "Raspberry Pi",
+            "slug": "raspberry-pi"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "auth.group",
+        "fields": {
+            "name": "feed-approver",
+            "permissions": []
+        }
+    }
+]
