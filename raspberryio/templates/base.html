@@ -71,8 +71,8 @@
                     <li><a href="{% url 'login' %}">Log In</a></li>
                     {% endif %}
                 </ul>
-                <form class="navbar-search">
-                   <input type="text" class="search-query" placeholder="Search">
+                <form action="{% url 'search' %}" class="navbar-search">
+                   <input type="text" name='q' class="search-query" placeholder="Search">
                 </form>
             </div>
         </div>
