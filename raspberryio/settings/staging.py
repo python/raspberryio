@@ -1,3 +1,4 @@
+import json
 import os
 
 from ConfigParser import RawConfigParser
@@ -34,6 +35,6 @@ try:
     SECRETS_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, os.pardir))
     config = RawConfigParser()
     config.read(os.path.join(SECRETS_ROOT, 'settings.ini'))
-    SUPERFEEDR_CREDS = config.get('secrets', 'SUPERFEEDR_CREDS')
+    SUPERFEEDR_CREDS = json.loads(config.get('secrets', 'SUPERFEEDR_CREDS'))
 except:
     pass

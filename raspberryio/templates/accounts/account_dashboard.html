@@ -1,39 +1,59 @@
 {% extends "base.html" %}
 {% load i18n future mezzanine_tags %}
 
-{% block meta_title %}{{ user.username }} Dashboard{% endblock %}
-{% block title %}{{ user.username }} Dashboard{% endblock %}
-{% block body_id %}account{% endblock %}
-{% block body_class %}profile dashboard{% endblock %}
+{% block meta_title %}Dashboard{% endblock %}
+{% block title %}Dashboard{% endblock %}
+{% block body_id %}dashboard{% endblock %}
 
 {% block main %}
 <div class="row">
-    {% with user as profile_user %}
-    {% include 'includes/account_profile_placard.html' %}
-    {% endwith %}
+    <div class="span12">
+        <h1>Welcome {{ user.username }}!</h1>
+        
+    </div>
 </div>
+
 <div class="row">
-    <div class="span8">
-        <h3>Following</h3>
+    <div class="activity span7">
+        <div class="top"></div>
+        <h2>Recent Activity</h2>
         <ul>
-        {% for action in actions %}
-            <li>{% include 'includes/account_action.html' %}</li>
-        {% empty %}
-        {% trans "You are not following anyone yet." %}
-        {% endfor %}
+            {% for action in actions %}
+                <li>{% include 'includes/account_action.html' %}</li>
+            {% empty %}
+            <p>
+            {% trans "You are not following anyone yet." %}
+            </p>
+            {% endfor %}
         </ul>
     </div>
-    <div class="span4">
-        <h3>My Projects</h3>
-        <ul>
+    <div class="projects span4 offset1">
+
+        <h3><img src="{{ STATIC_URL }}img/razzy-head.png" width="35"> My Projects</h3>
+        {% if user.projects.all %}
+        <ul class="nav nav-tabs nav-stacked">
         {% with user.projects.all as projects %}
         {% for project in projects %}
             <li><a href="{% url 'project-detail' project.slug %}">{{ project.title }}</a></li>
-        {% empty %}
-            <a href="{% url 'project-create-edit' %}"><i class="icon-plus"></i> Create Project</a>
         {% endfor %}
         {% endwith %}
         </ul>
+        {% else %}
+        <a class="create" href="{% url 'project-create-edit' %}"><i class="icon-plus icon-white"></i> Create Project</a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
+
+{% if user.projects.all %}
+{% block extra_js %}
+    <script src="{{ STATIC_URL }}js/update_relationship.js"></script>
+    <script src="{{ STATIC_URL }}js/libs/swipe.js"></script>
+    <script>
+
+    $('#slider').Swipe();
+    window.mySwipe = $('#slider').data('Swipe');
+
+    </script>
+{% endblock %}
+{% endif %}

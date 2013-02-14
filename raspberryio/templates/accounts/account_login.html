@@ -7,14 +7,13 @@
 {% block body_id %}account{% endblock %}
 
 {% block main %}
-
     {% if request.user.is_authenticated %}
-        <p>{% trans "You're already logged in." %}</p>
+        <h2>{% trans "You're already logged in." %}</h2>
     {% else %}
-        <legend>{{ title }} </legend>
-        <form class="registration"  method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
+        <h2>{{ title }} </h2>
+        <form class="login"  method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
             {{ form|as_bootstrap }}
-        <input class="submit" type="submit" value="{{ title }}">
+        <input type="submit" value="{{ title }}">
         </form>
         <div class="extra">
             {% url "signup" as signup_url %}

@@ -7,15 +7,18 @@
 {% block body_id %}account{% endblock %}
 
 {% block main %}
-<fieldset>
-    <legend>{{ title }} </legend>
-    <form class="registration"  method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
-        {{ form|as_bootstrap }}
-        <div id="change_gravatar">
-            <a href="http://gravatar.com" target="_blank">Change your avatar at Gravatar</a>
-        </div>
-   	<input class="submit" type="submit" value="{{ title }}">
-    </form>
+<div class="row">
+    <div class="span12">
+        <h2>{{ title }}</h2>
+        <form class="registration"  method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
+            {{ form|as_bootstrap }}
+            <div id="change_gravatar">
+                <a href="http://gravatar.com" target="_blank">Change your gravatar image</a>
+            </div>
+       	<input class="submit" type="submit" value="{{ title }}">
+        </form>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}

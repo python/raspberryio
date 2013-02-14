@@ -15,7 +15,7 @@
 
     {% if debug %}
         <link rel="stylesheet/less" type="text/css" media="all" href="{{ STATIC_URL }}less/site.less">
-        <script src="{{ STATIC_URL }}js/libs/less-1.3.0.min.js"></script>
+        <script src="{{ STATIC_URL }}js/libs/less-1.3.3.min.js"></script>
     {% else %}
         {% compress css %}
             <link rel="stylesheet" type="text/less" media="all" href="{{ STATIC_URL }}less/site.less">
@@ -58,12 +58,12 @@
                 <ul class="nav">
                     {% if user.is_authenticated %}
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">My Profile<b class="caret"></b></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Hi {{ user.username }}!<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="{% url 'profile-dashboard' %}">Dashboard</a></li>
-                            <li><a href="{% url 'profile' user.username %}">View Profile</a></li>
+                            <li><a href="{% url 'profile-dashboard' %}">My Dashboard</a></li>
+                            <li><a href="{% url 'profile' user.username %}">My Profile</a></li>
                             <li><a href="{% url 'profile_update' %}">Edit Profile</a></li>
-                            <li><a href="{% url 'project-create-edit' %}">Create Project</a></li>
+                            <li><a href="{% url 'project-create-edit' %}">Create new project</a></li>
                         </ul>
                     </li>
                     <li><a href="{% url 'logout' %}">Log Out</a></li>
@@ -117,7 +117,7 @@
                     <li class="about">
                         <div class="tabWrapper">
                             <a class="tab" href="#">
-                                <img src="http://placehold.it/50x60" alt="About Raspberry IO">
+                                <img src="{{ STATIC_URL }}img/razzy.png" alt="About Raspberry IO" width="50" height="60">
                             </a>
                             <div class="tabContent">
                                 <h4>About Raspberry I/O</h4>

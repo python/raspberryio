@@ -194,6 +194,17 @@ def project_run(cmd):
 
 
 @task
+def update_service_confs():
+    """Update supervisor configuration."""
+    require('environment')
+    upload_supervisor_app_conf(app_name=u'gunicorn')
+    upload_supervisor_app_conf(app_name=u'group')
+    nginx.upload_nginx_site_conf(site_name=u'%(project)s-%(environment)s.conf' % env)
+    # Restart services to pickup changes
+    supervisor_command('reload')
+
+
+@task
 def update_requirements():
     """Update required Python libraries."""
     require('environment')
@@ -273,7 +284,7 @@ def upload_secrets(secrets_filepath):
     """Upload a settings.ini file to the server"""
     require('environment')
     destination_file = os.path.join(env.root, 'settings.ini')
-    put(secrets_filepath, destination_file)
+    put(secrets_filepath, destination_file, use_sudo=True)
     sudo('chown %s:%s %s' % (env.project_user, env.project_user, destination_file))
 
 
