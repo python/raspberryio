@@ -7,36 +7,29 @@
 
 {% block content %}
 <header>
-  <hgroup class="container">
+  <div class="container">
     <h1>Welcome to Raspberry I/O!</h1>
     <p>This is a place for learning, sharing and creating your Raspberry Pi project.</p>
-    {# This form should post the username to the registration form on submit. #}
-    <form class="form-search">{% csrf_token %}
-    	<div class="input-append">
-    		<input type="text" class="search-query" placeholder="Pick a username">
-    		<button type="submit" class="btn">Continue</button>
-    	</div>
-    </form>
-  </hgroup>
+  </div>
 </header>
 
 {# Need to figure out how we are implementing featured projects on homepage. #}
 <div id="featured">
-	<div class="container">
+    <div class="container">
         <a href="#">
         <div class="info">
-    		<h2>Featured Project name</h2>
-    		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+            <h2>Featured Project name</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
         </div>
         <img src="http://placekitten.com/1500/800">
         </a>
-	</div>
+    </div>
 </div>
 
 <div id="jumbo-search" >
-	<form class="form-search">
-    	<input type="text" placeholder="Search" class="search-query">
-    	<span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
-	</form>
+    <form action="{% url 'search' %}" class="form-search">
+        <input type="text" name="q" placeholder="Search" class="search-query">
+        <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
+    </form>
 </div>
 {% endblock %}
