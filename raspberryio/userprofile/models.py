@@ -1,24 +1,7 @@
-from django.contrib.auth.models import User
 from django.db import models
 
-from raspberryio.search.models import Searchable
 
-
-class SearchableUser(Searchable, User):
-    """
-    A proxy model on django.contrib.auth.models.User to make user fields
-    searchable.
-    """
-
-    search_fields = {
-        'username': 10, 'first_name': 10, 'last_name': 5
-    }
-
-    class Meta(object):
-        proxy = True
-
-
-class Profile(Searchable):
+class Profile(models.Model):
     """
     The user profile model
     """
@@ -31,8 +14,6 @@ class Profile(Searchable):
     avatar = models.ImageField(upload_to="images/avatars",
                                blank=True, null=True,
                                help_text="Upload an avatar")
-
-    search_fields = {'bio': 5, 'twitter_id': 10}
 
     def clean(self):
         # strip twitter_id of @ symbol, if present
