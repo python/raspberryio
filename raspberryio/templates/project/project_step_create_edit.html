@@ -14,7 +14,8 @@
     {# Ajax Multifile uploader form #}
     {% include 'includes/file_upload/uploader_form.html' %}
 
-    <form id="project-step-form" class="project-step-create-edit-form" action="" method="post" accept-charset="utf-8"> {% csrf_token %}
+    <form id="project-step-form" class="project-step-create-edit-form" action="" method="post" accept-charset="utf-8">
+        {% csrf_token %}
         {{ project_step_form|as_bootstrap }}
         <input type="submit" name="save" id="submit-project-step-create-edit" value="Save and View"/>
         <input type="submit" name="save-add" id="submit-project-step-create-edit-add-another" value="Save and add another" />

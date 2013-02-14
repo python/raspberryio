@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags %}
+{% load bootstrap_toolkit %}
+
+{% block meta_title %}Community{% endblock %}
+{% block title %}Community{% endblock %}
+{% block body_id %}community{% endblock %}
+
+{% block main %}
+  {% if adding %}
+    <h3>Community: add a {{ feed_type }} feed</h3>
+  {% else %}
+    <h3>Community: edit {{ feed }}</h3>
+  {% endif %}
+
+  <form method="POST" action="" id="add_feed_form" class="wide">
+    {% csrf_token %}
+    {{ form|as_bootstrap }}
+      <input type="submit" value="{% if adding %}Add Feed{% else %}Save{% endif %}">
+  </form>
+{% endblock %}
