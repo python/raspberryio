@@ -14,6 +14,11 @@ local development system::
 - Postgres >= 8.4 (9.1 recommended)
 - git >= 1.7
 
+Some additional packages are needed for PIL:
+
+     sudo apt-get install libjpeg8-dev libfreetype6 libfreetype6-dev zlib1g-dev
+
+
 The deployment uses SSH with agent forwarding so you'll need to enable agent
 forwarding if it is not already by adding ``ForwardAgent yes`` to your SSH config.
 
