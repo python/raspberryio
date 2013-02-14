@@ -16,15 +16,21 @@
 
 {# Need to figure out how we are implementing featured projects on homepage. #}
 <div id="featured">
-	<div class="container">
+    <div class="container">
         <a href="#">
         <div class="info">
-    		<h2>Featured Project name</h2>
-    		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+            <h2>Featured Project name</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
         </div>
         <img src="http://placekitten.com/1500/800">
         </a>
-	</div>
+    </div>
 </div>
 
+<div id="jumbo-search" >
+    <form action="{% url 'search' %}" class="form-search">
+        <input type="text" name="q" placeholder="Search" class="search-query">
+        <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
+    </form>
+</div>
 {% endblock %}

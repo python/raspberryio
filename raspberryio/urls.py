@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^dashboard/$', 'raspberryio.userprofile.views.profile_dashboard', name='profile-dashboard'),
     url(r'^projects/', include('raspberryio.project.urls')),
     url(r'^accounts/', include('raspberryio.userprofile.urls')),
+    url(r'^search/', include('raspberryio.search.urls')),
     url(r'^community/', include('raspberryio.aggregator.urls')),
     # Feeds
     url(r'^rss/community/firehose/$', CommunityAggregatorFirehoseFeed(), name='aggregator-firehose-feed'),
