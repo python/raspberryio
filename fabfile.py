@@ -269,6 +269,15 @@ def deploy(branch=None):
 
 
 @task
+def upload_secrets(secrets_filepath):
+    """Upload a settings.ini file to the server"""
+    require('environment')
+    destination_file = os.path.join(env.root, 'settings.ini')
+    put(secrets_filepath, destination_file)
+    sudo('chown %s:%s %s' % (env.project_user, env.project_user, destination_file))
+
+
+@task
 def get_db_dump(clean=True):
     """Get db dump of remote enviroment."""
     require('environment')
