@@ -33,10 +33,11 @@
         {% if user.projects.all %}
         <ul class="nav nav-tabs nav-stacked">
         {% with user.projects.all as projects %}
-        {% for project in projects %}
+        {% for project in projects|slice:":10" %}
             <li><a href="{% url 'project-detail' project.slug %}">{{ project.title }}</a></li>
         {% endfor %}
         {% endwith %}
+            <li><a href="{% url 'profile' user.username %}">Go to your profile</a></li>
         </ul>
         {% else %}
         <a class="create" href="{% url 'project-create-edit' %}"><i class="icon-plus icon-white"></i> Create Project</a>
