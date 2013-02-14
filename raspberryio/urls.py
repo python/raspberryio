@@ -31,6 +31,7 @@ urlpatterns = patterns('',
 
     # django-push
     url(r'^subscriber/', include('django_push.subscriber.urls')),
+    url(r'^qanda/', include('raspberryio.qanda.urls')),
 
     # django-activity-streams
     url('^activity/', include('actstream.urls')),

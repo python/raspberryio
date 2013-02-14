@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load mezzanine_tags %}
+{% load url from future %}
+
+{% block body_id %}question-detail{% endblock %}
+
+{% block main %}
+    <header>
+        <h2>
+            {{ question.title }}
+            {% if request.user == question.user or request.user.is_superuser %}
+                <a href="{% url 'question-create-edit' question.slug %}"><i class="icon-edit"></i> Edit Question</a>
+            {% endif %}
+        </h2>
+        {% with question.user.get_profile as profile %}
+        <div class="userinfo">
+            <a href="{% url 'profile' question.user.username %}">
+                {% if profile.use_gravatar %}
+                    <img src="{% gravatar_url question.user.email 35 %}" alt="question.user.username" />
+                {% elif profile.avatar %}
+                    <img src="{{ MEDIA_URL }}{% thumbnail profile.avatar.url 35 35 %}" alt="question.user.username" />
+                {% else %}
+                    <img src="{{ STATIC_URL }}images/no-profile.png" alt="question.user.username"/>
+                {% endif %}
+            </a> Written by:
+            <a href="{% url 'profile' question.user.username %}">{{ question.user.username }}</a>
+        </div>
+        {% endwith %}
+    </header>
+
+    <div class="question">
+            {{ question.question }}
+    </div>
+
+{% endblock %}
