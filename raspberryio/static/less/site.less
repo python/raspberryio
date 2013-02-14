@@ -8,6 +8,9 @@
 // -- Homepage
 // -- Account pages
 // -- Project list
+// -- Project detail
+// -- Project create/edit 
+// -- Dashboard
 
 /* Bootstrap imports
 ==================== */
@@ -16,8 +19,8 @@
 
 /* Variables
 ================= */
-@darkPurple: #631B42;
-@medGreen: #8FAC3C;
+@purpleDark: #631B42;
+@greenMedium: #8FAC3C;
 
 /* Mixins
 ================= */
@@ -50,29 +53,45 @@ html, body {
 	height: 100%;
 }
 
+h1 {
+	font-family: 'Harabara';
+ 	font-weight: normal;
+ 	letter-spacing: 0.06em;
+ 	padding-bottom: 20px;
+}
+
 #page {
 	min-height: 100%;
     position: relative;
+    color: @white;
 }
 
 #content {
 	padding-top: 25px;
+	a {
+		color: @purpleDark;
+		font-weight: bold;
+	}
 }
 
 #global-nav {
-	.box-shadow(0 -1px 3px @grayLight);
-	background-color: @white;
+	.box-shadow(0);
+	background-color: none transparent;
 	padding: 5px 20px 10px;
-	@media (max-width: 767px) {
-		margin: 0 -20px;
+	a { 
+		margin-top: 9px;
+		color: @white;
 	}
-	a { margin-top: 9px;}
 	.brand {
 		.pull-left;
 		font-family: 'Harabara';
  		font-weight: normal;
- 		letter-spacing: 0.02em;
- 		font-size: 24px;
+ 		letter-spacing: 0.06em;
+ 		font-size: 32px;
+ 		color: @white;
+ 		&:hover {
+ 			text-decoration: none;
+ 		}
 	}
 	.right-block {
 		.pull-right;
@@ -97,6 +116,10 @@ html, body {
 					&:hover {
 						background-color: transparent;
 					}
+					.caret {
+						border-bottom-color: @white;
+						border-top-color: @white;
+					}
 				}
 				.dropdown-toggle .caret {
 					margin-top: 8px;
@@ -108,14 +131,13 @@ html, body {
 						padding-left: 0;
 						float: none;
 						a {
+							color: @gray;
 							margin-top: 0;
+							&:hover {
+								color: @white;
+								#gradient > .vertical(@grayLight, @gray);
+							}
 						}
-					}
-				}
-				&.open {
-					a .caret {
-						border-bottom-color: @navbarLinkColor;
-						border-top-color: @navbarLinkColor;
 					}
 				}
 			}
@@ -130,9 +152,18 @@ html, body {
 
 .placeholder(#CCCCCC);
 
+.page-header {
+	font-family: 'Harabara';
+	letter-spacing: 0.06em;
+	font-weight: normal;
+	font-size: 30px;
+	margin-top: 0;
+	margin-bottom: 30px;
+}
+
 .navbar {
 	font-size: 18px;
-	min-height: 60px;
+	min-height: 50px;
 	@media (max-width: 320px) {
 		font-size: 14px;
 	}
@@ -145,7 +176,6 @@ html, body {
 	 	.box-shadow(0 1px 4px @grayLighter);
 	 	border-bottom: 1px solid #CCCCCC;
 	 	min-height: auto;
-
 	}
 	.nav,.nav > li {
 		float: none;
@@ -180,16 +210,19 @@ html, body {
 				border-left: 0 none;
 				.tabWrapper {
 					position: absolute;
-					top: 0;
+					top: -15px;
+					@media (max-width: 600px) {
+						top: -35px;
+					}
 					a.tab {
 						#gradient > .vertical(@navbarBackgroundHighlight, @navbarBackground);
 						border-top: 1px solid #d4d4d4;
 						border-right: 1px solid #d4d4d4;
 						border-left: 1px solid #d4d4d4;
 						.border-radius(50px 50px 0 0);
-						padding: 35px 25px 35px 25px;
+						padding: 25px 25px 35px 25px;
 						@media (min-width: 320px) and (max-width: 400px) { 
-							padding: 35px 15px;
+							padding: 25px 15px 35px;
 						}
 					}
 					.tabContent {
@@ -200,9 +233,11 @@ html, body {
 						position: absolute;
 						right: -165px;
 						width: 400px;
-						padding: 15px 15px 30px 15px;
+						padding: 10px 15px 30px 15px;
 						font-size: 13px;
 						font-weight: 300;
+						color: @gray;
+						top: 70px;
 						@media (min-width: 480px) and (max-width: 600px) {
 							width: 350px;
 							right: -150px;
@@ -232,29 +267,20 @@ html, body {
 	}
 	footer {
 		text-align: center;
-		font-size: 11px;
+		font-size: 9px;
 		color: @white;
-		padding: 10px 0;
+		padding: 3px 0;
 		background-color: @grayDark;
 		position: relative;
 		z-index: 2;
+		a {
+			color: @white;
+		}
 	}
 }
 
 .gallery-display{
 	margin-top: 25px;
-	@media (min-width: 1200px) {
-		margin: 25px 0 800px;
-	}
-	@media (min-width: 1024px) and (max-width: 1200px) {
-		margin: 25px 0 600px;
-	}
-	@media (min-width: 767px) and (max-width: 1024px) {
-		margin: 25px 0 500px;
-	}
-	@media (min-width: 320px) and (max-width: 767px) {
-		margin: 25px 0 100px;
-	}
 	.gallery {
 		position: relative;
 		@media (min-width: 320px) and (max-width: 767px) {
@@ -300,13 +326,13 @@ html, body {
 				}
 				z-index: 2;
 				background: @gray;
-			    color: #FFFFFF;
+			    color: @white !important;
 			    font-size: 45px;
-			    font-weight: 100;
+			    font-weight: 100 !important;
 			    height: 50px;
 			    line-height: 40px;
 			    margin-top: -20px;
-			    .opacity(50);
+			    .opacity(80);
 			    position: absolute;
 			    text-align: center;
 			    top: 45%;
@@ -362,14 +388,45 @@ html, body {
 }
 
 #push {
-	height: 60px;
+	height: 125px;
 }
 
 [class^="icon-"], [class*=" icon-"] {
 	background-image: url('../img/glyphicons-halflings.png')
 	}
 
-
+.icon-white {
+	background-image: url('../img/glyphicons-halflings-white.png')
+}
+// Generic form styles
+form.registration, form.login, form.project-create-edit-form {
+	.help-inline {
+		color: @white;
+		font-style: italic;
+	}
+	input[type="submit"] {
+		.btn;
+		.btn-large;
+		font-weight: bold;
+	}
+	input[type="text"], input[type="password"], textarea  { 
+		.input-large;
+		height: 30px;
+		font-size: 18px;
+	}
+	label {
+		font-size: 18px;
+	}
+	.add-on {
+		font-size: 18px;
+		height: 30px;
+		line-height: 30px;
+	}
+	.help-block {
+		.alert;
+		.alert-error;
+	}
+}
 
 /* Homepage
 ================= */
@@ -400,17 +457,30 @@ body#homepage {
     }
     #featured {
     	background-color: @black;
-    	@media (max-width: 767px) {
-			margin: 0 -20px;
-		}
+    	position: relative;
 		.info {
-			padding: 150px 20px;
-			@media (max-width: 480px) {
-				padding: 50px 20px;
-			}
 			.text-shadow();
 			color: @white;
-			background: url('http://placekitten.com/1500/500');
+			position: absolute;
+			padding: 25px;
+			@media (min-width: 979px) {
+				top: 100px;
+			}
+			@media (min-width: 679px) and (max-width: 979px) {
+				top: 90px;
+			}
+			@media (min-width: 600px) and (max-width: 679px) {
+				top: 80px;
+			}
+			@media (min-width: 320px) and (max-width: 600px) {
+				h2 {
+					font-size: 24px;
+				}
+				p {
+					font-size: 18px;
+					line-height: 24px;
+				}
+			}
 		}
 		h2 {
 			margin: 0;
@@ -434,12 +504,13 @@ body#homepage {
 	    		@media (max-width: 800px) {
 	    			width: 90%;
 	    		}
-	    		@media (min-width: 800px) and (max-width: 1024px) {
-	    			width: 70%;
+	    		@media (min-width: 320px) and (max-width: 1024px) {
+	    			width: 80%;
 	    		}
 	    	}
 	    	span {
 	    		.help-block;
+	    		color: @white;
 	    		padding: 10px 0;
 	    	}
     	}
@@ -449,34 +520,29 @@ body#homepage {
 /* Account pages
 ================= */
 body#account {
-	h2 {
-		padding-bottom: 9px;
-		margin: 0 0 30px 0;
-	}
-	form.registration {
-		padding-bottom: 25px;
-		textarea {
-			width: 50%;
-			height: 100px;
-			@media (max-width: 480px) {
-				width: 90%;
+	form {
+		&.registration {
+			padding-bottom: 25px;
+			textarea {
+				width: 50%;
+				height: 100px;
+				@media (max-width: 480px) {
+					width: 90%;
+				}
 			}
-		}
-		.submit {
-			.btn;
-			.btn-primary;
-			.btn-large;
-		}
-		.input_id_avatar {
-			display: none;
-		}
-	}
-	&.login {
-		.submit {
-			margin: 20px 0 0 0;
-		}
-		.extra {
-			margin-bottom: 20px;
+			.input_id_avatar {
+				display: none;
+			}
+			.input-prepend {
+				color: @gray;
+			}
+			#change_gravatar {
+				margin-bottom: 30px;
+				a {
+					.btn;
+					.btn-success;
+				}
+			}
 		}
 	}
 	&.profile {
@@ -491,7 +557,6 @@ body#account {
 		.avatar {
 			img {
 				border: 8px solid @white;
-				.box-shadow( 1px 1px 3px 2px @grayLight);
 			}
 			@media (min-width: 767px) and (max-width: 1200px) {
 				padding-right: 20px;
@@ -516,7 +581,6 @@ body#account {
 				text-overflow: ellipsis;
 				margin: 0;
 				span {
-					color: lighten(@gray, 10%);
 					display: block;
 					font-size: 20px;
     				font-style: normal;
@@ -524,6 +588,7 @@ body#account {
     				top: -10px;
     				vertical-align: top;
     				position: relative;
+    				font-style: italic;
 				}
 			}
 			a.follow {
@@ -539,15 +604,11 @@ body#account {
 			@media (min-width: 320px) and (max-width: 767px) {
 				.hide;
 			}
-			h3 {
-				border-bottom: 1px solid @grayLighter;
-			}
-			background-color: @white;
-			padding: 0 15px 15px;
-			.border-radius(10px);
 			ul {
-				margin: 0;
-				padding: 0;
+				background-color: @white;
+				color: @gray;
+				.border-radius(5px);
+
 			}
 		}
 	}
@@ -600,24 +661,18 @@ body#project-list {
 /* Project detail
 ====================== */
 body#project-detail {
-	#content {
-			margin-bottom: 100px;
-	}
 	#publish {
-		a {
-			.btn;
-		}
+		a { .btn; }
 	}
 	header {
 		h2 {
-			a {
-				.btn;
+			a { 
+				.btn; 
+				.btn-success;
 			}
 		}
 		.userinfo {
-			img {
-				border: 3px solid @white;
-			}
+			img { border: 3px solid @white; }
 			font-size: 18px;
 			margin-bottom: 20px;
 		}
@@ -682,4 +737,92 @@ body#project-detail {
 	}
 }
 
+/* Project create/edit
+========================= */
+body#project-create-edit {
+	#content {
+		padding-top: 0;
+		@media(max-width: 767px) {
+			padding: 0 15px;
+		}
+	}
+	h2 {
+		.page-header;
+	}
+	form.project-create-edit-form {
+		input[type="text"] { 
+			.input-large;
+			height: 30px;
+			width: 50%;
+			font-size: 18px;
+		}
+		input[type="submit"] { 
+			.btn-success; 
+		}
+		label {
+			font-size: 18px;
+			line-height: 32px;
+		}
+	}
+}
 
+/* Dashboard
+========================= */
+body#dashboard {
+	.activity {
+		background-color: @purpleDark;
+		h2 {
+			background: @white;
+		    border: 1px solid @grayLighter;
+		    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+		    color: @purpleDark;
+		    margin: 0 -10px;
+		    padding: 5px 10px;
+		    position: relative;
+		    font-size: 22px;
+		    font-weight: bold;
+			&:before, &:after {
+				border-top: 10px solid darken(@purpleDark, 20%);
+			    bottom: -11px;
+			    content: " ";
+			    position: absolute;
+			}
+			&:before {
+				border-left: 10px solid transparent;
+    			left: -1px;
+			}
+			&:after {
+				border-right: 10px solid transparent;
+    			right: -1px;
+			}
+		}
+		.top {
+			background-color: @purpleDark;
+			padding: 10px;
+		}
+		ul {
+			padding: 15px 25px;
+			margin: 0; 
+			a {
+				color: @white;
+			}
+		}
+	}
+	.projects {
+		time {
+			font-style: italic;
+		}
+		.create {
+			.btn;
+			.btn-success;
+		}
+		ul.nav {
+			background-color: @white;
+    		.box-shadow(0 1px 4px rgba(0, 0, 0, 0.067));
+    		.border-radius(6px);
+    		a {
+    			color: @purpleDark;
+    		}
+		}
+	}
+}

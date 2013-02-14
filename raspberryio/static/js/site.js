@@ -18,7 +18,7 @@ $(function() {
         if ($(this).hasClass('open')) {
             $(this).removeClass('open');
             $('.tabWrapper').animate({
-                top: '0'
+                top: '-15px'
             }, 250 );
         } else {
             $(this).addClass('open');
