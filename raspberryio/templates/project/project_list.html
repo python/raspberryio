@@ -4,8 +4,9 @@
 {% block body_id %}project-list{% endblock %}
 
 {% block main %}
-	<form class="search form-search">{% csrf_token %}
-    	<input type="text" class="search-query" placeholder="Find projects">
+	<form action="{% url 'search' %}" class="search form-search">
+        <input name='q' type="text" class="search-query" placeholder="Find projects">
+        <input type="hidden" name='type' value="project.project">
     </form>
 
     <div class="row">
