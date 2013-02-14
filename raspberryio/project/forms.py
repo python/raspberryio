@@ -27,7 +27,7 @@ class PlaceHolderMixin(object):
                 field.label = ''
 
 
-class ProjectForm(PlaceHolderMixin, forms.ModelForm):
+class ProjectForm(forms.ModelForm):
 
     class Meta(object):
         model = Project

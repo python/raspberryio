@@ -2,14 +2,23 @@
 {% load url from future %}
 {% load bootstrap_toolkit %}
 
+{% block body_id %}project-create-edit{% endblock %}
+
 {% block main %}
-    <form class="project-create-edit-form" action="" method="post" accept-charset="utf-8" enctype="multipart/form-data"> {% csrf_token %}
-        {{ project_form|as_bootstrap }}
-        <input type="submit" id="submit-project-create-edit" name="save" value="Save" />
-            {% if not project.id %}
-                <input type="submit" id="submit-project-create-edit" name="save-add-step" value="Save and add project steps" />
-            {% endif %}
-    </form>
+<div class="row">
+    <div class="span12">
+        <h2>Create your project</h2>
+        <form class="project-create-edit-form" action="" method="post" accept-charset="utf-8" enctype="multipart/form-data"> {% csrf_token %}
+            {{ project_form|as_bootstrap }}
+            <input type="submit" id="submit-project-create-edit" name="save" value="Save &amp; preview" />
+                {% if not project.id %}
+                    <input type="submit" id="submit-project-create-edit" name="save-add-step" value="Save &amp; add project steps" />
+                {% endif %}
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="span12">
     {% if project.id %}
         {% for step in project.steps.all %}
             <a href="{% url 'project-step-create-edit' project.slug step.order %}">
@@ -21,11 +30,6 @@
             Create a new project step
         </a>
     {% endif %}
-    {% comment %}
-        FIXME: Remove these br tags. Used temporarily because the above links
-        were being hidden by the bottom nav.
-    {% endcomment %}
-    <br>
-    <br>
-    <br>
+    </div>
+</div>
 {% endblock %}
