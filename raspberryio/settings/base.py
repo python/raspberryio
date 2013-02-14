@@ -187,6 +187,7 @@ INSTALLED_APPS = (
     # RaspberryIO apps
     "raspberryio.userprofile",
     "raspberryio.project",
+    "raspberryio.search",
     "raspberryio.aggregator",
 )
 
@@ -255,6 +256,21 @@ ACTSTREAM_SETTINGS = {
     'MODELS': ('auth.user', 'project.project', 'project.projectstep', 'wiki.article'),
     'FETCH_RELATIONS': True,
     'USE_PREFETCH': True,
+}
+
+# Models to use in Mezzanine SearchManager. These models have proxy models
+# dynamically defined for them that subclass Searchable in
+# raspberryio.search.models
+# Expected format:
+# {'appname.modelname': {'field': weight, 'field': weight}, ...}
+
+SEARCH_MODEL_INDEXES = {
+    'auth.user': {
+        'username': 5, 'first_name': 10, 'last_name': 5,
+    },
+    'project.project': {
+        'title': 10, 'tldr': 5,
+    },
 }
 
 ####################

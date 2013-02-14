@@ -2,6 +2,10 @@ from django.db import models
 
 
 class Profile(models.Model):
+    """
+    The user profile model
+    """
+
     user = models.OneToOneField("auth.User")
     bio = models.TextField(blank=True, default='')
     website = models.URLField(blank=True, default='')
@@ -18,3 +22,7 @@ class Profile(models.Model):
 
     def __unicode__(self):
         return self.user.username
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('profile', (self.user.username,))
