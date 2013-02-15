@@ -5,48 +5,6 @@
   {% block pagetitle %}{% endblock %}
 {% endblock %}
 
-
-{% block global_nav %}
-  <nav id="global-nav">
-    <div class="container">
-      <a class="brand" href="/">{{ settings.SITE_TITLE }}</a>
-      <div class="right-block">
-        <ul class="nav">
-          {% if user.is_authenticated %}
-            {% include "wiki/plugins/notifications/menubaritem.html" %}
-            <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-              <span class="badge notification-cnt">0</span>
-              My Profile
-              <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu">
-              <li><a href="{% url 'profile-dashboard' %}">Dashboard</a></li>
-              <li><a href="{% url 'profile' user.username %}">View Profile</a></li>
-              <li><a href="{% url 'profile_update' %}">Edit Profile</a></li>
-              <li><a href="{% url 'project-create-edit' %}">Create Project</a></li>
-              <li class="divider"></li>
-              <div class="notification-list">
-                <div class="notification-li-container"></div>
-                <li class="notifications-empty"><a href="#"><em>{% trans "No notifications" %}</em></a></li>
-                <li class="divider"></li>
-                <li><a href="#" onclick="notify_mark_read()">{% trans "Clear notifications list" %}</a></li>
-              </div>
-            </ul>
-          </li>
-          <li><a href="{% url 'logout' %}">Log Out</a></li>
-          {% else %}
-          <li><a href="{% url 'login' %}">Log In</a></li>
-          {% endif %}
-        </ul>
-        <form class="navbar-search">
-          <input type="text" class="search-query" placeholder="Search">
-        </form>
-      </div>
-    </div>
-  </nav>
-{% endblock %}
-
 {% block content %}
   {% block wiki_body %}
 
