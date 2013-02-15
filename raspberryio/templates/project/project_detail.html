@@ -37,11 +37,11 @@
             <div class="userinfo">
                 <a href="{% url 'profile' project.user.username %}">
                     {% if profile.use_gravatar %}
-                        <img src="{% gravatar_url project.user.email 35 %}" alt="project.user.username" />
+                        <img src="{% gravatar_url project.user.email 35 %}" alt="{{ project.user.username }}" />
                     {% elif profile.avatar %}
-                        <img src="{{ MEDIA_URL }}{% thumbnail profile.avatar.url 35 35 %}" alt="project.user.username" />
+                        <img src="{{ MEDIA_URL }}{% thumbnail profile.avatar.url 35 35 %}" alt="{{ project.user.username }}" />
                     {% else %}
-                        <img src="{{ STATIC_URL }}images/no-profile.png" alt="project.user.username"/>
+                        <img src="{{ STATIC_URL }}img/no-photo.png" alt="{{ project.user.username }}" width="40" />
                     {% endif %}
                 </a> Written by:
                 <a href="{% url 'profile' project.user.username %}">{{ project.user.username }}</a>
