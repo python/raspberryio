@@ -206,7 +206,8 @@
                     $publish_project.fadeOut();
                     $publish.children('h4')
                             .html('w00t! This project is now published.')
-                            .addClass('done').delay(1000).fadeOut();
+                            .addClass('done');
+                    $publish.delay(1000).fadeOut();
                 });
             });
         });
