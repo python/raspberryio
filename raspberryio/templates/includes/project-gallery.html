@@ -7,7 +7,9 @@
         <div id="slider" class="swipe">
           <ul class="swipe-wrap"> 
             <li class="add">
-                <a href="{% url 'project-create-edit' %}"><img src="http://placehold.it/250x200&amp;text=+ Add a project"></a>
+                <a href="{% url 'project-create-edit' %}">
+                    <img src="{{ STATIC_URL }}img/add-project.png" alt="Add a project" />
+                </a>
             </li>
             {% for project in projects %}
             <li>
@@ -15,7 +17,7 @@
                     {% if project.featured_photo %}
                         <img src="{{ MEDIA_URL }}{% thumbnail project.featured_photo.url 500 400 %}" alt="{{ project.title }}"/>
                     {% else %}
-                        <img src="http://placehold.it/500x400&amp;text={{ project.title }}" alt="{{ project.title }}"/>
+                        <img src="{{ STATIC_URL }}img/no-featured-photo.png" alt="{{ project.title }}" width="400" />
                     {% endif %}
                 </a>
             </li>
@@ -30,7 +32,7 @@
     </div>
     <ul class="tiled">
         <li class="add">
-            <a href="{% url 'project-create-edit' %}"><img src="http://placehold.it/250x200&amp;text=+ Add a project"></a>
+            <a href="{% url 'project-create-edit' %}"><img src="{{ STATIC_URL }}img/add-project.png" alt="Add a project" /></a>
         </li>
         {% for project in projects %}
         <li>
@@ -38,7 +40,7 @@
                 {% if project.featured_photo %}
                     <img src="{{ MEDIA_URL }}{% thumbnail project.featured_photo.url 500 400 %}" alt="{{ project.title }}"/>
                 {% else %}
-                    <img src="http://placehold.it/500x400&amp;text={{ project.title }}" alt="{{ project.title }}"/>
+                    <img src="{{ STATIC_URL }}img/no-featured-photo.png" alt="{{ project.title }}" width="400" />
                 {% endif %}
             </a>
         </li>
@@ -46,7 +48,7 @@
     </ul>
     {% else %}
     <div class="span12">
-        <a href="{% url 'project-create-edit' %}"><img src="http://placehold.it/250x200&amp;text=+ Add a project"></a>
+        <a href="{% url 'project-create-edit' %}"><img src="{{ STATIC_URL }}img/add-project.png" alt="Add a project" /></a>
     </div>
     {% endif %}
 </div>

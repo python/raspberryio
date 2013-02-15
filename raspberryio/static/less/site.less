@@ -12,6 +12,7 @@
 // -- Project create/edit 
 // -- Project step create/edit
 // -- Dashboard
+// -- Followers/Following
 
 
 /* Bootstrap imports
@@ -75,6 +76,15 @@ h1 {
 		font-weight: bold;
 	}
 }
+.follow-btn {
+	a { 
+		.btn; 
+		&.follow {
+			.btn-success;
+			color: @white !important;
+		}
+	}
+}
 
 #global-nav {
 	.box-shadow(0);
@@ -98,22 +108,20 @@ h1 {
 	.right-block {
 		.pull-right;
 		font-size: 13px;
-		@media (max-width: 480px) {
-			float: none;
+		@media (max-width: 679px) {
+			width: 100%;
+			margin-top: 5px;
 		}
 		ul.nav {
 			list-style: none;
 			.pull-left;
 			margin-bottom: 0;
-			@media (max-width: 480px) {
-				margin: 0 0 10px 0;
+			@media (max-width: 679px) {
+				margin: auto;
 			}
 			li {
 				.pull-left;
 				padding-right: 10px;
-				@media (max-width: 480px) {
-					padding: 0 10px;
-				}
 				a {
 					&:hover {
 						background-color: transparent;
@@ -142,11 +150,6 @@ h1 {
 						}
 					}
 				}
-			}
-		}
-		.navbar-search {
-			@media (max-width: 480px) {
-				margin-top: 8px;
 			}
 		}
 	}
@@ -400,11 +403,26 @@ h1 {
 .icon-white {
 	background-image: url('../img/glyphicons-halflings-white.png')
 }
+
+
 // Generic form styles
 form.registration, form.login, form.project-create-edit-form, form.project-step-create-edit-form  {
 	.help-inline {
 		color: @white;
 		font-style: italic;
+	}
+	.control-group.error {
+		.help-inline {
+			color: lighten(@red, 50%);
+		}
+		.help-block {
+			.alert;
+			.alert-error;
+			margin-top: 15px;
+		}
+		label {
+			color: @white;
+		}
 	}
 	input[type="submit"] {
 		.btn;
@@ -417,25 +435,22 @@ form.registration, form.login, form.project-create-edit-form, form.project-step-
 		height: 30px;
 		font-size: 18px;
 	}
+	input[type="file"] {
+		cursor: pointer;
+	}
+	textarea {
+		width: 90%;
+		height: 200px;
+		padding: 8px;
+	}
 	label {
 		font-size: 18px;
+		font-weight: bold;
 	}
 	.add-on {
 		font-size: 18px;
 		height: 30px;
 		line-height: 30px;
-	}
-	.help-block {
-		.alert;
-		.alert-error;
-	}
-	.control-group.error {
-		.control-label {
-			color: @white;
-		}
-		.help-block {
-			margin-top: 25px;
-		}
 	}
 }
 
@@ -622,21 +637,13 @@ body#account {
 					padding: 10px 0;
 					li {
 						text-align: center;
-						a {
+						a.url, a.twitter {
 							color: @white;
 							font-size: 18px;
 							font-weight: 300;
 						}
 					}
 				}
-			}
-			a.follow {
-				.btn;
-				.btn-primary;
-			}
-			a.unfollow {
-				.btn;
-				.btn-warning;
 			}
 			.stats {
 				@media (min-width: 320px) and (max-width: 767px) {
@@ -701,7 +708,12 @@ body#project-list {
 ====================== */
 body#project-detail {
 	#publish {
-		a { .btn; }
+		border-bottom: 3px dotted lighten(@red, 30%);
+		margin-bottom: 25px;
+		a { 
+			.btn; 
+			.btn-primary;
+		}
 	}
 	header {
 		h2 {
@@ -758,6 +770,12 @@ body#project-detail {
 	.steps {
 		.photo {
 			margin-bottom: 25px;
+		}
+		h3 {
+			a {
+				.btn;
+				.btn-success;
+			}
 		}
 	}
 	.gallery-display {
@@ -937,6 +955,56 @@ body#dashboard {
     		a {
     			color: @purpleDark;
     		}
+		}
+	}
+}
+
+/* Followers/Following
+========================= */
+body#user-listing {
+	header {
+		margin-bottom: 15px;
+		.nav-actions {
+			text-align: center;
+			a {
+				.btn;
+				.btn-large;
+				&.active {
+					.opacity(60);
+				}
+				margin-right: 5px;
+			}
+		}
+	}
+	.user-list {
+		ul {
+			list-style: none;
+			@media (max-width: 767px) {
+				width: 60%;
+				margin: auto;
+			}
+			@media (max-width: 400px) {
+				width: 80%;
+			}
+			li {
+				text-align: center;
+				@media (max-width: 767px) {
+					float: left;
+					margin-bottom: 15px;
+				}
+				img {
+					padding: 8px;
+					background-color: @white;
+					@media (max-width: 767px) {
+						width: 75px;
+						float: left;
+					}
+				}
+				a.username {
+					color: @white;
+					padding-bottom: 20px;
+				}
+			}
 		}
 	}
 }

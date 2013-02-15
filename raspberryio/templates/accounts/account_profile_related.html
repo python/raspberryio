@@ -3,31 +3,35 @@
 
 {% block meta_title %}{{ profile_user.username }}{% endblock %}
 {% block title %}{{ profile_user.username }}{% endblock %}
-{% block body_id %}account{% endblock %}
-{% block body_class %}user-listing{% endblock %}
+{% block body_id %}user-listing{% endblock %}
 
-{% block main %}
-<div class="row">
-    <div class="span12">
-        <p><a class="{% if "following" in request.get_full_path %}active{% endif %}" href="{% url 'profile-related' username=request.user relation='following' %}"><span>Following</span></a></p>
-        <p><a class="{% if "followers" in request.get_full_path %}active{% endif %}" href="{% url 'profile-related' username=request.user relation='followers' %}"><span>Followers</span></a></p>
-    </div>
-</div>
-{% for related_user in related_users %}
-<div class="row">
-    <div class="span2">
-        {% with related_user.get_profile as profile %}
-        {% include 'includes/profile-picture.html' %}
-        {% endwith %}
-        <div class="user-info">
-            <a href="{{ related_user.get_absolute_url }}">{{ related_user.username }}</a>
-            {% include 'includes/relationship-status.html' with profile_user=related_user %}
+{% block main%}
+<header>
+    <div class="row">
+        <div class="nav-actions span12">
+            <a class="{% if "following" in request.get_full_path %}active{% endif %}" href="{% url 'profile-related' username=request.user relation='following' %}">Following</a>
+            <a class=" {% if "followers" in request.get_full_path %}active{% endif %}" href="{% url 'profile-related' username=request.user relation='followers' %}">Followers</a> 
         </div>
     </div>
-</div>
-{% endfor %}
+</header>
+<div class="user-list row">
+    <ul>
+        {% for related_user in related_users %}
+        <li class="span3">
+            {% with related_user.get_profile as profile %}
+            {% include 'includes/profile-picture.html' %}
+            {% endwith %}
+            
+            <div class="userinfo">  
+                <p><a class="username" href="{{ related_user.get_absolute_url }}">{{ related_user.username }}</a></p>
+                {% include 'includes/relationship-status.html' with profile_user=related_user %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
+</div>
 
 {% block extra_js %}
-<script src="{{ STATIC_URL }}js/update_relationship.js"></script>
+    <script src="{{ STATIC_URL }}js/update_relationship.js"></script>
 {% endblock %}
