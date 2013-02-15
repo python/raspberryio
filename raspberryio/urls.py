@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.views.generic import RedirectView
 
 from django_notify.urls import get_pattern as get_notify_pattern
 from wiki.urls import get_pattern as get_wiki_pattern
@@ -36,6 +37,7 @@ urlpatterns = patterns('',
 
     # wiki
     url(r'^wiki/notify/', get_notify_pattern()),
+    url(r'^wiki/.*_settings/', RedirectView.as_view(url='/wiki/')),
     url(r'wiki/', get_wiki_pattern()),
     # Mezzanine urls
     url(r'^', include('mezzanine.urls')),
