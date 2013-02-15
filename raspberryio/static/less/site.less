@@ -89,7 +89,7 @@ h1 {
 #global-nav {
 	.box-shadow(0);
 	background-color: none transparent;
-	padding: 5px 20px 10px;
+	padding: 5px 0 10px;
 	a { 
 		margin-top: 9px;
 		color: @white;
@@ -278,7 +278,7 @@ h1 {
 		position: relative;
 		z-index: 2;
 		a {
-			color: @white;
+			color: @white !important;
 		}
 	}
 }
@@ -735,7 +735,7 @@ body#project-detail {
 		hr {
 			padding: 2px 0;
 			border: none;
-			background-color: @gray;
+			background-color: @greenMedium;
 		}
 		ul {
 			position: absolute;
@@ -748,19 +748,20 @@ body#project-detail {
 			li {
 				.pull-left;
 				text-align: center;
-				font-size: 18px;
+				font-size: 11px;
+				font-weight: normal;
 				line-height: 24px;
-				padding-right: 20px;
+				padding-right: 8px;
 				&:last-child {
 					padding-right: 0;
 				}
 				a {
 					color: @white;
-					background-color: @grayLight;
+					background-color: @purpleDark;
 					.border-radius(30px);
 					padding: 5px 10px;
 					&:hover {
-						background-color: @gray;
+						background-color: lighten(@purpleDark, 20%);
 						text-decoration: none;
 					}
 				}

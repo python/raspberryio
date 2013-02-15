@@ -5,56 +5,64 @@
 {% block body_id %}project-detail{% endblock %}
 
 {% block main %}
-    {% if not project.is_published %}
-        {% if request.user == project.user or request.user.is_superuser %}
-            <div id="publish">
-                <h4>This project is saved as a draft. <a id="publish-project" href="#">Publish Now</a>
-                </h4>
-            </div>
-        {% endif %}
-    {% endif %}
-    <header>
-        <h2>
-            {{ project.title }}
-            {% if request.user == project.user or request.user.is_superuser %}
-                <a href="{% url 'project-create-edit' project.slug %}"><i class="icon-edit icon-white"></i> Edit Project</a>
-                <a href="{% url 'project-step-create-edit' project.slug %}"><i class="icon-plus icon-white"></i> Add Step</a>
-            {% endif %}
-            {# Leaving in here for now. This is slated for Phase II work. #}
-            {% comment %}
-            <a class="follow" href="#">Follow</a>
-            <a class="upvote" href="#">Upvote</a>
-            {% endcomment %}
-        </h2>
-        {% with project.user.get_profile as profile %}
-        <div class="userinfo">
-            <a href="{% url 'profile' project.user.username %}">
-                {% if profile.use_gravatar %}
-                    <img src="{% gravatar_url project.user.email 35 %}" alt="project.user.username" />
-                {% elif profile.avatar %}
-                    <img src="{{ MEDIA_URL }}{% thumbnail profile.avatar.url 35 35 %}" alt="project.user.username" />
-                {% else %}
-                    <img src="{{ STATIC_URL }}images/no-profile.png" alt="project.user.username"/>
-                {% endif %}
-            </a> Written by:
-            <a href="{% url 'profile' project.user.username %}">{{ project.user.username }}</a>
+{% if not project.is_published %}
+<div class="row">
+    <div class="span12">
+    {% if request.user == project.user or request.user.is_superuser %}
+        <div id="publish">
+            <h4>This project is saved as a draft. <a id="publish-project" href="#">Publish Now</a>
+            </h4>
         </div>
-        {% endwith %}
-    </header>
+    {% endif %}
+    </div>
+</div>
+{% endif %}
 
-    {% if project.steps.count > 1  %}
+<div class="row">
+    <div class="span12">
+        <header>
+            <h2>
+                {{ project.title }}
+                {% if request.user == project.user or request.user.is_superuser %}
+                    <a href="{% url 'project-create-edit' project.slug %}"><i class="icon-edit icon-white"></i> Edit Project</a>
+                    <a href="{% url 'project-step-create-edit' project.slug %}"><i class="icon-plus icon-white"></i> Add Step</a>
+                {% endif %}
+                {# Leaving in here for now. This is slated for Phase II work. #}
+                {% comment %}
+                <a class="follow" href="#">Follow</a>
+                <a class="upvote" href="#">Upvote</a>
+                {% endcomment %}
+            </h2>
+            {% with project.user.get_profile as profile %}
+            <div class="userinfo">
+                <a href="{% url 'profile' project.user.username %}">
+                    {% if profile.use_gravatar %}
+                        <img src="{% gravatar_url project.user.email 35 %}" alt="project.user.username" />
+                    {% elif profile.avatar %}
+                        <img src="{{ MEDIA_URL }}{% thumbnail profile.avatar.url 35 35 %}" alt="project.user.username" />
+                    {% else %}
+                        <img src="{{ STATIC_URL }}images/no-profile.png" alt="project.user.username"/>
+                    {% endif %}
+                </a> Written by:
+                <a href="{% url 'profile' project.user.username %}">{{ project.user.username }}</a>
+            </div>
+            {% endwith %}
+        </header>
+    </div>
+</div>
+
+    
     <div class="steps-timeline row">
         <div class="span12">
             <hr />
             <ul>
-                <li><a href="#">Overview</a></li>
+                <li><a href="#overview">Overview</a></li>
                 {% for step in project.steps.all %}
-                <li><a href="#">{{ forloop.counter }}</a></li>
+                <li><a href="#step{{ forloop.counter }}">{{ forloop.counter }}</a></li>
                 {% endfor %}
             </ul>
         </div>
     </div>
-    {% endif %}
 
     <div class="overview row">
         {% if project.featured_video or project.featured_photo %}
