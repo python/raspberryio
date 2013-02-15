@@ -120,7 +120,7 @@
             <div class="span12">
                 <div id="videoDiv{{ forloop.counter}}">
                  {# Use if flash not located #}
-                 <iframe type="text/html" width="100%" height="300"
+                 <iframe type="text/html" width="50%" height="300"
                          src="{{ step.embed_url }}"
                          frameborder="0">
                  </iframe>
@@ -177,7 +177,7 @@
                 var videoID = "{{ project.video_id }}";
                 var params = { allowScriptAccess: "always" };
                 var atts = { id: "ytPlayer" };
-                swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "?version=3&enablejsapi=1&playerapiid=player1", "videoDiv", "480", "295", "9", null, null, params, atts);
+                swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "?version=3&enablejsapi=1&playerapiid=player1", "videoDiv", "100%", "350", "9", null, null, params, atts);
             };
             google.setOnLoadCallback(_run);
         </script>
@@ -190,7 +190,7 @@
                 var videoID = "{{ step.video_id }}";
                 var params = { allowScriptAccess: "always" };
                 var atts = { id: "ytPlayer" };
-                swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "?version=3&enablejsapi=1&playerapiid=player1", "videoDiv{{ forloop.counter }}", "480", "295", "9", null, null, params, atts);
+                swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "?version=3&enablejsapi=1&playerapiid=player1", "videoDiv{{ forloop.counter }}", "100%", "350", "9", null, null, params, atts);
             };
             google.setOnLoadCallback(_run);
         </script>
