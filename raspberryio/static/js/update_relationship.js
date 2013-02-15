@@ -1,13 +1,14 @@
 $(document).ready(function()
     {
-        $(".follow-btn").delegate(".following", "click", function(e) {
+        $(".follow-btn").delegate(".unfollow", "click", function(e) {
              e.preventDefault();
              var item = $(this);
              $.post( $(this).attr("href"), function() {
                      $(item).attr('class', 'follow')
                             .text('Follow')
-                            .attr('href', $(item).attr('href').replace(/following/i, "follow_all"));
-                     var followers = +$('#followers').text();
+                            .attr('href', $(item).attr('href').replace(/unfollow/i, "follow_all"));
+                     var followers = +$('#followers').data('followers');
+                     $('#followers').data('followers', followers - 1);
                      $('#followers').text(followers - 1);
                 });
           });
@@ -15,10 +16,11 @@ $(document).ready(function()
              e.preventDefault();
              var item = $(this);
              $.post( $(this).attr("href"), function() {
-                     $(item).attr('class', 'following')
-                            .text('Following')
-                            .attr('href', $(item).attr('href').replace(/follow_all/i, "following"));
-                     var followers = +$('#followers').text();
+                     $(item).attr('class', 'unfollow')
+                            .text('Unfollow')
+                            .attr('href', $(item).attr('href').replace(/follow_all/i, "unfollow"));
+                     var followers = +$('#followers').data('followers');
+                     $('#followers').data('followers', followers + 1);
                      $('#followers').text(followers + 1);
              });
         });

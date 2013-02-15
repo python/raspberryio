@@ -33,10 +33,10 @@
                     <a class="url" href="{{ profile_user.get_profile.website }}">
                         {{ profile_user.get_profile.website }}
                     </a>
-                </li> 
+                </li>
                 {% endif %}
             </ul>
-           
+
         </div>
         {% if profile.bio %}
             <div class="bio span5">
@@ -51,8 +51,8 @@
             <h3>Stats</h3>
             <ul class="nav nav-tabs nav-stacked">
                 <li><span>Public projects: {{ profile_user.projects.published.count }}</span></li>
-                <li><a id="followers" href="{% url 'profile-related' username=profile_user relation='followers' %}">Followers: {{ profile_user.username|followers }}</a></li>
-                <li><a id="following" href="{% url 'profile-related' username=profile_user relation='following' %}">Following: {{ profile_user.username|following }}</a></li>
+                <li><a href="{% url 'profile-related' username=profile_user relation='followers' %}">Followers: <span id="followers" data-followers="{{ profile_user.username|followers }}">{{ profile_user.username|followers }}</span></a></li>
+                <li><a href="{% url 'profile-related' username=profile_user relation='following' %}">Following: <span id="following" data-following="{{ profile_user.username|following }}">{{ profile_user.username|following }}</span></a></li>
             </ul>
         </div>
         {% endwith %}
