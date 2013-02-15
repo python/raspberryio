@@ -115,7 +115,20 @@
                 {{ step.content|safe }}
             </div>
         </div>
-        {% if step.video or step.gallery.all %}
+        {% if step.video %}
+        <div class="row">
+            <div class="span12">
+                <div id="videoDiv{{ forloop.counter}}">
+                 {# Use if flash not located #}
+                 <iframe type="text/html" width="100%" height="300"
+                         src="{{ step.embed_url }}"
+                         frameborder="0">
+                 </iframe>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if step.gallery.all %}
         <div class="row">
             <div class="gallery-display">
                 <div class="gallery">

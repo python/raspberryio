@@ -1,15 +1,6 @@
 {% load url from future %}
 {% load mezzanine_tags %}
 
-{% if step.video %}
-     <li id="videoDiv{{ forloop.counter}}">
-         {# Use if flash not located #}
-         <iframe type="text/html" width="100%" height="300"
-                 src="{{ step.embed_url }}"
-                 frameborder="0">
-         </iframe>
-     </li>
- {% endif %}
  {% for photo in step.gallery.all %}
  <li>
     <img src="{{ MEDIA_URL }}{% thumbnail photo.get_thumbnail_url 600 400 %}" alt="{{ photo.get_filename }}" />
