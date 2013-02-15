@@ -5,12 +5,14 @@
     {% if projects %}
     <div class="gallery">
         <div id="slider" class="swipe">
-          <ul class="swipe-wrap"> 
+          <ul class="swipe-wrap">
+            {% if request.user == profile_user %}
             <li class="add">
                 <a href="{% url 'project-create-edit' %}">
                     <img src="{{ STATIC_URL }}img/add-project.png" alt="Add a project" />
                 </a>
             </li>
+            {% endif %}
             {% for project in projects %}
             <li>
                 <a href="{% url 'project-detail' project.slug %}">
@@ -31,9 +33,11 @@
         </nav>
     </div>
     <ul class="tiled">
+        {% if request.user == profile_user %}
         <li class="add">
             <a href="{% url 'project-create-edit' %}"><img src="{{ STATIC_URL }}img/add-project.png" alt="Add a project" /></a>
         </li>
+        {% endif %}
         {% for project in projects %}
         <li>
             <a href="{% url 'project-detail' project.slug %}">
@@ -47,8 +51,10 @@
         {% endfor %}
     </ul>
     {% else %}
-    <div class="span12">
-        <a href="{% url 'project-create-edit' %}"><img src="{{ STATIC_URL }}img/add-project.png" alt="Add a project" /></a>
-    </div>
+        {% if request.user == profile_user %}
+            <a href="{% url 'project-create-edit' %}"><img src="{{ STATIC_URL }}img/add-project.png" alt="Add a project" /></a>
+        {% else %}
+                <h2>There are no projects.</h2>
+        {% endif %}
     {% endif %}
 </div>
