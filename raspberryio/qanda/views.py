@@ -8,11 +8,20 @@ from mezzanine.utils.sites import current_site_id
 from raspberryio.qanda.models import Question
 from raspberryio.qanda.forms import QuestionForm
 
+
+def question_list(request):
+    questions = Question.objects.all()
+    return render(request, 'qanda/question_list.html', {
+        'questions': questions,
+    })
+
+
 def question_detail(request, question_slug):
-    user = request.user
     question = get_object_or_404(Question, slug=question_slug)
+    answers = question.answers.all()
     return render(request, 'qanda/question_detail.html', {
         'question': question,
+        'answers': answers,
     })
 
 

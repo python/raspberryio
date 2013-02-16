@@ -32,6 +32,15 @@ urlpatterns = patterns('',
     # django-push
     url(r'^subscriber/', include('django_push.subscriber.urls')),
     url(r'^qanda/', include('raspberryio.qanda.urls')),
+    url(r'^search/', include('raspberryio.search.urls')),
+    url(r'^community/', include('raspberryio.aggregator.urls')),
+    # Feeds
+    url(r'^rss/community/firehose/$', CommunityAggregatorFirehoseFeed(), name='aggregator-firehose-feed'),
+    url(r'^rss/community/(?P<slug>[\w-]+)/$', CommunityAggregatorFeed(), name='aggregator-feed'),
+
+    # django-push
+    url(r'^subscriber/', include('django_push.subscriber.urls')),
+    url(r'^qanda/', include('raspberryio.qanda.urls')),
 
     # django-activity-streams
     url('^activity/', include('actstream.urls')),

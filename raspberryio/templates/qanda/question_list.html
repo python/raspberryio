@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load mezzanine_tags %}
+{% load url from future %}
+
+{% block body_id %}question-list{% endblock %}
+
+{% block main %}
+    <header>
+        <h2>
+            Q &amp; A
+        </h2>
+    </header>
+    <div class="ask">
+        <a href="{% url 'question-create-edit' %}">Ask a question</a>
+    </div>
+    <div class="question">
+        <h3>
+            Questions:
+        </h3>
+        {% for question in questions %}
+            <div>
+                <a href="{% url 'question' question.slug %}">{{ question.title }}</a>
+            </div>
+        {% empty %}
+            <div>
+                <p>No questions have been asked.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

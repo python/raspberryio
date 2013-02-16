@@ -9,7 +9,7 @@
         <h2>
             {{ question.title }}
             {% if request.user == question.user or request.user.is_superuser %}
-                <a href="{% url 'question-create-edit' question.slug %}"><i class="icon-edit"></i> Edit Question</a>
+                <a href="{% url 'question-create-edit' question.slug %}"><i class="icon-edit icon-white"></i> Edit Question</a>
             {% endif %}
         </h2>
         {% with question.user.get_profile as profile %}
@@ -29,7 +29,12 @@
     </header>
 
     <div class="question">
-            {{ question.question }}
+        {{ question.question|safe }}
+    </div>
+    <div class="answers">
+        {% for answer in answers %}
+            {{ answer.answer|safe }}
+        {% endfor %}
     </div>
 
 {% endblock %}
