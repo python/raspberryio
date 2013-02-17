@@ -258,6 +258,7 @@ ACTSTREAM_SETTINGS = {
                'project.project',
                'project.projectstep',
                'qanda.question',
+               'qanda.answer',
                'wiki.article'),
     'FETCH_RELATIONS': True,
     'USE_PREFETCH': True,

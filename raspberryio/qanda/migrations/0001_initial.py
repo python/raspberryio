@@ -33,23 +33,12 @@ class Migration(SchemaMigration):
         # Adding model 'Answer'
         db.create_table('qanda_answer', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
-            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
-            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
-            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
-            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='answers', to=orm['auth.User'])),
             ('score', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('question', self.gf('django.db.models.fields.related.ForeignKey')(related_name='answers', to=orm['qanda.Question'])),
             ('answer', self.gf('mezzanine.core.fields.RichTextField')()),
-            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
+            ('created_datetime', self.gf('django.db.models.fields.DateTimeField')()),
+            ('modified_datetime', self.gf('django.db.models.fields.DateTimeField')()),
         ))
         db.send_create_signal('qanda', ['Answer'])
 
@@ -130,23 +119,12 @@ class Migration(SchemaMigration):
         },
         'qanda.answer': {
             'Meta': {'object_name': 'Answer'},
-            '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'answer': ('mezzanine.core.fields.RichTextField', [], {}),
-            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'expiry_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'created_datetime': ('django.db.models.fields.DateTimeField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': "orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
-            'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
-            'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'modified_datetime': ('django.db.models.fields.DateTimeField', [], {}),
             'question': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'answers'", 'to': "orm['qanda.Question']"}),
             'score': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'short_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
-            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['sites.Site']"}),
-            'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
-            'status': ('django.db.models.fields.IntegerField', [], {'default': '2'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'answers'", 'to': "orm['auth.User']"})
         },
         'qanda.question': {

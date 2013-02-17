@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 {% load mezzanine_tags %}
+{% load bootstrap_toolkit %}
+
 {% load url from future %}
 
 {% block body_id %}question-detail{% endblock %}
 
 {% block main %}
     <header>
+        <a href="{% url 'question-list' %}">Questions</a>
         <h2>
             {{ question.title }}
             {% if request.user == question.user or request.user.is_superuser %}
@@ -33,8 +36,54 @@
     </div>
     <div class="answers">
         {% for answer in answers %}
-            {{ answer.answer|safe }}
+            <div>
+                {{ answer.score }}
+            </div>
+            <div>
+                {{ answer.answer|safe }}
+            </div>
         {% endfor %}
     </div>
+    {% if answer_create_form %}
+        <div>
+            <form class="answer-create-edit-form" action="{% url 'answer-create-edit' question.slug %}" method="post" accept-charset="utf-8">{% csrf_token %}
+                {{ answer_create_form|as_bootstrap }}
+                <input type="submit" id="submit-answer-create-edit" name="save" value="Submit Answer"/>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}
 
+{% block extra_js %}
+    <script>
+        $(function(){
+            $('input:submit').click(function(e) {
+                var $this = $(this);
+                var $mce_field = $this.parents('form')
+                    .find('textarea.mceEditor');
+                var mce_fieldname = $mce_field.attr('name');
+                var iframe_selector = '#id_' + mce_fieldname + '_ifr',
+                    $answer_contents = $(iframe_selector).contents(),
+                    answer_input = $answer_contents.find('#tinymce').html(),
+                    stripped_input = $(answer_input).text().replace(/\s/g, '');
+                if (stripped_input === '') {
+                    // Prevent form submission and show an error message for
+                    // the required field
+                    e.preventDefault();
+                    var err_msg_id = 'error-' + mce_fieldname,
+                        $err_msg = $('<p>')
+                        .attr('id', err_msg_id)
+                        .attr('class', 'help-block')
+                        .text('This field is required');
+                    var label_selector = 'label[for=id_' + mce_fieldname + ']',
+                        $mce_field_label = $(label_selector);
+                    var $existing = $mce_field_label.parent()
+                        .find('#' + err_msg_id);
+                    if ($existing.length === 0) {
+                        $mce_field_label.before($err_msg);
+                    }
+                }
+            });
+        });
+    </script>
 {% endblock %}

@@ -5,8 +5,8 @@ from django.contrib.sites.models import Site
 from actstream import action
 from mezzanine.utils.sites import current_site_id
 
-from raspberryio.qanda.models import Question
-from raspberryio.qanda.forms import QuestionForm
+from raspberryio.qanda.models import Question, Answer
+from raspberryio.qanda.forms import QuestionForm, AnswerForm
 
 
 def question_list(request):
@@ -19,10 +19,15 @@ def question_list(request):
 def question_detail(request, question_slug):
     question = get_object_or_404(Question, slug=question_slug)
     answers = question.answers.all()
-    return render(request, 'qanda/question_detail.html', {
+    context = {
         'question': question,
         'answers': answers,
-    })
+    }
+    if request.user.is_authenticated:
+        context.update({
+            'answer_create_form': AnswerForm(),
+        })
+    return render(request, 'qanda/question_detail.html', context)
 
 
 @login_required
@@ -42,3 +47,18 @@ def question_create_edit(request, question_slug=None):
         'question': question,
         'question_form': question_form,
     })
+
+
+@login_required
+def answer_create_edit(request, question_slug, answer_pk=None):
+    question = get_object_or_404(Question, slug=question_slug)
+    if answer_pk:
+        answer = get_object_or_404(Answer, pk=answer_pk)
+    else:
+        answer = Answer(user=request.user, question=question)
+    answer_form = AnswerForm(request.POST or None, instance=answer)
+    if answer_form.is_valid():
+        answer_form.save()
+        action.send(request.user, verb='answered', target=answer)
+        return redirect(answer)
+    return redirect(question)
