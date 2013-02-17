@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.models import Site
 
-from actstream import action
 from mezzanine.utils.sites import current_site_id
 
 from raspberryio.qanda.models import Question, Answer
@@ -46,7 +45,6 @@ def question_create_edit(request, question_slug=None):
     question_form = QuestionForm(request.POST or None, instance=question)
     if question_form.is_valid():
         question_form.save()
-        action.send(user, verb='asked', target=question)
         return redirect(question)
     return render(request, 'qanda/question_create_edit.html', {
         'question': question,
@@ -64,6 +62,5 @@ def answer_create_edit(request, question_slug, answer_pk=None):
     answer_form = AnswerForm(request.POST or None, instance=answer)
     if answer_form.is_valid():
         answer_form.save()
-        action.send(request.user, verb='answered', target=answer)
         return redirect(answer)
     return redirect(question)

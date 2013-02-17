@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.html import strip_tags
 
 from mezzanine.core.models import Displayable, Ownable
 from mezzanine.core.fields import RichTextField
@@ -39,7 +40,7 @@ class Answer(Ownable):
         super(Answer, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return u'Answer: {0}'.format(self.title)
+        return u'Answer: {0}'.format(strip_tags(self.answer))
 
     @models.permalink
     def get_absolute_url(self):
