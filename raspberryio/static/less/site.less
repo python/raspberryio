@@ -83,6 +83,12 @@ h1 {
 			.btn-success;
 			color: @white !important;
 		}
+		&.unfollow {
+			&.action {
+				.btn-danger;
+				color: @white !important;
+			}
+		}
 	}
 }
 
@@ -660,29 +666,6 @@ body#account {
 					}
 				}
 			}
-		}
-		
-	}
-	&.user-listing {
-		.row {
-			margin: 10px 0;
-			.span2 {
-				background-color: @white;
-				padding: 15px 10px;
-				.border-radius(10px);
-			}
-		}
-		a.follow {
-			.btn;
-			.btn-primary;
-		}
-		a.unfollow {
-			.btn;
-			.btn-warning;
-		}
-		img.profile {
-			float: left;
-			padding-right: 10px;
 		}
 	}
 }
