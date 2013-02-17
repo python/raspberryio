@@ -50,7 +50,7 @@
         <div class="stats span3">
             <h3>Stats</h3>
             <ul class="nav nav-tabs nav-stacked">
-                <li><span>Public projects: {{ profile_user.projects.published.count }}</span></li>
+                <li class="projects">Public projects: {{ profile_user.projects.published.count }}</li>
                 <li><a href="{% url 'profile-related' username=profile_user relation='followers' %}">Followers: <span id="followers" data-followers="{{ profile_user.username|followers }}">{{ profile_user.username|followers }}</span></a></li>
                 <li><a href="{% url 'profile-related' username=profile_user relation='following' %}">Following: <span id="following" data-following="{{ profile_user.username|following }}">{{ profile_user.username|following }}</span></a></li>
             </ul>
