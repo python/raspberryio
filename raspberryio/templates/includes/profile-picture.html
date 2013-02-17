@@ -5,5 +5,5 @@
 {% elif profile.avatar %}
     <img class="profile" src="{{ MEDIA_URL }}{% thumbnail profile.avatar.url 150 150 %}" alt="{{ profile_user.username }}"/>
 {% else %}
-    <img class="profile" src="{{ STATIC_URL }}images/no-profile.png" alt="{{ profile_user.username }}" width="150" />
+    <img class="profile" src="{{ STATIC_URL }}img/no-photo.png" alt="{{ profile_user.username }}" width="150" />
 {% endif %}

@@ -56,9 +56,9 @@
             <a class="brand" href="/">{{ settings.SITE_TITLE }}</a>
             <div class="right-block">
                 <ul class="nav">
-                    {% if user.is_authenticated %}
+                    {% if request.user.is_authenticated %}
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Hi {{ user.username }}!<b class="caret"></b></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Hi {{ request.user }}!<b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'profile-dashboard' %}">My Dashboard</a></li>
                             <li><a href="{% url 'profile' user.username %}">My Profile</a></li>

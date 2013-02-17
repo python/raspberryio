@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 {% load i18n future mezzanine_tags %}
 
-{% block meta_title %}{{ profile_user.username }}{% endblock %}
-{% block title %}{{ profile_user.username }}{% endblock %}
+{% block meta_title %}{{ user.username }}{% endblock %}
+{% block title %}{{ user.username }}{% endblock %}
 {% block body_id %}user-listing{% endblock %}
 
 {% block main%}
 <header>
     <div class="row">
         <div class="nav-actions span12">
-            <a class="{% if "following" in request.get_full_path %}active{% endif %}" href="{% url 'profile-related' username=request.user relation='following' %}">Following</a>
-            <a class=" {% if "followers" in request.get_full_path %}active{% endif %}" href="{% url 'profile-related' username=request.user relation='followers' %}">Followers</a> 
+            <a class="{% if "following" in request.get_full_path %}active{% endif %}" href="{% url 'profile-related' username=user relation='following' %}">Following</a>
+            <a class=" {% if "followers" in request.get_full_path %}active{% endif %}" href="{% url 'profile-related' username=user relation='followers' %}">Followers</a> 
         </div>
     </div>
 </header>
@@ -18,9 +18,11 @@
     <ul>
         {% for related_user in related_users %}
         <li class="span3">
+            <a href="{{ related_user.get_absolute_url }}">
             {% with related_user.get_profile as profile %}
             {% include 'includes/profile-picture.html' %}
             {% endwith %}
+            </a>
             
             <div class="userinfo">  
                 <p><a class="username" href="{{ related_user.get_absolute_url }}">{{ related_user.username }}</a></p>

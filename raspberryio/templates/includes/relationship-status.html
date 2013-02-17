@@ -3,7 +3,7 @@
 {% if not request.user.is_anonymous and request.user != profile_user %}
     <div class="follow-btn">
     {% if request.user|is_following:profile_user %}
-        <a class="following" href="{% follow_url profile_user %}">Following</a>
+        <a class="unfollow" href="{% follow_url profile_user %}">Following</a>
     {% else %}
         <a class="follow" href="{% follow_url profile_user %}">Follow</a>
     {% endif %}
