@@ -1,3 +1,4 @@
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.models import Site
@@ -36,6 +37,10 @@ def question_create_edit(request, question_slug=None):
     site = Site.objects.get(id=current_site_id)
     if question_slug:
         question = get_object_or_404(Question, slug=question_slug)
+        if question.user != user and not user.is_superuser:
+            return HttpResponseForbidden(
+                'You are not the owner of this question'
+            )
     else:
         question = Question(user=user, site=site)
     question_form = QuestionForm(request.POST or None, instance=question)
