@@ -18,9 +18,11 @@
     <ul>
         {% for related_user in related_users %}
         <li class="span3">
+            <a href="{{ related_user.get_absolute_url }}">
             {% with related_user.get_profile as profile %}
             {% include 'includes/profile-picture.html' %}
             {% endwith %}
+            </a>
             
             <div class="userinfo">  
                 <p><a class="username" href="{{ related_user.get_absolute_url }}">{{ related_user.username }}</a></p>
