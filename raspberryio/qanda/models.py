@@ -1,4 +1,6 @@
 from django.db import models
+from django.db import transaction
+from django.contrib.auth.models import User
 from django.utils.html import strip_tags
 
 from mezzanine.core.models import Displayable, Ownable
@@ -11,7 +13,6 @@ class Question(Displayable, Ownable):
     A user question
     """
     question = RichTextField()
-    score = models.IntegerField(default=0)
 
     def __unicode__(self):
         return u'Question: {0}'.format(self.title)
@@ -31,6 +32,16 @@ class Answer(Ownable):
     answer = RichTextField()
     created_datetime = models.DateTimeField('Created')
     modified_datetime = models.DateTimeField('Modified')
+    voters = models.ManyToManyField(User, related_name='answer_votes')
+
+    def add_voter(self, user):
+        with transaction.commit_on_success():
+            if not self.voters.filter(pk=user.pk).exists():
+                self.score += 1
+                self.voters.add(user)
+                self.save()
+                return True
+            return False
 
     def save(self, *args, **kwargs):
         # Set created and modified datetimes if not provided.

@@ -25,7 +25,6 @@ class Migration(SchemaMigration):
             ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='questions', to=orm['auth.User'])),
             ('question', self.gf('mezzanine.core.fields.RichTextField')()),
-            ('score', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
         ))
         db.send_create_signal('qanda', ['Question'])
@@ -42,6 +41,14 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('qanda', ['Answer'])
 
+        # Adding M2M table for field voters on 'Answer'
+        db.create_table('qanda_answer_voters', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('answer', models.ForeignKey(orm['qanda.answer'], null=False)),
+            ('user', models.ForeignKey(orm['auth.user'], null=False))
+        ))
+        db.create_unique('qanda_answer_voters', ['answer_id', 'user_id'])
+
 
     def backwards(self, orm):
         # Deleting model 'Question'
@@ -49,6 +56,9 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Answer'
         db.delete_table('qanda_answer')
+
+        # Removing M2M table for field voters on 'Answer'
+        db.delete_table('qanda_answer_voters')
 
 
     models = {
@@ -125,7 +135,8 @@ class Migration(SchemaMigration):
             'modified_datetime': ('django.db.models.fields.DateTimeField', [], {}),
             'question': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'answers'", 'to': "orm['qanda.Question']"}),
             'score': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'answers'", 'to': "orm['auth.User']"})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'answers'", 'to': "orm['auth.User']"}),
+            'voters': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'answer_votes'", 'symmetrical': 'False', 'to': "orm['auth.User']"})
         },
         'qanda.question': {
             'Meta': {'object_name': 'Question'},
@@ -139,7 +150,6 @@ class Migration(SchemaMigration):
             'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
             'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'question': ('mezzanine.core.fields.RichTextField', [], {}),
-            'score': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'short_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'site': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['sites.Site']"}),
             'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
