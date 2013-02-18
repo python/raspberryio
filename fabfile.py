@@ -1,6 +1,10 @@
 import ConfigParser
 import os
+import random
 import re
+import string
+
+from getpass import getpass
 
 from argyle import rabbitmq, postgres, nginx, system
 from argyle.base import upload_template
@@ -10,7 +14,7 @@ from argyle.system import service_command, start_service, stop_service, restart_
 
 from fabric import utils
 from fabric.api import cd, env, get, hide, local, put, require, run, settings, sudo, task
-from fabric.contrib import files, console
+from fabric.contrib import exists, files, console
 
 # Directory structure
 PROJECT_ROOT = os.path.dirname(__file__)
@@ -23,6 +27,7 @@ env.shell = '/bin/bash -c'
 env.disable_known_hosts = True
 env.ssh_port = 2222
 env.forward_agent = True
+env.password_name = ['newrelic_license_key']
 
 # Additional settings for argyle
 env.ARGYLE_TEMPLATE_DIRS = (
@@ -193,15 +198,49 @@ def project_run(cmd):
     sudo(cmd, user=env.project_user)
 
 
+def _random_password(length=8, chars=string.letters + string.digits):
+    """Generates a random password with the specificed length and chars."""
+    return ''.join([random.choice(chars) for i in range(length)])
+
+
+def _load_passwords(names, length=20, generate=False):
+    """Retrieve password from the user's home directory, or generate a new random one if none exists"""
+    for name in names:
+        filename = ''.join([env.home, name])
+        if generate:
+            passwd = _random_password(length=length)
+            sudo('touch %s' % filename, user=env.project_user)
+            sudo('chmod 600 %s' % filename, user=env.project_user)
+            with hide('running'):
+                sudo('echo "%s">%s' % (passwd, filename), user=env.project_user)
+        if env.host_string and exists(filename):
+            with hide('stdout'):
+                passwd = sudo('cat %s' % filename).strip()
+        else:
+            passwd = getpass('Please enter %s: ' % name)
+        setattr(env, name, passwd)
+
+
 @task
 def update_service_confs():
     """Update supervisor configuration."""
     require('environment')
+    upload_newrelic_conf()
     upload_supervisor_app_conf(app_name=u'gunicorn')
     upload_supervisor_app_conf(app_name=u'group')
     nginx.upload_nginx_site_conf(site_name=u'%(project)s-%(environment)s.conf' % env)
     # Restart services to pickup changes
     supervisor_command('reload')
+
+
+@task
+def upload_newrelic_conf():
+    """Upload New Relic configuration from the template."""
+    require('environment')
+    _load_passwords(env.password_names)
+    template = os.path.join(env.templates_dir, 'newrelic.ini')
+    destination = os.path.join(env.services, 'newrelic-%(environment)s.ini' % env)
+    upload_template(template, destination, context=env, user=env.project_user)
 
 
 @task
@@ -340,3 +379,5 @@ def reset_local_db():
     local('createdb %s' % local_db)
     host = '%s@%s' % (env.project_user, env.hosts[0])
     local('ssh -p %s -C %s pg_dump -Ox %s | psql %s' % (env.ssh_port, host, remote_db, local_db))
+
+
