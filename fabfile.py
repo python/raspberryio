@@ -7,7 +7,6 @@ import string
 from getpass import getpass
 
 from argyle import rabbitmq, postgres, nginx, system
-from argyle.base import upload_template
 from argyle.postgres import create_db_user, create_db
 from argyle.supervisor import supervisor_command, upload_supervisor_app_conf
 from argyle.system import service_command, start_service, stop_service, restart_service
@@ -27,7 +26,7 @@ env.shell = '/bin/bash -c'
 env.disable_known_hosts = True
 env.ssh_port = 2222
 env.forward_agent = True
-env.password_name = ['newrelic_license_key']
+env.password_names = ['newrelic_license_key']
 
 # Additional settings for argyle
 env.ARGYLE_TEMPLATE_DIRS = (
@@ -238,9 +237,10 @@ def upload_newrelic_conf():
     """Upload New Relic configuration from the template."""
     require('environment')
     _load_passwords(env.password_names)
-    template = os.path.join(env.templates_dir, 'newrelic.ini')
-    destination = os.path.join(env.services, 'newrelic-%(environment)s.ini' % env)
-    upload_template(template, destination, context=env, user=env.project_user)
+    template = os.path.join(CONF_ROOT, 'templates', 'newrelic.ini')
+    destination = os.path.join(env.root, 'newrelic-%(environment)s.ini' % env)
+    files.upload_template(template, destination, context=env, use_sudo=True)
+    sudo('chown %s:%s %s' % (env.project_user, env.project_user, destination))
 
 
 @task
