@@ -14,7 +14,7 @@ from argyle.system import service_command, start_service, stop_service, restart_
 
 from fabric import utils
 from fabric.api import cd, env, get, hide, local, put, require, run, settings, sudo, task
-from fabric.contrib import exists, files, console
+from fabric.contrib import files, console
 
 # Directory structure
 PROJECT_ROOT = os.path.dirname(__file__)
@@ -213,7 +213,7 @@ def _load_passwords(names, length=20, generate=False):
             sudo('chmod 600 %s' % filename, user=env.project_user)
             with hide('running'):
                 sudo('echo "%s">%s' % (passwd, filename), user=env.project_user)
-        if env.host_string and exists(filename):
+        if env.host_string and files.exists(filename):
             with hide('stdout'):
                 passwd = sudo('cat %s' % filename).strip()
         else:
