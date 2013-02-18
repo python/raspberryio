@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load future %}
+{% load future project_tags mezzanine_tags %}
 
 {% block site_title %}Raspberry I/O{% endblock %}
 
@@ -18,16 +18,27 @@
   </div>
 </header>
 
-{# Need to figure out how we are implementing featured projects on homepage. #}
 <div id="featured">
     <div class="container">
-        <a href="#">
-        <div class="info">
-            <h2>Featured Project name</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-        </div>
-        <img src="http://placekitten.com/1500/800">
-        </a>
+        {% featured_projects 1 %}
+        {% for featured in featured_projects %}
+            <a href="{% url 'project-detail' featured.project.slug %}">
+            <div class="info">
+                <h2>{{ featured.project.title }}</h2>
+                <p>{{ featured.byline }}</p>
+            </div>
+            <img src="{{ MEDIA_URL }}{% thumbnail featured.photo.url 1252 626 %}" alt="{{ featured.project.title }}"/>
+            </a>
+        {% empty %}
+            <a href="#">
+            <div class="info">
+                <h2>Featured Project name</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+            </div>
+            <img src="http://placekitten.com/1500/800">
+            </a>
+        {% endfor %}
+
     </div>
 </div>
 
