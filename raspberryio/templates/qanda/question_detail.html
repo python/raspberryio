@@ -102,7 +102,7 @@
                     var err_msg_id = 'error-' + mce_fieldname,
                         $err_msg = $('<p>')
                         .attr('id', err_msg_id)
-                        .attr('class', 'help-block')
+                        .addClass('help-block')
                         .text('This field is required');
                     var label_selector = 'label[for=id_' + mce_fieldname + ']',
                         $mce_field_label = $(label_selector);
@@ -110,6 +110,7 @@
                         .find('#' + err_msg_id);
                     if ($existing.length === 0) {
                         $mce_field_label.before($err_msg);
+                        $err_msg.parent('.control-group').addClass('error');
                     }
                 }
             });

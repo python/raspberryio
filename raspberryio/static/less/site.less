@@ -411,7 +411,9 @@ h1 {
 
 
 // Generic form styles
-form.registration, form.login, form.project-create-edit-form, form.project-step-create-edit-form  {
+form.registration, form.login, form.project-create-edit-form,
+form.project-step-create-edit-form, form.question-create-edit-form,
+form.answer-create-edit-form {
 	.help-inline {
 		color: @white;
 		font-style: italic;
@@ -429,7 +431,7 @@ form.registration, form.login, form.project-create-edit-form, form.project-step-
 			color: @white;
 		}
 	}
-	input[type="submit"] {
+	input[type="submit"], input[type="button"] {
 		.btn;
 		.btn-large;
 		.btn-success;
