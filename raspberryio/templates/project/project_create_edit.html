@@ -10,6 +10,7 @@
         <h2>Create your project</h2>
         <form class="project-create-edit-form" action="" method="post" accept-charset="utf-8" enctype="multipart/form-data"> {% csrf_token %}
             {{ project_form|as_bootstrap }}
+            {{ project_form.media }}
             <input type="submit" id="submit-project-create-edit" name="save" value="Save &amp; preview" />
                 {% if not project.id %}
                     <input type="submit" id="submit-project-create-edit" name="save-add-step" value="Save &amp; add project steps" />

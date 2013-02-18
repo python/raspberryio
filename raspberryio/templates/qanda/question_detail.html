@@ -56,6 +56,7 @@
         <div>
             <form class="answer-create-edit-form" action="{% url 'answer-create-edit' question.slug %}" method="post" accept-charset="utf-8">{% csrf_token %}
                 {{ answer_create_form|as_bootstrap }}
+                {{ answer_create_form.media }}
                 <input type="submit" id="submit-answer-create-edit" name="save" value="Submit Answer"/>
             </form>
         </div>
