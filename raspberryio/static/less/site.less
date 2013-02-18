@@ -13,7 +13,7 @@
 // -- Project step create/edit
 // -- Dashboard
 // -- Followers/Following
-
+// -- Search Results
 
 /* Bootstrap imports
 ==================== */
@@ -76,6 +76,21 @@ h1 {
 		font-weight: bold;
 	}
 }
+
+.inner-content {
+	.border-radius(10px);
+
+	background-color: #FFF;
+	h1, h2, h3, h4, h5, {
+		padding: 15px;
+		color: @purpleDark;
+	}
+	p {
+		padding: 20px;
+		color: #000;
+	}
+}
+
 .follow-btn {
 	a { 
 		.btn; 
@@ -418,7 +433,7 @@ form.answer-create-edit-form {
 		color: @white;
 		font-style: italic;
 	}
-	.control-group.error {
+	.control-group.error, .control {
 		.help-inline {
 			color: lighten(@red, 50%);
 		}
@@ -997,5 +1012,28 @@ body#user-listing {
 				}
 			}
 		}
+	}
+}
+
+
+/* Search Results
+========================= */
+body#search-results {
+	.inner-content {
+		margin: 10px;
+		padding: 20px;
+	}
+
+	h4 {
+		margin: 10px;
+		padding: 5px;
+	}
+
+	img {
+		padding: 8px;
+	}
+
+	p {
+		padding: 15px;
 	}
 }
