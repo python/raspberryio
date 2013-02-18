@@ -264,6 +264,13 @@ SUPERFEEDR_CREDS = ""  # list of [email,secretkey]
 PUSH_HUB = 'https://superfeedr.com/hubbub'
 PUSH_CREDENTIALS = 'raspberryio.aggregator.utils.push_credentials'
 
+# django-wiki settings
+"""
+See https://github.com/benjaoming/django-wiki/blob/master/wiki/conf/settings.py
+for more django-wiki settings (No real documentation)
+"""
+WIKI_ACCOUNT_HANDLING = False
+
 # activity stream settings
 ACTSTREAM_SETTINGS = {
     'MODELS': (
