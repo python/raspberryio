@@ -191,3 +191,20 @@ class ProjectImage(models.Model):
         files_data = [image.get_image_data() for image in images] \
             if isinstance(images, Iterable) else [images.get_image_data()]
         return {'files': files_data}
+
+
+class FeaturedProject(models.Model):
+    "A Project annotated for featuring on the Home Page"
+    project = models.OneToOneField("project.Project")
+    byline = models.CharField(max_length=50,
+                help_text='A terse descriptiong to be used on the home page.'
+                )
+    photo = models.ImageField(upload_to='images/project_featured_photos',
+                help_text='Upload an image for the home page. Minimum ' \
+                          'dimensions are 1252x626.')
+    featured_start_date = models.DateTimeField(default=now(),
+                help_text='Date the Project will start being featured on the' \
+                          'homepage.')
+
+    class Meta:
+        ordering = ['-featured_start_date']
