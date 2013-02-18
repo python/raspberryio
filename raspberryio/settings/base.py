@@ -236,21 +236,33 @@ COMPRESS_PRECOMPILERS = (
     ('text/less', 'lessc {infile} {outfile}'),
 )
 
+# Mezzanine settings
 AUTH_PROFILE_MODULE = "userprofile.Profile"
 ACCOUNTS_PROFILE_FORM_CLASS = "raspberryio.userprofile.forms.UserProfileForm"
 
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 LOGIN_REDIRECT_URL = 'raspberryio.userprofile.views.profile_dashboard'
 
-FEED_APPROVERS_GROUP_NAME = "feed-approver"
-SUPERFEEDR_CREDS = ""  # list of [email,secretkey]
-
-# PubSubHubbub settings
-PUSH_HUB = 'https://superfeedr.com/hubbub'
-PUSH_CREDENTIALS = 'raspberryio.aggregator.utils.push_credentials'
-
 # Supply the custom TinyMCE JavaScript
 TINYMCE_SETUP_JS = os.path.join('js', 'libs', 'tinymce_setup.js')
+
+# Limit Mezzanine RichText fields to these html tags
+RICHTEXT_ALLOWED_TAGS = (
+    'a', 'abbr', 'acronym', 'address', 'area', 'b', 'bdo', 'big', 'blockquote',
+    'br', 'caption', 'center', 'cite', 'code', 'col', 'colgroup',
+    'dd', 'del', 'dfn', 'dir', 'div', 'dl', 'dt', 'em', 'font',
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i', 'ins', 'kbd', 'label',
+    'legend', 'li', 'map', 'menu', 'ol', 'optgroup',
+    'option', 'p', 'pre', 'q', 's', 'samp', 'select', 'small', 'span',
+    'strike', 'strong', 'sub', 'sup', 'table', 'tbody', 'td',
+    'tfoot', 'th', 'thead', 'tr', 'tt', 'u', 'ul', 'var', 'wbr'
+)
+
+# PubSubHubbub settings
+FEED_APPROVERS_GROUP_NAME = "feed-approver"
+SUPERFEEDR_CREDS = ""  # list of [email,secretkey]
+PUSH_HUB = 'https://superfeedr.com/hubbub'
+PUSH_CREDENTIALS = 'raspberryio.aggregator.utils.push_credentials'
 
 # activity stream settings
 ACTSTREAM_SETTINGS = {
