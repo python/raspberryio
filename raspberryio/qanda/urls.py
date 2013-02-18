@@ -7,7 +7,7 @@ urlpatterns = patterns('raspberryio.qanda.views',
         'question_detail',
         name='question'),
     # Create/edit questions
-    url(r'^ask/$',
+    url(r'^question/$',
         'question_create_edit',
         name='question-create-edit'),
     url(r'^edit-question/(?P<question_slug>[\w-]+)/$',
