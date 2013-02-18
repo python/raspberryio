@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n future mezzanine_tags relationship_tags %}
+{% load profile_tags %}
 
 {% block meta_title %}{{ profile_user.username }}{% endblock %}
 {% block title %}{{ profile_user.username }}{% endblock %}
@@ -14,13 +15,7 @@
         </h2>
         {% with profile_user.get_profile as profile %}
         <div class="avatar span3">
-            {% if profile.use_gravatar %}
-                <img src="{% gravatar_url profile_user.email 250 %}" alt="{{ profile_user.username }}" />
-            {% elif profile.avatar %}
-                <img src="{{ MEDIA_URL }}{% thumbnail profile.avatar.url 250 250 %}" alt="{{ profile_user.username }}"/>
-            {% else %}
-                <img src="{{ STATIC_URL }}img/no-photo.png" alt="{{ profile_user.username }}" />
-            {% endif %}
+            {% avatar profile 250 %}
             <ul>
                 <li>{% include 'includes/relationship-status.html' %}</li>
                 {% if profile.website or profile.twitter_id %}

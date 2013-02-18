@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load mezzanine_tags %}
 {% load url from future %}
+{% load profile_tags %}
 
 {% block body_id %}project-detail{% endblock %}
 
@@ -36,13 +37,7 @@
             {% with project.user.get_profile as profile %}
             <div class="userinfo">
                 <a href="{% url 'profile' project.user.username %}">
-                    {% if profile.use_gravatar %}
-                        <img src="{% gravatar_url project.user.email 35 %}" alt="{{ project.user.username }}" />
-                    {% elif profile.avatar %}
-                        <img src="{{ MEDIA_URL }}{% thumbnail profile.avatar.url 35 35 %}" alt="{{ project.user.username }}" />
-                    {% else %}
-                        <img src="{{ STATIC_URL }}img/no-photo.png" alt="{{ project.user.username }}" width="40" />
-                    {% endif %}
+                    {% avatar profile 35 %}
                 </a> Written by:
                 <a href="{% url 'profile' project.user.username %}">{{ project.user.username }}</a>
             </div>

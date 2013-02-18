@@ -1,32 +1,59 @@
 {% extends "base.html" %}
 
 {% load i18n future mezzanine_tags %}
+{% load profile_tags %}
 
 {% block meta_title %}{% trans "Search Results" %}{% endblock %}
 {% block title %}{% trans "Search Results" %}{% endblock %}
 
 {% block main %}
-    <p>
-        {% if results.paginator.count == 0 %}
-            {% blocktrans %}
-                No results were found in {{ search_type }} matching your query: {{ query }}
-            {% endblocktrans %}
-        {% else %}
-            {% blocktrans with start=results.start_index end=results.end_index total=results.paginator.count %}
-                Showing {{ start }} to {{ end }} of {{ total }} results in {{ search_type }} matching your query: {{ query }}
-            {% endblocktrans %}
-        {% endif %}
-    </p>
+    <div class="">
+        <p>
+            {% if results.paginator.count == 0 %}
+                {% blocktrans %}
+                    No results were found in {{ search_type }} matching your query: {{ query }}
+                {% endblocktrans %}
+            {% else %}
+                {% blocktrans with start=results.start_index end=results.end_index total=results.paginator.count %}
+                    Showing {{ start }} to {{ end }} of {{ total }} results in {{ search_type }} matching your query: {{ query }}
+                {% endblocktrans %}
+            {% endif %}
+        </p>
 
-    <div id="search-results">
-        {% for result in results.object_list %}
-            <h5>{{ forloop.counter0|add:results.start_index }})
-            <a href="{{ result.get_absolute_url }}">{{ result }}</a></h5>
-            <p>{{ result.description|truncatewords_html:20|safe }}</p>
-            <a href="{{ result.get_absolute_url }}">{% trans "read more" %}</a>
-        {% endfor %}
+        <div id="search-results">
+            {% for result in results.object_list %}
+                <div class="search-result-title">
+                    <h5>
+                    {# Search result number #}
+                        {{ forloop.counter0|add:results.start_index }})
+                    {# User profile avatar #}
+                        {% if result.profile %}
+                            {% avatar result.profile 50 %}
+                        {% endif %}
+                    {# Project image #}
+                        {% if result.tldr %}
+                            {% if result.featured_photo %}
+                                <img src="{{ MEDIA_URL }}{% thumbnail result.featured_photo.url 50 50 %}" alt="{{ result.title }}"/>
+                            {% else %}
+                                <img src="{{ STATIC_URL }}img/no-featured-photo.png" alt="{{ project.title }}" width="50" />
+                            {% endif %}
+                        {% endif %}
+                    {# Human readable type #}
+                        <a href="{{ result.get_absolute_url }}">
+                            {{ result.search_classname|capfirst }} - {{ result }}
+                        </a>
+                    </h5>
+                </div>
+                <div class="search-result-description">
+                    {% if result.description %}
+                        <p>{{ result.description|truncatewords_html:50|safe }}</p>
+                    {% elif result.profile.bio %}
+                        <p>{{ result.profile.bio|truncatewords:50 }}</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        {% pagination_for results %}
     </div>
-
-    {% pagination_for results %}
-
 {% endblock %}
