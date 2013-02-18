@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load bootstrap_toolkit %}
+
+{% block main %}
+    <form class="question-create-edit-form" action="" method="post" accept-charset="utf-8"> {% csrf_token %}
+        {{ question_form|as_bootstrap }}
+        <input type="submit" id="submit-question-create-edit" name="save" value="Save" />
+        <input type="button" id="cancel-question-create-edit" name="cancel" value="Cancel" onClick="history.go(-1);"/>
+    </form>
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load mezzanine_tags %}
+{% load bootstrap_toolkit %}
+
+{% load url from future %}
+
+{% block body_id %}question-detail{% endblock %}
+
+{% block main %}
+    <header>
+        <a href="{% url 'question-list' %}">Questions</a>
+        <h2>
+            {{ question.title }}
+            {% if request.user == question.user or request.user.is_superuser %}
+                <a href="{% url 'question-create-edit' question.slug %}"><i class="icon-edit icon-white"></i> Edit Question</a>
+            {% endif %}
+        </h2>
+        {% with question.user.get_profile as profile %}
+        <div class="userinfo">
+            <a href="{% url 'profile' question.user.username %}">
+                {% if profile.use_gravatar %}
+                    <img src="{% gravatar_url question.user.email 35 %}" alt="question.user.username" />
+                {% elif profile.avatar %}
+                    <img src="{{ MEDIA_URL }}{% thumbnail profile.avatar.url 35 35 %}" alt="question.user.username" />
+                {% else %}
+                    <img src="{{ STATIC_URL }}images/no-profile.png" alt="question.user.username"/>
+                {% endif %}
+            </a> Written by:
+            <a href="{% url 'profile' question.user.username %}">{{ question.user.username }}</a>
+        </div>
+        {% endwith %}
+    </header>
+
+    <div class="question">
+        {{ question.question|safe }}
+    </div>
+    <div class="answers">
+        {% for answer in answers %}
+            {% if answer.pk not in votes %}
+                <div id="upvote-answer-{{ answer.pk }}">
+                    <a class="upvote-answer" href="#" data-url="{% url 'upvote-answer' answer.pk %}" data-pk="{{ answer.pk }}">
+                        Upvote
+                        <i class="icon-thumbs-up icon-white"></i>
+                    </a>
+                </div>
+            {% endif %}
+            <div>
+                <p>Score: <span id="score-{{ answer.pk }}">{{ answer.score }}</span></p>
+            </div>
+            <div>
+                {{ answer.answer|safe }}
+            </div>
+        {% endfor %}
+    </div>
+    {% if answer_create_form %}
+        <div>
+            <form class="answer-create-edit-form" action="{% url 'answer-create-edit' question.slug %}" method="post" accept-charset="utf-8">{% csrf_token %}
+                {{ answer_create_form|as_bootstrap }}
+                <input type="submit" id="submit-answer-create-edit" name="save" value="Submit Answer"/>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        $(function() {
+
+            // Ajax post request when user upvotes an answer
+            $('.upvote-answer').click(function(e) {
+                e.preventDefault();
+                var $this = $(this),
+                    upvote_answer_url = $this.data('url'),
+                    answer_pk = $this.data('pk'),
+                    $upvote_answer_div = $('div#upvote-answer-' + answer_pk),
+                    score_selector = '#score-' + answer_pk;
+                $.post(upvote_answer_url, function(result) {
+                    $upvote_answer_div.fadeOut();
+                    if (result === 'true') {
+                        var $score = $(score_selector),
+                            current_score = parseInt($score.html(), 10);
+                        $score.html(current_score + 1);
+                    }
+                });
+            });
+
+            // Require the answer be filled in in order to allow submission
+            $('input:submit').click(function(e) {
+                var $this = $(this);
+                var $mce_field = $this.parents('form')
+                    .find('textarea.mceEditor');
+                var mce_fieldname = $mce_field.attr('name');
+                var iframe_selector = '#id_' + mce_fieldname + '_ifr',
+                    $answer_contents = $(iframe_selector).contents(),
+                    answer_input = $answer_contents.find('#tinymce').html(),
+                    stripped_input = $(answer_input).text().replace(/\s/g, '');
+                if (stripped_input === '') {
+                    // Prevent form submission and show an error message for
+                    // the required field
+                    e.preventDefault();
+                    var err_msg_id = 'error-' + mce_fieldname,
+                        $err_msg = $('<p>')
+                        .attr('id', err_msg_id)
+                        .attr('class', 'help-block')
+                        .text('This field is required');
+                    var label_selector = 'label[for=id_' + mce_fieldname + ']',
+                        $mce_field_label = $(label_selector);
+                    var $existing = $mce_field_label.parent()
+                        .find('#' + err_msg_id);
+                    if ($existing.length === 0) {
+                        $mce_field_label.before($err_msg);
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

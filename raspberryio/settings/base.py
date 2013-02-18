@@ -189,6 +189,7 @@ INSTALLED_APPS = (
     "raspberryio.project",
     "raspberryio.search",
     "raspberryio.aggregator",
+    "raspberryio.qanda",
 )
 
 PASSWORD_HASHERS = (
@@ -253,7 +254,10 @@ TINYMCE_SETUP_JS = os.path.join('js', 'libs', 'tinymce_setup.js')
 
 # activity stream settings
 ACTSTREAM_SETTINGS = {
-    'MODELS': ('auth.user', 'project.project', 'project.projectstep', 'wiki.article'),
+    'MODELS': (
+        'auth.user', 'project.project', 'project.projectstep',
+        'qanda.question', 'qanda.answer', 'wiki.article'
+    ),
     'FETCH_RELATIONS': True,
     'USE_PREFETCH': True,
 }
