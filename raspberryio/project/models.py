@@ -197,7 +197,7 @@ class FeaturedProject(models.Model):
     "A Project annotated for featuring on the Home Page"
     project = models.OneToOneField("project.Project")
     byline = models.CharField(max_length=50,
-                help_text='A terse descriptiong to be used on the home page.'
+                help_text='A terse description to be used on the home page.'
                 )
     photo = models.ImageField(upload_to='images/project_featured_photos',
                 help_text='Upload an image for the home page. Minimum ' \
