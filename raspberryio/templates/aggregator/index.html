@@ -1,17 +1,6 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags %}
 
-{% block extrahead %}
-{{ block.super }}
-<style type="text/css">
-  ul.messages li {
-    font-weight: 600;
-    list-style: none;
-    padding: 20px 0;
-  }
-</style>
-{% endblock %}
-
 {% block meta_title %}{{ title }}{% endblock %}
 {% block title %}{{ title }}{% endblock %}
 {% block body_id %}community{% endblock %}
@@ -22,14 +11,6 @@
   <div class="alert alert-info">
     This page, updated regularly, aggregates what's going on in the community.
   </div>
-
-  {% if messages %}
-  <ul class="messages">
-      {% for message in messages %}
-      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-      {% endfor %}
-  </ul>
-  {% endif %}
 
   {% for feedtype in feedtype_list %}
   <div id="{{ feedtype.slug }}" class="module {% cycle "first" "last" %}">

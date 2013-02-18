@@ -80,22 +80,22 @@
     </nav>
     {% endblock %}
 
-    {% if page.title %}
     <header>
     {% block header %}
         <div class="container">
             {% nevercache %}
-            {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}" data-alert="alert">
-                <a class="close" href="#" onclick="$(this).parent().fadeOut('fast'); return false;">×</a>{{ message }}
-            </div>
-            {% endfor %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}" data-alert="alert">
+                        <a class="close" href="#" onclick="$(this).parent().fadeOut('fast'); return false;">×</a>{{ message }}
+                    </div>
+                {% endfor %}
+                {% if page.title %}
+                    <h1>{% block title %}{% endblock %}</h1>
+                {% endif %}
             {% endnevercache %}
-            <h1>{% block title %}{% endblock %}</h1>
         </div>
     {% endblock %}
     </header>
-    {% endif %}
 
     {% block content %}
         <div class="container">
