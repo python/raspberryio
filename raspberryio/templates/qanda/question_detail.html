@@ -36,8 +36,16 @@
     </div>
     <div class="answers">
         {% for answer in answers %}
+            {% if answer.pk not in votes %}
+                <div id="upvote-answer-{{ answer.pk }}">
+                    <a class="upvote-answer" href="#" data-url="{% url 'upvote-answer' answer.pk %}" data-pk="{{ answer.pk }}">
+                        Upvote
+                        <i class="icon-thumbs-up icon-white"></i>
+                    </a>
+                </div>
+            {% endif %}
             <div>
-                {{ answer.score }}
+                <p>Score: <span id="score-{{ answer.pk }}">{{ answer.score }}</span></p>
             </div>
             <div>
                 {{ answer.answer|safe }}
@@ -56,7 +64,27 @@
 
 {% block extra_js %}
     <script>
-        $(function(){
+        $(function() {
+
+            // Ajax post request when user upvotes an answer
+            $('.upvote-answer').click(function(e) {
+                e.preventDefault();
+                var $this = $(this),
+                    upvote_answer_url = $this.data('url'),
+                    answer_pk = $this.data('pk'),
+                    $upvote_answer_div = $('div#upvote-answer-' + answer_pk),
+                    score_selector = '#score-' + answer_pk;
+                $.post(upvote_answer_url, function(result) {
+                    $upvote_answer_div.fadeOut();
+                    if (result === 'true') {
+                        var $score = $(score_selector),
+                            current_score = parseInt($score.html(), 10);
+                        $score.html(current_score + 1);
+                    }
+                });
+            });
+
+            // Require the answer be filled in in order to allow submission
             $('input:submit').click(function(e) {
                 var $this = $(this);
                 var $mce_field = $this.parents('form')

@@ -3,8 +3,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.models import Site
 
+from hilbert.decorators import ajax_only
 from mezzanine.utils.sites import current_site_id
 
+from raspberryio.project.utils import AjaxResponse
 from raspberryio.qanda.models import Question, Answer
 from raspberryio.qanda.forms import QuestionForm, AnswerForm
 
@@ -23,8 +25,11 @@ def question_detail(request, question_slug):
         'question': question,
         'answers': answers,
     }
-    if request.user.is_authenticated:
+    if request.user.is_authenticated():
+        votes = request.user.answer_votes.filter(question=question) \
+            .values_list('pk', flat=True)
         context.update({
+            'votes': votes,
             'answer_create_form': AnswerForm(),
         })
     return render(request, 'qanda/question_detail.html', context)
@@ -64,3 +69,11 @@ def answer_create_edit(request, question_slug, answer_pk=None):
         answer_form.save()
         return redirect(answer)
     return redirect(question)
+
+
+@login_required
+@ajax_only
+def upvote_answer(request, answer_pk):
+    answer = get_object_or_404(Answer, pk=answer_pk)
+    result = answer.add_voter(request.user)
+    return AjaxResponse(request, result)

@@ -20,4 +20,9 @@ urlpatterns = patterns('raspberryio.qanda.views',
     url(r'^edit-answer/(?P<question_slug>[\w-]+)/(?P<answer_pk>[\w-]+)/$',
         'answer_create_edit',
         name='answer-create-edit'),
+    # Upvote answer Ajax view
+    url(r'^upvote/(?P<answer_pk>[\d]+)/$',
+        'upvote_answer',
+        name='upvote-answer'
+    ),
 )

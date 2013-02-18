@@ -42,6 +42,19 @@ class QuestionDetailViewTestCase(ViewTestMixin, QandaBaseTestCase):
         result_answers = response.context['answers']
         self.assertEqual(set(result_answers), expected_answers)
 
+    def test_votes(self):
+        self.client.login(username=self.user.username, password='password')
+        answer = self.create_answer(question=self.question)
+        self.create_answer(question=self.question)
+        other_answer = self.create_answer()
+        answer.add_voter(self.user)
+        other_answer.add_voter(self.user)
+        response = self.client.get(self.url)
+        user_votes = response.context['votes']
+        self.assertEqual(set(user_votes), set([answer.pk]),
+            "Only the current question's answers the user voted on should appear in 'votes'"
+        )
+
 
 class QuestionCreateEditViewTestCase(AuthViewMixin, QandaBaseTestCase):
     url_name = 'question-create-edit'
@@ -209,3 +222,57 @@ class AnswerCreateEditViewTestCase(QandaBaseTestCase):
         answer = Answer.objects.get(pk=self.answer.pk)
         self.assertEqual(answer.user, self.user)
         self.assertEqual(answer.answer, self.answer.answer)
+
+
+class UpvoteAnswerViewTestCase(QandaBaseTestCase):
+    url_name = 'upvote-answer'
+
+    def setUp(self):
+        self.user = self.create_user(data={'password': 'password'})
+        self.question = self.create_question()
+        self.answer = self.create_answer(question=self.question)
+        self.client.login(username=self.user.username, password='password')
+        self.url = reverse(self.url_name, args=self.get_url_args())
+
+    def get_url_args(self):
+        return (self.answer.pk,)
+
+    def test_bad_pk(self):
+        url = reverse(self.url_name, args=(9999,))
+        response = self.client.get(url, is_ajax=True)
+        self.assertEqual(response.status_code, 404)
+        answer = Answer.objects.get(pk=self.answer.pk)
+        self.assertEqual(answer.score, 0)
+        self.assertEqual(answer.voters.count(), 0)
+
+    def test_not_ajax(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 400)
+        answer = Answer.objects.get(pk=self.answer.pk)
+        self.assertEqual(answer.score, 0)
+        self.assertEqual(answer.voters.count(), 0)
+
+    def test_login_required(self):
+        self.client.logout()
+        response = self.client.get(self.url, is_ajax=True)
+        self.assertEqual(response.status_code, 302)
+        answer = Answer.objects.get(pk=self.answer.pk)
+        self.assertEqual(answer.score, 0)
+        self.assertEqual(answer.voters.count(), 0)
+
+    def test_new_vote(self):
+        response = self.client.get(self.url, is_ajax=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, 'true')
+        answer = Answer.objects.get(pk=self.answer.pk)
+        self.assertEqual(list(answer.voters.all()), [self.user])
+        self.assertEqual(answer.score, 1)
+
+    def test_existing_vote(self):
+        self.answer.add_voter(self.user)
+        response = self.client.get(self.url, is_ajax=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, 'false')
+        answer = Answer.objects.get(pk=self.answer.pk)
+        self.assertEqual(list(answer.voters.all()), [self.user])
+        self.assertEqual(answer.score, 1)
