@@ -28,19 +28,19 @@
                         {{ forloop.counter0|add:results.start_index }})
                     {# User profile avatar #}
                         {% if result.profile %}
-                            {% avatar result.profile 50 %}
+                            {% avatar result.profile 100 %}
                         {% endif %}
                     {# Project image #}
                         {% if result.tldr %}
                             {% if result.featured_photo %}
-                                <img src="{{ MEDIA_URL }}{% thumbnail result.featured_photo.url 50 50 %}" alt="{{ result.title }}"/>
+                                <img src="{{ MEDIA_URL }}{% thumbnail result.featured_photo.url 100 100 %}" alt="{{ result.title }}" width="100"/>
                             {% else %}
-                                <img src="{{ STATIC_URL }}img/no-featured-photo.png" alt="{{ project.title }}" width="50" />
+                                <img src="{{ STATIC_URL }}img/no-featured-photo.png" alt="{{ project.title }}" width="100" />
                             {% endif %}
                         {% endif %}
                     {# Human readable type #}
                         <a href="{{ result.get_absolute_url }}">
-                            {{ result.search_classname|capfirst }} - {{ result }}
+                            <span>{{ result.search_classname|capfirst }}</span> - <span>{{ result }}</span>
                         </a>
                     </h5>
                 </div>
