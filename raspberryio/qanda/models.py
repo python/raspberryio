@@ -34,6 +34,9 @@ class Answer(Ownable):
     modified_datetime = models.DateTimeField('Modified')
     voters = models.ManyToManyField(User, related_name='answer_votes')
 
+    class Meta:
+        ordering = ['-score']
+
     def add_voter(self, user):
         with transaction.commit_on_success():
             if not self.voters.filter(pk=user.pk).exists():
