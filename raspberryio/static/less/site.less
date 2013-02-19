@@ -24,6 +24,8 @@
 ================= */
 @purpleDark: #631B42;
 @greenMedium: #8FAC3C;
+@grayLightest: #F0F0F0;
+@raspberry: #c03939;
 
 /* Mixins
 ================= */
@@ -49,7 +51,7 @@
 ================= */
 
 body {
-	background: url('../img/background.png');
+	background-color: @grayLightest;
 }
 
 html, body {
@@ -63,17 +65,74 @@ h1 {
  	padding-bottom: 20px;
 }
 
+ul {
+	list-style: none;
+}
+
 #page {
 	min-height: 100%;
     position: relative;
-    color: @white;
+}
+
+.user-message {
+	margin-top: 40px;
+	margin-bottom: 0;
 }
 
 #content {
 	padding-top: 25px;
 	a {
-		color: @purpleDark;
 		font-weight: bold;
+		color: @raspberry;
+		&:hover {
+			color: @gray;
+			text-decoration: none;
+		}
+	}
+	// Generic form styles
+	form {
+		.help-inline {
+			font-style: italic;
+		}
+		.control-group.error, .control {
+			.help-block {
+				.alert;
+				.alert-error;
+				margin-top: 15px;
+			}
+		}
+		.required {
+			label:after {
+				content: "*"; 
+				color: @raspberry;
+				font-size: 18px;
+			}
+		}
+		input[type="submit"], input[type="button"] {
+			.btn;
+			.btn-success;
+			font-weight: bold;
+		}
+		input[type="text"], input[type="password"], textarea  { 
+			.input-large;
+			height: 30px;
+			font-size: 18px;
+		}
+		input[type="file"] {
+			cursor: pointer;
+		}
+		textarea {
+			width: 90%;
+			height: 200px;
+			padding: 8px;
+		}
+		label {
+		}
+		.add-on {
+			font-size: 18px;
+			height: 30px;
+			line-height: 30px;
+		}
 	}
 }
 
@@ -108,67 +167,36 @@ h1 {
 }
 
 #global-nav {
-	.box-shadow(0);
-	background-color: none transparent;
-	padding: 5px 0 10px;
 	a { 
-		margin-top: 9px;
-		color: @white;
+		color: @gray;
+		&:hover {
+			#gradient > .vertical(@grayLightest, @grayLighter);
+			.box-shadow(0 1px 10px rgba(0, 0, 0, 0.1));
+		}
 	}
 	.brand {
-		.pull-left;
 		font-family: 'Harabara';
  		font-weight: normal;
- 		letter-spacing: 0.06em;
- 		font-size: 32px;
- 		color: @white;
+ 		letter-spacing: 0.03em;
+ 		font-size: 24px;
+ 		color: @gray;
  		&:hover {
  			text-decoration: none;
  		}
 	}
 	.right-block {
 		.pull-right;
-		font-size: 13px;
-		@media (max-width: 679px) {
-			width: 100%;
-			margin-top: 5px;
+		@media (max-width: 979px) {
+			float: none;
 		}
 		ul.nav {
-			list-style: none;
-			.pull-left;
-			margin-bottom: 0;
-			@media (max-width: 679px) {
-				margin: auto;
-			}
 			li {
-				.pull-left;
-				padding-right: 10px;
-				a {
-					&:hover {
-						background-color: transparent;
-					}
-					.caret {
-						border-bottom-color: @white;
-						border-top-color: @white;
-					}
-				}
-				.dropdown-toggle .caret {
-					margin-top: 8px;
-				}
 				ul.dropdown-menu {
-					padding: 5px 0;
-					li {
-						padding-right: 0;
-						padding-left: 0;
-						float: none;
-						a {
-							color: @gray;
-							margin-top: 0;
-							&:hover {
-								color: @white;
-								#gradient > .vertical(@grayLight, @gray);
-							}
-						}
+					a {
+						&:hover {
+							#gradient > .vertical(@grayLight, @gray);
+							color: @white;
+		 				}
 					}
 				}
 			}
@@ -183,10 +211,9 @@ h1 {
 	letter-spacing: 0.06em;
 	font-weight: normal;
 	font-size: 30px;
-	margin-bottom: 30px;
 }
 
-.navbar {
+#footer-nav.navbar {
 	font-size: 18px;
 	min-height: 50px;
 	@media (max-width: 320px) {
@@ -295,7 +322,7 @@ h1 {
 		font-size: 9px;
 		color: @white;
 		padding: 3px 0;
-		background-color: @grayDark;
+		background: url('../img/background.png');
 		position: relative;
 		z-index: 2;
 		a {
@@ -315,7 +342,6 @@ h1 {
 			.hide;
 		}
 		.no-swipe {
-			list-style: none;
 			margin: 0;
 			padding: 0;
 		}
@@ -326,7 +352,6 @@ h1 {
 		  .swipe-wrap {
 			  overflow: hidden;
 			  position: relative;
-			  list-style: none;
 			  padding: 0;
 			  margin: 0;
 			  li {
@@ -386,7 +411,8 @@ h1 {
 		}
 	}
 	ul.tiled {
-		list-style: none;
+		padding: 0;
+		margin: 0;
 		@media (max-width: 767px) {
 			.hide;
 		}
@@ -424,60 +450,9 @@ h1 {
 	background-image: url('../img/glyphicons-halflings-white.png')
 }
 
-
-// Generic form styles
-form.registration, form.login, form.project-create-edit-form,
-form.project-step-create-edit-form, form.question-create-edit-form,
-form.answer-create-edit-form {
-	.help-inline {
-		color: @white;
-		font-style: italic;
-	}
-	.control-group.error, .control {
-		.help-inline {
-			color: lighten(@red, 50%);
-		}
-		.help-block {
-			.alert;
-			.alert-error;
-			margin-top: 15px;
-		}
-		label {
-			color: @white;
-		}
-	}
-	input[type="submit"], input[type="button"] {
-		.btn;
-		.btn-large;
-		.btn-success;
-		font-weight: bold;
-	}
-	input[type="text"], input[type="password"], textarea  { 
-		.input-large;
-		height: 30px;
-		font-size: 18px;
-	}
-	input[type="file"] {
-		cursor: pointer;
-	}
-	textarea {
-		width: 90%;
-		height: 200px;
-		padding: 8px;
-	}
-	label {
-		font-size: 18px;
-		font-weight: bold;
-	}
-	.add-on {
-		font-size: 18px;
-		height: 30px;
-		line-height: 30px;
-	}
-}
-
 .banner-content {
 	background-color: @purpleDark;
+	color: @white;
 	h2 {
 		background: @white;
 	    border: 1px solid @grayLighter;
@@ -513,80 +488,74 @@ form.answer-create-edit-form {
 /* Homepage
 ================= */
 body#homepage {
-	header {
-        padding: 25px 0;
-        text-align: center;
-        h1 {
-        	padding-bottom: 0;
-        }
-        .container {
-            p { .lead; }
-	    	a {
-	    		.btn;
-	    		.btn-success;
-	    		.btn-large;
-	    	}
-        }
-    }
-    #featured {
-    	background-color: @black;
-    	position: relative;
-		.info {
-			.text-shadow();
+	@media (max-width: 767px) {
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+	.homepage-hero-wrap {
+		position: fixed;
+		width: 100%;
+		top: 0;
+		left: 0;
+		height: 400px;
+		margin: 0 auto;
+		z-index: -9999;
+		background: url('../img/background.png');
+		@media (max-width: 767px) {
+			position: relative;
+			top: 40px;
+			height: 500px;
+		}
+		.message {
+			position: relative;
+			margin: 30px auto 0;
+			text-align: center;
+			padding: 0 10%;
+			width: 72.916666666667%;
 			color: @white;
+			h1 { padding-bottom: 0; }
+			p { .lead; }
+			a {
+				.btn;
+				.btn-large;
+				.btn-success;
+			}
+		}
+	}
+	#global-nav {
+		position: relative;
+		margin: 0 auto;
+		width: 100%;
+		-webkit-box-shadow: 0 1px 5px -1px #333;
+		-moz-box-shadow: 0 1px 5px -1px #333;
+		box-shadow: 0 1px 5px -1px #333;
+		clear: both;
+		z-index: 9999 !important;
+		top: 400px;
+		@media (max-width: 767px) {
+			top: 0;
 			position: absolute;
-			padding: 25px;
-			@media (min-width: 979px) {
-				top: 100px;
-			}
-			@media (min-width: 679px) and (max-width: 979px) {
-				top: 90px;
-			}
-			@media (min-width: 600px) and (max-width: 679px) {
-				top: 80px;
-			}
-			@media (min-width: 320px) and (max-width: 600px) {
-				h2 {
-					font-size: 24px;
-				}
-				p {
-					font-size: 18px;
-					line-height: 24px;
-				}
-			}
 		}
-		h2 {
-			margin: 0;
+	}
+    #featured {
+    	min-height: 600px;
+    	.makeRow();
+		margin: 400px auto 0;
+		background-color: @grayLightest;
+		display: block;
+		padding-top: 40px;
+		text-align: center;
+		@media (max-width: 767px) {
+			margin: auto 0;
+			min-height: 375px;
+			padding-left: 20px;
+			padding-right: 20px;
 		}
-		p {
-			font-size: 21px;
-    		font-weight: 200;
-    		line-height: 30px;
+		.project {
+			width: 100%;
+			margin: auto 0;
+			p { .lead; }
 		}
-    }
-    #jumbo-search {
-    	padding: 25px 0;
-    	text-align: center;
-    	form {
-	    	input {
-	    		.border-radius(20px);
-	    		width: 50%;
-	    		font-size: 24px;
-	    		line-height: 30px;
-	    		height: 30px;
-	    		@media (max-width: 800px) {
-	    			width: 90%;
-	    		}
-	    		@media (min-width: 320px) and (max-width: 1024px) {
-	    			width: 80%;
-	    		}
-	    	}
-	    	span {
-	    		.help-block;
-	    		color: @white;
-	    		padding: 10px 0;
-	    	}
-    	}
     }
 }
 
@@ -619,15 +588,6 @@ body#account {
 		}
 	}
 	&.profile {
-		#content {
-			@media (min-width: 320px) and (max-width: 767px) {
-				text-align: center;
-			}
-			ul {
-				list-style: none;
-			}
-		}
-		
 		.user-profile {
 			.banner-content;
 			padding-bottom: 25px;
@@ -747,7 +707,6 @@ body#project-detail {
 			width: 90%;
 			top: 10px;
 			left: 10px;
-			list-style: none;
 			.clearfix;
 			z-index: 1;
 			li {
@@ -803,12 +762,6 @@ body#project-detail {
 /* Project create/edit
 ========================= */
 body#project-create-edit {
-	#content {
-		padding-top: 0;
-		@media(max-width: 767px) {
-			padding: 0 15px;
-		}
-	}
 	h2 {
 		.page-header;
 	}
@@ -940,9 +893,17 @@ body#dashboard {
 		.banner-content;
 		ul {
 			padding: 15px 25px;
-			margin: 0; 
-			a {
-				color: @white;
+			margin: 0;
+			li {
+				padding-bottom: 15px;
+				font-size: 18px;
+				font-weight: 150;
+				a {
+					color: @white;
+				}
+				time {
+					font-size: 14px;
+				}
 			}
 		}
 	}
@@ -984,7 +945,6 @@ body#user-listing {
 	}
 	.user-list {
 		ul {
-			list-style: none;
 			@media (max-width: 767px) {
 				width: 60%;
 				margin: auto;

@@ -125,7 +125,7 @@
         {% endif %}
         {% if step.gallery.all %}
         <div class="row">
-            <div class="gallery-display">
+            <div class="gallery-display span12">
                 <div class="gallery">
                     {% if step.gallery.count > 1 %}
                     <div class="swipe" id="slider{{ forloop.counter }}">
@@ -138,12 +138,12 @@
                         <a onclick="swipes[{{ forloop.counter0 }}].next()" id="next" href="javascript:void(0)">></a>
                     </nav>
                     {% else %}
-                    <ul class="no-swipe span12">
+                    <ul class="no-swipe">
                         {% include 'includes/step-gallery.html' %}
                     </ul>
                     {% endif %}
                 </div>
-                <ul class="tiled span12">
+                <ul class="tiled">
                     {% include 'includes/step-gallery.html' %}
                 </ul>
             </div>
