@@ -12,9 +12,12 @@
         <a href="{% url 'question-list' %}">Questions</a>
         <h2>
             {{ question.title }}
-            {% if request.user == question.user or request.user.is_superuser %}
-                <a href="{% url 'question-create-edit' question.slug %}"><i class="icon-edit icon-white"></i> Edit Question</a>
-            {% endif %}
+            {% comment %}
+            {# Removing the ability for user's to edit their own question for now #}
+                {% if request.user == question.user or request.user.is_superuser %}
+                    <a href="{% url 'question-create-edit' question.slug %}"><i class="icon-edit icon-white"></i> Edit Question</a>
+                {% endif %}
+            {% endcomment %}
         </h2>
         {% with question.user.get_profile as profile %}
         <div class="userinfo">
