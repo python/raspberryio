@@ -1,6 +1,6 @@
 psycopg2==2.4.5
 BeautifulSoup==3.2.1
-Django==1.4.3
+Django==1.4.4
 -e git+git://github.com/stephenmcd/mezzanine.git@32db9351cc16e6fef1c761a88a111f49d9ca464c#egg=Mezzanine
 South==0.7.6
 django_compressor==1.2
