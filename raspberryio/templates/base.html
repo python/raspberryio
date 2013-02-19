@@ -106,7 +106,7 @@
             {% nevercache %}
                 {% for message in messages %}
                     <div class="user-message alert alert-{{ message.tags }}" data-alert="alert">
-                        <a class="close" href="#" onclick="$(this).parent().fadeOut('fast'); return false;">×</a>{{ message }}
+                        {{ message }}
                     </div>
                 {% endfor %}
                 {% if page.title %}
