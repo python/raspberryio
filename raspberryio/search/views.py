@@ -39,6 +39,10 @@ def search(request):
         search_model = Searchable
         search_type = "Everything"
     results = search_model.objects.search(query, for_user=request.user)
+    results = [
+        result for result in results
+        if getattr(result, 'is_published', True)
+    ]
     # paginate the results
     per_page = settings.SEARCH_PER_PAGE
     max_paging_links = settings.MAX_PAGING_LINKS
