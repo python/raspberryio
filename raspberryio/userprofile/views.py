@@ -56,7 +56,8 @@ def profile_dashboard(request):
 
 def profile_users(request):
     """Returns the list of active site users"""
-    users = User.objects.filter(is_active=True).order_by('username')
+    users = User.objects.filter(is_active=True, profile__isnull=False) \
+        .order_by('username')
     paginator = Paginator(users, 20)
 
     page = request.GET.get('page')
