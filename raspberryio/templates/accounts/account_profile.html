@@ -8,7 +8,8 @@
 {% block body_class %}profile{% endblock %}
 
 {% block main %}
-    <div class="user-profile row">
+<div class="row">
+    <div class="user-profile span12">
         <div class="top"></div>
         <h2>{{ profile_user.get_full_name }}
             <span>{{ profile_user.username }}</span>
@@ -17,7 +18,9 @@
         <div class="avatar span3">
             {% avatar profile 250 %}
             <ul>
-                <li>{% include 'includes/relationship-status.html' %}</li>
+                {% if request.user.is_authenticated %}
+                    <li>{% include 'includes/relationship-status.html' %}</li>
+                {% endif %}
                 {% if profile.website or profile.twitter_id %}
                 <li>
                     <a class="twitter" href="http://twitter.com/{{ profile_user.get_profile.twitter_id }}">
@@ -52,6 +55,7 @@
         </div>
         {% endwith %}
     </div>
+</div>
 
 <div class="row">
     {% if request.user == profile_user %}
