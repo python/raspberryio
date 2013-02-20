@@ -2,7 +2,8 @@ from django.conf.urls import patterns, url
 
 
 urlpatterns = patterns('raspberryio.qanda.views',
-    url(r'^$', 'question_list', name='question-list'),
+    url(r'^$', 'index', name='community-index'),
+    url(r'^ask/$', 'question_list', name='question-list'),
     url(r'^view/(?P<question_slug>[\w-]+)/$',
         'question_detail',
         name='question'),
