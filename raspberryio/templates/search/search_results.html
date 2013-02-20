@@ -50,13 +50,13 @@
                     </h4>
                     {# Use the content body for the given object, truncate it, and escape html if needed #}
                     {% if result.description %}
-                        <p>{{ result.description|truncatewords_html:50|safe }}</p>
+                        <p>{{ result.description|striptags|truncatewords:50 }}</p>
                     {% elif result.profile.bio %}
                         <p>{{ result.profile.bio|truncatewords:50 }}</p>
                     {% elif result.content and result.search_classname == 'Project Step' %}
-                        <p>{{ result.content|truncatewords_html:50|safe }}</p>
+                        <p>{{ result.content|striptags|truncatewords:50 }}</p>
                     {% elif result.content and result.search_classname != 'Project Step' %}
-                    {# TODO: Escape markdown for Wiki content #}
+                        {# TODO: strip markdown for Wiki content #}
                         <p>{{ result.content|truncatewords:50 }}</p>
                     {% endif %}
                 </div>
