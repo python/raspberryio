@@ -57,7 +57,7 @@ class Answer(Ownable):
         super(Answer, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return u'Answer: {0}'.format(strip_tags(self.answer))
+        return unicode(self.question)
 
     @models.permalink
     def get_absolute_url(self):

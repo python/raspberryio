@@ -58,6 +58,8 @@
                     {% elif result.content and result.search_classname != 'Project Step' %}
                         {# TODO: strip markdown for Wiki content #}
                         <p>{{ result.content|truncatewords:50 }}</p>
+                    {% elif result.answer %}
+                        <p>{{ result.answer|striptags|truncatewords:50 }}</p>
                     {% endif %}
                 </div>
             {% endfor %}
