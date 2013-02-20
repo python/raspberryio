@@ -1,10 +1,16 @@
+"""
+Models here provide search capability for those that can't be queried directly
+by Mezzanine's SearchableManager. For example, the wiki.ArticleRevision model
+tracks every revision to a wiki page. Searching on it directly would return
+every revision rather than the latest. (i.e. a flat structure is needed)
+"""
 from django.db import models, transaction
 
 
 class LatestArticleRevision(models.Model):
     """
     Copies the latest revision of a wiki article (wiki.ArticleRevision) when
-    saved in order to create a flat list for searching.
+    saved or deleted in order to create a flat list for searching.
     """
 
     article_id = models.BigIntegerField(unique=True)
