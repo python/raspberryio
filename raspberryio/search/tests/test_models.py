@@ -14,7 +14,7 @@ class SearchModelIndexeUtilsTestCase(ProjectBaseTestCase):
         self.index_settings = settings.SEARCH_MODEL_INDEXES
 
     def test_load_search_model_indexes_valid(self):
-        search_proxy_model = load_search_model_indexes()[0]
+        search_proxy_model = load_search_model_indexes()[1]
         self.assertEqual(
             search_proxy_model.search_fields,
             self.index_settings['auth.user']

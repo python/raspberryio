@@ -7,6 +7,11 @@ from raspberryio.project.tests.base import ProjectBaseTestCase
 
 
 class SearchViewTestCase(ViewTestMixin, ProjectBaseTestCase):
+    """
+    FIXME: This test is dependent on settings.SEARCH_MODEL_INDEXES. Need to
+    find a way to unit test the search functionality independent of settings
+    """
+
     url_name = 'search'
 
     def setUp(self):
