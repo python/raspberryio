@@ -3,7 +3,7 @@ from django.db.models.signals import post_save, pre_delete
 from actstream import action
 from wiki.models.article import Article, ArticleRevision
 
-from raspberryio.search.models import LatestArticleRevision
+from raspberryio.search_models.models import LatestArticleRevision
 
 
 def wiki_article_handler(sender, instance, created, **kwargs):
