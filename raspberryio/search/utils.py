@@ -85,6 +85,9 @@ def make_search_proxy_model(ModelKls, search_fields):
     """
 
     kls_name = 'Searchable' + ModelKls.__name__
+    search_classname = getattr(
+        ModelKls, 'search_classname', ModelKls.__name__.lower()
+    )
 
     class Meta(object):
         proxy = True
@@ -95,7 +98,7 @@ def make_search_proxy_model(ModelKls, search_fields):
 
     return type(kls_name, (Searchable, ModelKls), {
         'search_fields': search_fields,
-        'search_classname': ModelKls.__name__.lower(),
+        'search_classname': search_classname,
         'Meta': Meta,
         '__module__': ModelKls.__module__
     })
