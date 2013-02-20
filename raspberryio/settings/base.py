@@ -295,6 +295,9 @@ SEARCH_MODEL_INDEXES = {
     'project.project': {
         'title': 10, 'tldr': 5,
     },
+    'project.projectstep': {
+        'content': 10,
+    },
     'qanda.question': {
         'title': 10, 'question': 5,
     },
