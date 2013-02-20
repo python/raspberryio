@@ -1,16 +1,15 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags %}
 
-{% block meta_title %}Community{% endblock %}
-{% block title %}Community{% endblock %}
+{% block meta_title %}Blogs{% endblock %}
+{% block title %}Blogs{% endblock %}
 {% block body_id %}community{% endblock %}
 
 {% block main %}
-  <h3>RaspberryIO community: {{ feed_type.name }}
+  <h3>Blogs: {{ feed_type.name }}
     <a class="rss" href="{% url aggregator-feed feed_type.slug %}">RSS</a></h3>
   <div class="alert alert-info">
-    This page, updated regularly, aggregates {{ feed_type.name }}
-    from the RaspberryIO community.
+    This page, updated regularly, aggregates posts from the {{ feed_type.name }} community.
   </div>
 
   {% for item in object_list %}

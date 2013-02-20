@@ -37,6 +37,7 @@ class MockResponse(object):
 class AggregatorTests(TestCase):
 
     def setUp(self):
+        Group.objects.all().delete()
         settings.SUPERFEEDR_CREDS = None
         with patch.object(SubscriptionManager, 'subscription_request', return_value=MockResponse('fake')) as subreq:
             # Set up users who will get emailed

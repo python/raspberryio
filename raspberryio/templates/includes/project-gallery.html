@@ -7,21 +7,25 @@
         <div id="slider" class="swipe">
           <ul class="swipe-wrap">
             {% if request.user == profile_user %}
-            <li class="add">
+            <li class="add span3">
                 <a href="{% url 'project-create-edit' %}">
                     <img src="{{ STATIC_URL }}img/add-project.png" alt="Add a project" />
                 </a>
             </li>
             {% endif %}
             {% for project in projects %}
-            <li>
+            <li class="span3">
                 <a href="{% url 'project-detail' project.slug %}">
                     {% if project.featured_photo %}
                         <img src="{{ MEDIA_URL }}{% thumbnail project.featured_photo.url 500 400 %}" alt="{{ project.title }}"/>
                     {% else %}
-                        <img src="{{ STATIC_URL }}img/no-featured-photo.png" alt="{{ project.title }}" width="400" />
+                        <img src="{{ STATIC_URL }}img/no-featured-photo.png" alt="{{ project.title }}" width="500" />
                     {% endif %}
                 </a>
+                <div class="details">
+                    <h4>{{ project.title|truncatechars:"25" }}</h4>
+                    <p><a href="{% url 'profile' project.user.username %}">{{ project.user }}</a></p>
+                </div>
             </li>
             {% endfor %}
            
@@ -34,12 +38,12 @@
     </div>
     <ul class="tiled">
         {% if request.user == profile_user %}
-        <li class="add">
+        <li class="add span3">
             <a href="{% url 'project-create-edit' %}"><img src="{{ STATIC_URL }}img/add-project.png" alt="Add a project" /></a>
         </li>
         {% endif %}
         {% for project in projects %}
-        <li>
+        <li class="span3">
             <a href="{% url 'project-detail' project.slug %}">
                 {% if project.featured_photo %}
                     <img src="{{ MEDIA_URL }}{% thumbnail project.featured_photo.url 500 400 %}" alt="{{ project.title }}"/>
@@ -47,6 +51,10 @@
                     <img src="{{ STATIC_URL }}img/no-featured-photo.png" alt="{{ project.title }}" width="400" />
                 {% endif %}
             </a>
+            <div class="details">
+                <h4>{{ project.title|truncatechars:"25" }}</h4>
+                <p><a href="{% url 'profile' project.user.username %}">{{ project.user }}</a></p>
+            </div>
         </li>
         {% endfor %}
     </ul>

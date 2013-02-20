@@ -28,8 +28,6 @@ CACHES = {
 
 EMAIL_SUBJECT_PREFIX = '[Raspberryio Staging] '
 
-COMPRESS_ENABLED = True
-
 # import secrets
 try:
     SECRETS_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, os.pardir))

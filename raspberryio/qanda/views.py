@@ -7,8 +7,19 @@ from hilbert.decorators import ajax_only
 from mezzanine.utils.sites import current_site_id
 
 from raspberryio.project.utils import AjaxResponse
+from raspberryio.aggregator.models import FeedType, FeedItem, APPROVED_FEED
 from raspberryio.qanda.models import Question, Answer
 from raspberryio.qanda.forms import QuestionForm, AnswerForm
+
+
+def index(request):
+    questions = Question.objects.all()
+    feed_type = get_object_or_404(FeedType, slug='raspberry-pi')
+    return render(request, 'qanda/index.html', {
+        'questions': questions,
+        'feed_items': FeedItem.objects.filter(feed__feed_type=feed_type, feed__approval_status=APPROVED_FEED),
+        'feed_type': feed_type
+    })
 
 
 def question_list(request):

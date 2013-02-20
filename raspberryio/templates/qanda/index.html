@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags %}
+{% load url from future %}
+
+{% block meta_title %}Community{% endblock %}
+{% block title %}Community{% endblock %}
+{% block body_id %}question-list{% endblock %}
+
+{% block main %}
+
+  <h3>Community</h3>
+
+  <h4>Recent Blog Posts <small><a href="{% url 'community-feed-list' feed_type.slug %}">View More</a></small></h4>
+  {% for item in feed_items|slice:"5" %}
+    <div class="well">
+      <h5><a href="{{ item.link }}">{{ item.title }}</a></h5>
+      <p class="date">Posted on {{ item.date_modified|date:"F j, Y" }} at {{ item.date_modified|date:"g:i A" }} by <a href="{{ item.feed.public_url }}">{{ item.feed.title }}</a> <a class="rss" href="{{ item.feed.feed_url }}">RSS</a></p>
+    </div>
+    {% empty %}
+    <div>
+        <p>No recent posts.</p>
+    </div>
+    {% endfor %}
+
+  <h4>Recent Questions <small><a href="{% url 'question-list' %}">View More</a></small></h4>
+    {% for question in questions|slice:"5" %}
+        <div class="well">
+            <h5><a href="{% url 'question' question.slug %}">{{ question.title }}</a></h5>
+            <p class="date">Posted on {{ question.publish_date|date:"F j, Y" }} at {{ question.publish_date|date:"g:i A" }} by <a href="{% url 'profile' question.user.username %}">{{ question.user }}</a></p>
+        </div>
+    {% empty %}
+        <div>
+            <p>No questions have been asked.</p>
+        </div>
+    {% endfor %}
+{% endblock %}

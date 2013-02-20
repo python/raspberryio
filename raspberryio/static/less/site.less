@@ -74,11 +74,6 @@ ul {
     position: relative;
 }
 
-.user-message {
-	margin-top: 40px;
-	margin-bottom: 0;
-}
-
 #content {
 	padding-top: 25px;
 	a {
@@ -199,6 +194,13 @@ ul {
 		 				}
 					}
 				}
+			}
+		}
+		form {
+			input.search-query {
+				background: white url("../img/spyglass.png") no-repeat 10px 50%;
+				padding-left: 30px;	
+				line-height: 25px;
 			}
 		}
 	}
@@ -322,7 +324,7 @@ ul {
 		font-size: 9px;
 		color: @white;
 		padding: 3px 0;
-		background: url('../img/background.png');
+		background-color: @grayDark;
 		position: relative;
 		z-index: 2;
 		a {
@@ -333,6 +335,26 @@ ul {
 
 .gallery-display{
 	margin-top: 25px;
+	.details {
+		background-color: @white;
+		margin: auto 0;
+		padding: 15px 10px 2px;
+		text-align: left;
+		@media (max-width: 767px) {
+			text-align: center;
+		}
+		h4 {
+			margin: 0;
+			font-size: 16px;
+			@media (max-width: 767px) {
+				font-size: 20px;
+			}
+		}
+		p { 
+			font-size: 12px;
+			font-weight: 300;
+		}
+	}
 	.gallery {
 		position: relative;
 		@media (min-width: 320px) and (max-width: 767px) {
@@ -350,20 +372,17 @@ ul {
 		  visibility: hidden;
 		  position: relative;
 		  .swipe-wrap {
-			  overflow: hidden;
-			  position: relative;
-			  padding: 0;
-			  margin: 0;
-			  li {
-			  	float: left;
-		  		position: relative;
-		  		&.add {
-					.opacity(50);
-				}
-		  		img {
-		  			width: 100%;
-		  		}
-			  }
+			  	overflow: hidden;
+			  	position: relative;
+			  	padding: 0;
+			  	margin: 0;
+			  	li {
+			  		float: left;
+		  			position: relative;
+		  			img {
+		  				width: 100%;
+		  			}
+			  	}
 			}
 		}
 		nav {
@@ -410,25 +429,17 @@ ul {
 			}
 		}
 	}
-	ul.tiled {
-		padding: 0;
+	.tiled {
 		margin: 0;
 		@media (max-width: 767px) {
 			.hide;
 		}
 		li {
-			width: 25%;
 			padding-bottom: 15px;
 			text-align: center;
+			.pull-left;
 			@media (max-width: 979px) {
 				padding-bottom: 10px;
-			}
-			.pull-left;
-			img {
-				width: 95%;
-			}
-			&.add {
-				.opacity(50);
 			}
 		}
 	}
@@ -497,13 +508,22 @@ body#homepage {
 		width: 100%;
 		top: 0;
 		left: 0;
-		height: 400px;
+		height: 365px;
 		margin: 0 auto;
 		z-index: -9999;
 		background: url('../img/background.png');
+		@media (max-width: 979px) {
+			height: 400px;
+		}
 		@media (max-width: 767px) {
 			position: relative;
 			top: 40px;
+			height: 430px;
+		}
+		@media (max-width: 655px) {
+			height: 470px;
+		}
+		@media (max-width: 480px) {
 			height: 500px;
 		}
 		.message {
@@ -531,7 +551,10 @@ body#homepage {
 		box-shadow: 0 1px 5px -1px #333;
 		clear: both;
 		z-index: 9999 !important;
-		top: 400px;
+		top: 365px;
+		@media (max-width: 979px) {
+			top: 400px;
+		}
 		@media (max-width: 767px) {
 			top: 0;
 			position: absolute;
@@ -540,14 +563,17 @@ body#homepage {
     #featured {
     	min-height: 600px;
     	.makeRow();
-		margin: 400px auto 0;
+		margin: 365px auto 0;
 		background-color: @grayLightest;
 		display: block;
 		padding-top: 40px;
 		text-align: center;
+		@media (max-width: 979px) {
+			margin: 400px auto 0;
+		}
 		@media (max-width: 767px) {
 			margin: auto 0;
-			min-height: 375px;
+			min-height: 350px;
 			padding-left: 20px;
 			padding-right: 20px;
 		}
@@ -614,6 +640,9 @@ body#account {
 				}
 			}
 			.avatar {
+				@media (max-width: 767px) {
+					text-align: center;
+				}
 				ul {
 					margin: 0;
 					padding: 10px 0;
@@ -653,11 +682,13 @@ body#project-list {
 	#content {
 		text-align: center;
 		form {
-			input {
+			input.search-query {
+				background: white url("../img/spyglass-large.png") no-repeat 10px 50%;
 				.border-radius(30px);
-				font-size: 22px;
-				line-height: 45px;
+				font-size: 24px;
+				line-height: 50px;
 				height: 45px;
+				padding-left: 50px;
 				@media (min-width: 767px) {
 					width: 60%;
 				}
@@ -961,13 +992,13 @@ body#user-listing {
 				img {
 					padding: 8px;
 					background-color: @white;
+					.box-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
 					@media (max-width: 767px) {
 						width: 75px;
 						float: left;
 					}
 				}
 				a.username {
-					color: @white;
 					padding-bottom: 20px;
 				}
 			}

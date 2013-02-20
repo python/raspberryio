@@ -24,19 +24,13 @@ urlpatterns = patterns('',
     url(r'^projects/', include('raspberryio.project.urls')),
     url(r'^accounts/', include('raspberryio.userprofile.urls')),
     url(r'^search/', include('raspberryio.search.urls')),
-    url(r'^community/', include('raspberryio.aggregator.urls')),
-    url(r'^ask/', include('raspberryio.qanda.urls')),
-
-    # Feeds
-    url(r'^rss/community/firehose/$', CommunityAggregatorFirehoseFeed(), name='aggregator-firehose-feed'),
-    url(r'^rss/community/(?P<slug>[\w-]+)/$', CommunityAggregatorFeed(), name='aggregator-feed'),
+    url(r'^community/blogs/', include('raspberryio.aggregator.urls')),
+    url(r'^community/', include('raspberryio.qanda.urls')),
+    url(r'^rss/community/blogs/firehose/$', CommunityAggregatorFirehoseFeed(), name='aggregator-firehose-feed'),
+    url(r'^rss/community/blogs/(?P<slug>[\w-]+)/$', CommunityAggregatorFeed(), name='aggregator-feed'),
 
     # django-push
     url(r'^subscriber/', include('django_push.subscriber.urls')),
-
-    # Feeds
-    url(r'^rss/community/firehose/$', CommunityAggregatorFirehoseFeed(), name='aggregator-firehose-feed'),
-    url(r'^rss/community/(?P<slug>[\w-]+)/$', CommunityAggregatorFeed(), name='aggregator-feed'),
 
     # django-activity-streams
     url('^activity/', include('actstream.urls')),
