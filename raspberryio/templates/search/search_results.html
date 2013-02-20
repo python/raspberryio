@@ -52,6 +52,8 @@
                         <p>{{ result.description|truncatewords_html:50|safe }}</p>
                     {% elif result.profile.bio %}
                         <p>{{ result.profile.bio|truncatewords:50 }}</p>
+                    {% elif result.content %}
+                        <p>{{ result.content|truncatewords:50 }}</p>
                     {% endif %}
                 </div>
             {% endfor %}
