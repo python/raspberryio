@@ -18,7 +18,7 @@ class Question(Displayable, Ownable):
         ordering = ['-publish_date']
 
     def __unicode__(self):
-        return unicode(self.title)
+        return u'Question: {0}'.format(self.title)
 
     @models.permalink
     def get_absolute_url(self):

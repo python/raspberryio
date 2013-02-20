@@ -294,16 +294,6 @@ SEARCH_MODEL_INDEXES = {
     'project.project': {
         'title': 10, 'tldr': 5,
     },
-    'qanda.question': {
-        'title': 10, 'question': 5,
-    },
-    'qanda.answer': {
-        'answer': 3,
-    },
-    # LatestArticleRevision represents the latest flat list of wiki articles
-    'search.latestarticlerevision': {
-        'title': 10, 'content': 5,
-    },
 }
 
 ####################
