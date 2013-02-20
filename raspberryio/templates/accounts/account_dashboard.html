@@ -18,7 +18,7 @@
         <div class="top"></div>
         <h2>Recent Activity</h2>
         <ul>
-            {% for action in actions %}
+            {% for action in actions|slice:":10" %}
                 <li>{% include 'includes/account_action.html' %}</li>
             {% empty %}
             <p>
@@ -27,7 +27,7 @@
             {% endfor %}
         </ul>
     </div>
-    <div class="projects span4 offset1">
+    <div class="projects span5">
 
         <h3><img src="{{ STATIC_URL }}img/razzy-head.png" width="35"> My Projects</h3>
         {% if user.projects.all %}
@@ -37,10 +37,10 @@
             <li><a href="{% url 'project-detail' project.slug %}">{{ project.title }}</a></li>
         {% endfor %}
         {% endwith %}
-            <li><a href="{% url 'profile' user.username %}">Go to your profile</a></li>
+            <li><a href="{% url 'profile' user.username %}">View your profile &rarr;</a></li>
         </ul>
         {% else %}
-        <a class="create" href="{% url 'project-create-edit' %}"><i class="icon-plus icon-white"></i> Create Project</a>
+        <a class="create" href="{% url 'project-create-edit' %}"><i class="icon-plus icon-white"></i> Create Project &rarr;</a>
         {% endif %}
     </div>
 </div>

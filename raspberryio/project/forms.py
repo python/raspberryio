@@ -13,24 +13,41 @@ PLACEHOLDER_WIDGET_TYPES = (
 
 class PlaceHolderMixin(object):
     """
-    Mixin that sets the placeholders of fields to their label's value and removes
-    the label.
+    Mixin that sets the placeholder text for form text, password and
+    textarea fields.
+
+    Use Meta.remove_labels = True to remove labels whose placeholder text is
+    set.
+
+    Placeholder text defaults to each field's label. To override, set
+    Meta.placeholders to a dictionary of the form:
+        {'fieldname': 'placeholder text', ...}
     """
     def __init__(self, *args, **kwargs):
         super(PlaceHolderMixin, self).__init__(*args, **kwargs)
+        placeholders = getattr(self.Meta, 'placeholders', {})
         for name, field in self.fields.iteritems():
             widget_type = field.widget.__class__.__name__
             if widget_type in PLACEHOLDER_WIDGET_TYPES:
-                placeholder = field.label if field.label else name
-                placeholder = placeholder.replace('_', ' ')
-                field.widget.attrs.update({'placeholder': placeholder.title()})
-                field.label = ''
+                placeholder_text = placeholders.get(name, '')
+                if not placeholder_text:
+                    placeholder_text = field.label if field.label else name
+                    placeholder_text = placeholder_text.replace('_', ' ') \
+                        .title()
+                field.widget.attrs.update({
+                    'placeholder': placeholder_text
+                })
+                if getattr(self.Meta, 'remove_labels', False):
+                    field.label = ''
 
 
-class ProjectForm(forms.ModelForm):
+class ProjectForm(PlaceHolderMixin, forms.ModelForm):
 
     class Meta(object):
         model = Project
+        placeholders = {
+            'title': 'The title of your RaspberryPi project',
+        }
         fields = (
             'title', 'featured_photo', 'featured_video', 'tldr', 'categories',
         )

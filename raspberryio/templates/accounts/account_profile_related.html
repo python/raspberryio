@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n future mezzanine_tags %}
+{% load profile_tags %}
 
 {% block meta_title %}{{ user.username }}{% endblock %}
 {% block title %}{{ user.username }}{% endblock %}
@@ -20,7 +21,7 @@
         <li class="span3">
             <a href="{{ related_user.get_absolute_url }}">
             {% with related_user.get_profile as profile %}
-            {% include 'includes/profile-picture.html' %}
+                {% avatar profile 150 %}
             {% endwith %}
             </a>
             

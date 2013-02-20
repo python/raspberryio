@@ -95,6 +95,7 @@ def make_search_proxy_model(ModelKls, search_fields):
 
     return type(kls_name, (Searchable, ModelKls), {
         'search_fields': search_fields,
+        'search_classname': ModelKls.__name__.lower(),
         'Meta': Meta,
         '__module__': ModelKls.__module__
     })

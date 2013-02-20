@@ -3,7 +3,7 @@
 {% load bootstrap_toolkit %}
 
 {% block main %}
-    <form class="question-create-edit-form" action="" method="post" accept-charset="utf-8"> {% csrf_token %}
+    <form class="question-create-edit-form" method="post" accept-charset="utf-8"> {% csrf_token %}
         {{ question_form|as_bootstrap }}
         {{ project_form.media }}
         <input type="submit" id="submit-question-create-edit" name="save" value="Save" />

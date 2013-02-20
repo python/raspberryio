@@ -5,47 +5,56 @@
 
 {% block body_id %}homepage{% endblock %}
 
-{% block content %}
-<header>
-  <div class="container">
-    <h1>Welcome to Raspberry I/O!</h1>
-    <p>This is a place for learning, sharing and creating your Raspberry Pi project.</p>
-    {% if user.is_authenticated %}
-        <a href="{% url 'project-list' %}">Start Exploring!</a>
-    {% else %}
-        <a href="{% url 'signup' %}">Get Started!</a>
-    {% endif %}
-  </div>
-</header>
+{% block jumbotron %}
+<div class="homepage-hero-wrap">
+    <div class="container">
+        <div class="message">
+            <img src="{{ STATIC_URL }}img/razzy-large.png" alt="Hi! I am Razzy." width="100">
+            <h1>Welcome to Raspberry I/O!</h1>
+            <p>This is a place for learning, sharing and creating your Raspberry Pi project.</p>
+            {% if user.is_authenticated %}
+                <a href="{% url 'project-list' %}">Start Exploring &rarr;</a>
+            {% else %}
+                <a href="{% url 'signup' %}">Get Started &rarr;</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
 
+{% block content %}
 <div id="featured">
     <div class="container">
         {% featured_projects 1 %}
         {% for featured in featured_projects %}
-            <a href="{% url 'project-detail' featured.project.slug %}">
-            <div class="info">
+            
+            <div class="project">
                 <h2>{{ featured.project.title }}</h2>
                 <p>{{ featured.byline }}</p>
+                <a href="{% url 'project-detail' featured.project.slug %}"><img src="{{ MEDIA_URL }}{% thumbnail featured.photo.url 800 400 %}" alt="{{ featured.project.title }}"/></a>
             </div>
-            <img src="{{ MEDIA_URL }}{% thumbnail featured.photo.url 1252 626 %}" alt="{{ featured.project.title }}"/>
+            
             </a>
         {% empty %}
-            <a href="#">
-            <div class="info">
+            <div class="project">
                 <h2>Featured Project name</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                <a href="#"><img src="http://placekitten.com/800/400"></a>
             </div>
-            <img src="http://placekitten.com/1500/800">
-            </a>
         {% endfor %}
-
     </div>
 </div>
+{% endblock %}
 
-<div id="jumbo-search" >
-    <form action="{% url 'search' %}" class="form-search">
-        <input type="text" name="q" placeholder="Search" class="search-query">
-        <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
-    </form>
-</div>
+{% block extra_js %}
+<script src="{{ STATIC_URL }}js/libs/jquery.stickyPanel.min.js"></script>
+<script>
+    $(function () {
+        var stickyPanelOptions = {
+            afterDetachCSSClass: "",
+            savePanelSpace: true
+        };
+        $("#global-nav").stickyPanel(stickyPanelOptions);
+    });
+</script>
 {% endblock %}

@@ -50,47 +50,63 @@
 <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
 
 <div id="page">
+    
+    {% block jumbotron %}{% endblock %}
+
     {% block global_nav %}
-    <nav id="global-nav">
-        <div class="container">
-            <a class="brand" href="/">{{ settings.SITE_TITLE }}</a>
-            <div class="right-block">
-                <ul class="nav">
-                    {% if request.user.is_authenticated %}
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Hi {{ request.user }}!<b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{% url 'profile-dashboard' %}">My Dashboard</a></li>
-                            <li><a href="{% url 'profile' user.username %}">My Profile</a></li>
-                            <li><a href="{% url 'profile_update' %}">Edit Profile</a></li>
-                            <li><a href="{% url 'project-create-edit' %}">Create new project</a></li>
+    <div id="global-nav" class="navbar navbar-static-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="/">
+                    <img src="{{ STATIC_URL }}img/razzy-head.png" alt="Razzy head" width="20"> 
+                    {{ settings.SITE_TITLE }}
+                </a>
+                <div class="nav-collapse collapse">
+                    <div class="right-block">
+                        <ul class="nav">
+                            {% if request.user.is_authenticated %}
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Hi {{ request.user }}!<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{% url 'profile-dashboard' %}">My Dashboard</a></li>
+                                    <li><a href="{% url 'profile' user.username %}">My Profile</a></li>
+                                    <li><a href="{% url 'profile_update' %}">Edit Profile</a></li>
+                                    <li><a href="{% url 'project-create-edit' %}">Create new project</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{% url 'logout' %}">Log Out</a></li>
+                            {% else %}
+                            <li><a href="{% url 'login' %}">Log In</a></li>
+                            <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                            {% endif %}
                         </ul>
-                    </li>
-                    <li><a href="{% url 'logout' %}">Log Out</a></li>
-                    {% else %}
-                    <li><a href="{% url 'login' %}">Log In</a></li>
-                    <li><a href="{% url 'signup' %}">Sign Up</a></li>
-                    {% endif %}
-                </ul>
-                <form action="{% url 'search' %}" class="navbar-search">
-                    <input type="text" name='q' class="search-query" placeholder="Search" 
-                    {% if query %}
-                        value="{{ query }}"
-                    {% endif %}
-                    >
-                </form>
+                        <form action="{% url 'search' %}" class="navbar-search">
+                            <input type="text" name="q" class="search-query" placeholder="Search" 
+                            {% if query %}
+                                value="{{ query }}"
+                            {% endif %}
+                            >
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
+    </div>
     {% endblock %}
 
+    {% if page.title or messages %}
     <header>
     {% block header %}
         <div class="container">
             {% nevercache %}
                 {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}" data-alert="alert">
-                        <a class="close" href="#" onclick="$(this).parent().fadeOut('fast'); return false;">×</a>{{ message }}
+                    <div class="user-message alert alert-{{ message.tags }}" data-alert="alert">
+                        {{ message }}
                     </div>
                 {% endfor %}
                 {% if page.title %}
@@ -100,6 +116,7 @@
         </div>
     {% endblock %}
     </header>
+    {% endif %}
 
     {% block content %}
         <div class="container">
@@ -112,7 +129,7 @@
     <div id="push"></div>
 
     {% block navbar %}
-    <div class="navbar navbar-fixed-bottom">
+    <div id="footer-nav" class="navbar navbar-fixed-bottom">
         <div class="navbar-inner">
             <div class="container">
                 <ul class="nav">
@@ -121,7 +138,7 @@
                     <li class="about">
                         <div class="tabWrapper">
                             <a class="tab" href="#">
-                                <img src="{{ STATIC_URL }}img/razzy.png" alt="About Raspberry IO" width="50" height="60">
+                                <img src="{{ STATIC_URL }}img/razzy-small.png" alt="About Raspberry IO" width="50" height="60">
                             </a>
                             <div class="tabContent">
                                 <h4>About Raspberry I/O</h4>

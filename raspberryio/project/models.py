@@ -73,7 +73,7 @@ class Project(Displayable, Ownable, AdminThumbMixin):
         return ('project-detail', [self.slug])
 
     def __unicode__(self):
-        return u'Project: {0}'.format(self.title)
+        return unicode(self.title)
 
 
 class ProjectStep(Orderable, RichText):
