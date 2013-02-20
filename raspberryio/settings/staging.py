@@ -28,20 +28,6 @@ CACHES = {
 
 EMAIL_SUBJECT_PREFIX = '[Raspberryio Staging] '
 
-########## COMPRESSION CONFIGURATION
-COMPRESS_ENABLED = False
-# Default : the opposite of DEBUG
-
-COMPRESS_OFFLINE = False
-
-COMPRESS_DEBUG_TOGGLE = 'compressor'
-COMPRESS_JS_COMPRESSOR = 'compressor.css.CssCompressor'
-COMPRESS_CSS_COMPRESSOR = 'compressor.js.JsCompressor'
-COMPRESS_OUTPUT_DIR = 'CACHE'
-COMPRESS_JS_FILTERS = 'compressor.filters.jsmin.JSMinFilter'
-COMPRESS_CSS_FILTERS = 'compressor.filters.css_default.CssAbsoluteFilter'
-########## END COMPRESSION CONFIGURATION
-
 # import secrets
 try:
     SECRETS_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, os.pardir))
