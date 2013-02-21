@@ -20,7 +20,7 @@ from raspberryio.project.utils import AjaxResponse
 
 def index(request):
     "Custom view for site homepage"
-    users = User.objects.filter(is_active=True)
+    users = User.objects.filter(is_active=True, profile__isnull=False)
     users = [[x.actor_actions.all().count(), x] for x in users]
     active_users = sorted(users, key=itemgetter(0))
     active_users.reverse()
