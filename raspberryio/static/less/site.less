@@ -24,7 +24,7 @@
 ================= */
 @purpleDark: #631B42;
 @greenMedium: #8FAC3C;
-@grayLightest: #F0F0F0;
+@grayLightest: #edebeb;
 @raspberry: #c03939;
 
 /* Mixins
@@ -67,6 +67,11 @@ h1 {
 
 ul {
 	list-style: none;
+}
+
+hr {
+	border-color: @grayLighter;
+	.box-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
 }
 
 #page {
@@ -324,7 +329,7 @@ ul {
 		font-size: 9px;
 		color: @white;
 		padding: 3px 0;
-		background-color: @grayDark;
+		background: url('../img/background.png');
 		position: relative;
 		z-index: 2;
 		a {
@@ -508,23 +513,23 @@ body#homepage {
 		width: 100%;
 		top: 0;
 		left: 0;
-		height: 365px;
+		height: 340px;
 		margin: 0 auto;
 		z-index: -9999;
 		background: url('../img/background.png');
 		@media (max-width: 979px) {
-			height: 400px;
+			height: 350px;
 		}
 		@media (max-width: 767px) {
 			position: relative;
 			top: 40px;
-			height: 430px;
+			height: 400px;
 		}
 		@media (max-width: 655px) {
-			height: 470px;
+			height: 415px;
 		}
 		@media (max-width: 480px) {
-			height: 500px;
+			height: 440px;
 		}
 		.message {
 			position: relative;
@@ -535,11 +540,6 @@ body#homepage {
 			color: @white;
 			h1 { padding-bottom: 0; }
 			p { .lead; }
-			a {
-				.btn;
-				.btn-large;
-				.btn-success;
-			}
 		}
 	}
 	#global-nav {
@@ -551,38 +551,47 @@ body#homepage {
 		box-shadow: 0 1px 5px -1px #333;
 		clear: both;
 		z-index: 9999 !important;
-		top: 365px;
+		top: 340px;
 		@media (max-width: 979px) {
-			top: 400px;
+			top: 350px;
 		}
 		@media (max-width: 767px) {
 			top: 0;
 			position: absolute;
 		}
 	}
-    #featured {
-    	min-height: 600px;
-    	.makeRow();
-		margin: 365px auto 0;
+    #homepage-content{
+		margin: 340px auto 0;
 		background-color: @grayLightest;
 		display: block;
 		padding-top: 40px;
 		text-align: center;
+		p { .lead; }
 		@media (max-width: 979px) {
-			margin: 400px auto 0;
+			margin: 350px auto 0;
 		}
 		@media (max-width: 767px) {
 			margin: auto 0;
-			min-height: 350px;
+			min-height: 400px;
 			padding-left: 20px;
 			padding-right: 20px;
 		}
-		.project {
-			width: 100%;
-			margin: auto 0;
-			p { .lead; }
+		.get-started {
+			width: 65%;
+			margin: auto;
+			padding-bottom: 20px;
+			a {
+				.btn;
+				.btn-large;
+				.btn-success;
+			}
+		}
+		.featured {
+			width: 65%;
+			margin: auto;
 		}
     }
+    
 }
 
 /* Account pages
