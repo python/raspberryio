@@ -6,7 +6,6 @@ from django.views.generic import RedirectView
 
 from django_notify.urls import get_pattern as get_notify_pattern
 from wiki.urls import get_pattern as get_wiki_pattern
-from mezzanine.core.views import direct_to_template
 from aggregator.feeds import CommunityAggregatorFeed, CommunityAggregatorFirehoseFeed
 
 admin.autodiscover()
@@ -15,10 +14,9 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
-    # Static homepage template for now
-    url(r"^$", direct_to_template, {"template": "homepage.html"}, name="home"),
 
     # RaspberryIO apps
+    url(r"^$", 'raspberryio.project.views.index', name="home"),
     url(r'^users/$', 'raspberryio.userprofile.views.profile_users', name='profile-users'),
     url(r'^dashboard/$', 'raspberryio.userprofile.views.profile_dashboard', name='profile-dashboard'),
     url(r'^projects/', include('raspberryio.project.urls')),

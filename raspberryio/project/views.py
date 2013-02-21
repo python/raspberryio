@@ -15,6 +15,11 @@ from raspberryio.project.forms import (ProjectForm, ProjectStepForm,
 from raspberryio.project.utils import AjaxResponse
 
 
+def index(request):
+    "Custom view for site homepage"
+    return render(request, 'homepage.html', {})
+
+
 def project_list(request):
     user = request.user
     if user.is_superuser:
