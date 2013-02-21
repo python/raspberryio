@@ -355,7 +355,7 @@ def reset_local_media():
 
     require('environment', provided_by=('staging', 'production'))
     media = os.path.join(env.code_root, 'public/media')
-    local("rsync -rvaz 'ssh -p %s' %s@%s:%s %s/public" %
+    local("rsync -rvaze 'ssh -p %s' %s@%s:%s %s/public" %
                     (env.ssh_port, env.user, env.hosts[0], media, PROJECT_ROOT))
 
 
