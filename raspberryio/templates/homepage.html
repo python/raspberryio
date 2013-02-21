@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load future project_tags mezzanine_tags %}
+{% load url from future %}
+{% load profile_tags %}
 
 {% block site_title %}Raspberry I/O{% endblock %}
 
@@ -32,12 +34,25 @@
             {% endif %}
             </div>
         </div>
-        <hr>
+        
         <div class="row">
+            <div class="active-users">
+                <hr>
+               <h2>Most Active Users</h2>
+               <ul>
+               {% for num, user in active_users|slice:"6" %}
+                   <li class="span2">
+                       <a href="{% url 'profile' user %}">{% avatar user.get_profile 200 %}
+                           {{ user.username }}</a>
+                   </li>
+               {% endfor %}
+               </ul>
+            </div>
         </div>
-        <hr>
+        
         <div class="row">
             <div class="featured">
+            <hr>
             {% featured_projects 1 %}
             {% for featured in featured_projects %}
                 <div class="project">

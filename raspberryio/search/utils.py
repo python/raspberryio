@@ -42,8 +42,7 @@ def clean_model_fields(model_fields):
         for field_key in field_keys:
             if field_key not in model_field_names:
                 fields.pop(field_key)
-                err_msg = 'SEARCH_MODEL_INDEXES has a field {0} for the ' + \
-                'model {1} that does not exist'.format(field_key, ModelKls)
+                err_msg = 'SEARCH_MODEL_INDEXES has a field {0} for the model {1} that does not exist'.format(field_key, ModelKls)
                 logging.error(err_msg)
     return model_fields
 
@@ -63,14 +62,12 @@ def clean_index(index):
         try:
             appname, modelname = appname_model.split('.')
         except (TypeError, ValueError):
-            err_msg = 'SEARCH_MODEL_INDEXES setting key {0} is in the' + \
-            'wrong format'.format(appname_model)
+            err_msg = 'SEARCH_MODEL_INDEXES setting key {0} is in the wrong format'.format(appname_model)
             logging.error(err_msg)
             continue
         ModelKls = models.get_model(appname, modelname)
         if ModelKls is None:
-            err_msg = 'SEARCH_MODEL_INDEXES key {0} refers to a model' + \
-            'that cannot be found.'.format(appname_model)
+            err_msg = 'SEARCH_MODEL_INDEXES key {0} refers to a model that cannot be found.'.format(appname_model)
             logging.error(err_msg)
             continue
         model_classes_fields.append((ModelKls, fields))
@@ -85,6 +82,9 @@ def make_search_proxy_model(ModelKls, search_fields):
     """
 
     kls_name = 'Searchable' + ModelKls.__name__
+    search_classname = getattr(
+        ModelKls, 'search_classname', ModelKls.__name__.lower()
+    )
 
     class Meta(object):
         proxy = True
@@ -95,7 +95,7 @@ def make_search_proxy_model(ModelKls, search_fields):
 
     return type(kls_name, (Searchable, ModelKls), {
         'search_fields': search_fields,
-        'search_classname': ModelKls.__name__.lower(),
+        'search_classname': search_classname,
         'Meta': Meta,
         '__module__': ModelKls.__module__
     })

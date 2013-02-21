@@ -566,7 +566,21 @@ body#homepage {
 		display: block;
 		padding-top: 40px;
 		text-align: center;
+		a {
+			color: @raspberry;
+			font-weight: bold;
+		}
 		p { .lead; }
+		hr {
+			margin: 60px 0;
+		}
+		h2 {
+			font-family: 'Harabara';
+		 	font-weight: normal;
+		 	letter-spacing: 0.06em;
+		 	padding-bottom: 20px;
+		 	font-size: 36px;
+		}
 		@media (max-width: 979px) {
 			margin: 350px auto 0;
 		}
@@ -576,22 +590,31 @@ body#homepage {
 			padding-left: 20px;
 			padding-right: 20px;
 		}
-		.get-started {
+		.get-started, .featured {
 			width: 65%;
 			margin: auto;
-			padding-bottom: 20px;
+		}
+		.get-started {
 			a {
 				.btn;
 				.btn-large;
 				.btn-success;
 			}
 		}
-		.featured {
-			width: 65%;
-			margin: auto;
+		.featured, .active-users {
+			@media (max-width: 480px) {
+				.hide;
+			}
+		}
+		.active-users {
+			ul {
+				text-align: center;
+			}
+			img {
+				width: 100%;
+			}
 		}
     }
-    
 }
 
 /* Account pages

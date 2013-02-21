@@ -86,6 +86,8 @@ class ProjectStep(Orderable, RichText):
     video = models.URLField(blank=True, default='',
                             help_text='Enter a valid Youtube URL')
 
+    search_classname = 'Project Step'
+
     class Meta(object):
         order_with_respect_to = 'project'
 
@@ -127,7 +129,7 @@ class ProjectStep(Orderable, RichText):
         return None
 
     def __unicode__(self):
-        return u'ProjectStep: Step {0} of project {1}'.format(
+        return u'Step {0} of project {1}'.format(
             self._order, self.project.title
         )
 

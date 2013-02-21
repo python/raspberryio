@@ -61,9 +61,13 @@ class ProjectBaseTestCase(RaspberryIOBaseTestCase):
             'site': kwargs.pop('site', self.create_site()),
             'user': kwargs.pop('user', self.create_user()),
         }
-        return self.create_instance(
+        instance = self.create_instance(
             project.Project, defaults=defaults, **kwargs
         )
+        if 'status' in kwargs:
+            instance.status = kwargs['status']
+            instance.save()
+        return instance
 
     def create_project_step(self, **kwargs):
         defaults = {

@@ -4,6 +4,9 @@ from datetime import timedelta
 from django.core.urlresolvers import reverse
 
 from hilbert.test import ViewTestMixin, AuthViewMixin
+
+from actstream.actions import follow
+
 from mezzanine.utils.timezone import now
 from mezzanine.core.models import (CONTENT_STATUS_PUBLISHED,
     CONTENT_STATUS_DRAFT)
@@ -627,3 +630,25 @@ class ProjectImageDeleteViewTestCase(ProjectBaseTestCase):
         self.assertEqual(response.content, 'true')
         self.assertEqual(list(project_step.gallery.all()), [])
         self.assertEqual(list(ProjectImage.objects.all()), [])
+
+
+class IndexTestCase(ProjectBaseTestCase):
+    url_name = 'home'
+
+    def setUp(self):
+        self.user = self.create_user(data={'password': 'password'})
+        self.user1 = self.create_user(data={'password': 'password'})
+        self.url = reverse(self.url_name)
+
+    def test_active_users(self):
+        response = self.client.get(self.url)
+        self.assertEqual(2, len(response.context['active_users']))
+        self.user.is_active = False
+        self.user.save()
+        response = self.client.get(self.url)
+        self.assertEqual(1, len(response.context['active_users']))
+
+    def test_sorted_active_users(self):
+        follow(self.user, self.user1)
+        response = self.client.get(self.url)
+        self.assertEqual([1, self.user], response.context['active_users'][0])
