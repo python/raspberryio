@@ -351,6 +351,9 @@ hr {
 		h4 {
 			margin: 0;
 			font-size: 16px;
+			@media (max-width: 979px) {
+				font-size: 11px;
+			}
 			@media (max-width: 767px) {
 				font-size: 20px;
 			}
@@ -358,6 +361,10 @@ hr {
 		p { 
 			font-size: 12px;
 			font-weight: 300;
+			@media (min-width: 767px) and (max-width: 979px) {
+				line-height: 12px;
+				font-size: 11px;
+			}
 		}
 	}
 	.gallery {
