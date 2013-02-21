@@ -1,6 +1,9 @@
+from operator import itemgetter
+
 from django.http import HttpResponseForbidden, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.sites.models import Site
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from actstream import action
@@ -17,7 +20,11 @@ from raspberryio.project.utils import AjaxResponse
 
 def index(request):
     "Custom view for site homepage"
-    return render(request, 'homepage.html', {})
+    users = User.objects.filter(is_active=True)
+    users = [[x.actor_actions.all().count(), x] for x in users]
+    active_users = sorted(users, key=itemgetter(0))
+    active_users.reverse()
+    return render(request, 'homepage.html', {'active_users': active_users})
 
 
 def project_list(request):
