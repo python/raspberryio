@@ -40,7 +40,7 @@
                 <hr>
                <h2>Most Active Users</h2>
                <ul>
-               {% for num, user in active_users|slice:"6" %}
+               {% for num, user in active_users|slice:"5" %}
                    <li class="span2">
                        <a href="{% url 'profile' user %}">{% avatar user.get_profile 200 %}
                            {{ user.username }}</a>
