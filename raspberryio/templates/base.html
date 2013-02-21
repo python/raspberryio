@@ -166,9 +166,13 @@
 
     <script src="{{ STATIC_URL }}js/libs/bootstrap.min.js"></script>
 
-    {% compress js %}
-    <script src="{{ STATIC_URL }}js/site.js"></script>
-    {% endcompress %}
+    {% if debug %}
+        <script src="{{ STATIC_URL }}js/site.js"></script>
+    {% else %}
+        {% compress js %}
+            <script src="{{ STATIC_URL }}js/site.js"></script>
+        {% endcompress %}
+    {% endif %}
 
     {% block extra_js %}{% endblock %}
     {% render_block "js" %}

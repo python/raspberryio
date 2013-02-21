@@ -1,5 +1,4 @@
-
-from django.db import models
+from django.db import models, transaction
 
 from mezzanine.core.managers import SearchableManager
 
@@ -16,5 +15,6 @@ class Searchable(models.Model):
 
     class Meta():
         abstract = True
+
 
 searchable_models = load_search_model_indexes()

@@ -187,6 +187,7 @@ INSTALLED_APPS = (
     # RaspberryIO apps
     "raspberryio.userprofile",
     "raspberryio.project",
+    "raspberryio.search_models",
     "raspberryio.search",
     "raspberryio.aggregator",
     "raspberryio.qanda",
@@ -293,6 +294,19 @@ SEARCH_MODEL_INDEXES = {
     },
     'project.project': {
         'title': 10, 'tldr': 5,
+    },
+    'project.projectstep': {
+        'content': 10,
+    },
+    'qanda.question': {
+        'title': 10, 'question': 5,
+    },
+    'qanda.answer': {
+        'answer': 3,
+    },
+    # LatestArticleRevision represents the latest flat list of wiki articles
+    'search_models.latestarticlerevision': {
+        'title': 10, 'content': 5,
     },
 }
 
