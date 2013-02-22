@@ -14,7 +14,7 @@
 // -- Dashboard
 // -- Followers/Following
 // -- Search Results
-// -- Wiki pages
+// -- Community homepage
 
 /* Bootstrap imports
 ==================== */
@@ -492,11 +492,42 @@ hr {
 			border-right: 10px solid transparent;
     		right: -1px;
 		}
+		span {
+			font-family: Helvetica, Arial, sans-serif;
+			font-weight: normal;
+			letter-spacing: normal;
+		}
 	}
 	.top {
 		background-color: @purpleDark;
 		padding: 10px;
 	}
+}
+
+.item-list {
+ 	a.article-link {
+ 		color: @gray !important;
+ 		article {
+ 			background-color: @white;
+ 			padding: 10px 20px 10px;
+	 		.border-radius(10px);
+	 		.box-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+	 		margin-bottom: 20px;
+	 		&:hover {
+ 				background-color: @raspberry;
+ 				color: @white;
+ 			}
+ 			img {
+ 				padding-top: 10px;
+ 			}
+ 			section {
+	 			p {
+	 				font-weight: 200;
+	 				line-height: 24px;
+	 			}
+ 			}
+ 		}
+ 	}	
 }
 
 
@@ -964,17 +995,20 @@ body#dashboard {
 				padding-bottom: 15px;
 				font-size: 18px;
 				font-weight: 150;
-				a {
-					color: @white;
-				}
-				time {
+				.time {
 					font-size: 14px;
+				}
+				a {
+					color: @grayLightest;
+					&:hover {
+						text-decoration: underline;
+					}
 				}
 			}
 		}
 	}
 	.projects {
-		time {
+		.time {
 			font-style: italic;
 		}
 		.create {
@@ -1046,37 +1080,36 @@ body#user-listing {
 ========================= */
 body#search-results {
  	header {
- 		p { .lead; 
+ 		p { 
+ 			.lead; 
  			span {
  				font-weight: bold;
  			}
  		}
  	}
- 	#results-list {
- 		a {
- 			color: @gray;
- 			.result {
-	 			background-color: @white;
-	 			padding: 15px 20px 10px;
-		 		.border-radius(10px);
-		 		.box-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-		 		margin-bottom: 20px;
-		 		&:hover {
- 					background-color: @raspberry;
- 					color: @white;
- 				}
- 				img {
- 				}
- 				.details {
-		 			p {
-		 				font-weight: 200;
-		 				line-height: 24px;
-		 			}
-	 			}
- 			}
- 		}	
- 	}
 }
 
-/* Wiki pages
+/* Community homepage
 ========================= */
+body#community-home {	
+	.qanda {
+		h3 {
+			a.ask {
+				.btn;
+				.btn-success;
+			}
+		}
+	}
+}
+
+/* Question and Answer
+========================= */
+body#question-list {
+	a.btn {
+		.btn-success;
+		margin-bottom: 20px;
+	}
+	ul {
+		margin: 0;
+	}
+}	

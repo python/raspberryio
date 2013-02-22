@@ -37,4 +37,4 @@
     {% endif %}
 {% endif %}
 
-<p><time datetime="{{ action.timestamp|date:"c" }}">{{ action.timestamp|timesince }} {% trans "ago" %}</time></p>
+<p class="time">{{ action.timestamp|timesince }} {% trans "ago" %}</p>

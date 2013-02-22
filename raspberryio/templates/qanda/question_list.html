@@ -5,27 +5,21 @@
 {% block body_id %}question-list{% endblock %}
 
 {% block main %}
-    <header>
-        <h2>
-            Q &amp; A
-        </h2>
-    </header>
-    <div class="ask">
-        <a href="{% url 'question-create-edit' %}">Ask a question</a>
-    </div>
-    <div class="question">
-        <h3>
-            Questions:
-        </h3>
+<header>
+    <h2>Questions and Answers</h2>
+    <p>Have a question about a Raspberry Pi project you are working on? Find or ask questions, plis submit answers in this portion of our community pages.</p>
+</header>
+
+<h3>Questions</h3>
+<a class="btn" href="{% url 'question-create-edit' %}">Ask a question</a>
+{% if questions %}
+    <ul>
         {% for question in questions %}
-            <div>
-                <a href="{% url 'question' question.slug %}">{{ question.title }}</a>
-            </div>
-        {% empty %}
-            <div>
-                <p>No questions have been asked.</p>
-            </div>
+        <li><a href="{% url 'question' question.slug %}">{{ question.title }}</a></li>
         {% endfor %}
-    </div>
+    </ul>
+{% else %}
+<p>No questions have been asked.</p>
+{% endif %}
 
 {% endblock %}

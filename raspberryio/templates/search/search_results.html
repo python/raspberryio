@@ -24,21 +24,21 @@
 
 {% pagination_for results %}
 
-<div id="results-list">
+<div class="item-list">
     {% for result in results.object_list %}
-    <a href="{{ result.get_absolute_url }}">
-        <div class="result">
+    <a class="article-link" href="{{ result.get_absolute_url }}">
+        <article>
             {% if result.profile %}
-                {% avatar result.profile 100 %}
+                {% avatar result.profile 75%}
             {% endif %}
             {% if result.tldr %}
                 {% if result.featured_photo %}
-                    <img src="{{ MEDIA_URL }}{% thumbnail result.featured_photo.url 100 100 %}" alt="{{ result.title }}" width="50"/>
+                    <img src="{{ MEDIA_URL }}{% thumbnail result.featured_photo.url 75 75 %}" alt="{{ result.title }}" />
                 {% else %}
-                    <img src="{{ STATIC_URL }}img/no-featured-photo.png" alt="{{ project.title }}" width="50" />
+                    <img src="{{ STATIC_URL }}img/no-featured-photo.png" alt="{{ project.title }}" width="75" />
                 {% endif %}
             {% endif %}
-            <div class="details">
+            <section>
                 <h4>
                 {# Human readable type and title #}
                 {% if search_type == "Everything" %}
@@ -60,8 +60,8 @@
                     {{ result.answer|striptags|truncatewords:50 }}
                 {% endif %}
                 </p>
-            </div>
-        </div>
+            </section>
+        </article>
     </a>
     {% endfor %}
 </div>

@@ -4,33 +4,48 @@
 
 {% block meta_title %}Community{% endblock %}
 {% block title %}Community{% endblock %}
-{% block body_id %}question-list{% endblock %}
+{% block body_id %}community-home{% endblock %}
 
 {% block main %}
-
-  <h3>Community</h3>
-
-  <h4>Recent Blog Posts <small><a href="{% url 'community-feed-list' feed_type.slug %}">View More</a></small></h4>
-  {% for item in feed_items|slice:"5" %}
-    <div class="well">
-      <h5><a href="{{ item.link }}">{{ item.title }}</a></h5>
-      <p class="date">Posted on {{ item.date_modified|date:"F j, Y" }} at {{ item.date_modified|date:"g:i A" }} by <a href="{{ item.feed.public_url }}">{{ item.feed.title }}</a> <a class="rss" href="{{ item.feed.feed_url }}">RSS</a></p>
+<h2>Community</h2>
+<div class="item-list row">
+    <div class="feed span6">
+        <header>
+            <h3>Posts for 
+                <a href="{% url 'community-feed-list' feed_type.slug %}">{{ feed_type }}</a> 
+                <a class="rss" href="{{ feed_type.feed.feed_url }}">
+                <img src="{{ STATIC_URL }}img/feed-icon.png" width="25"></a>
+            </h3>
+            <p>These are a blog post collected around the interwebs about {{ feed_type }}. If you have one you would like to add, <a href="#">please fill out this form.</a></p>
+        </header>
+        {% for item in feed_items|slice:"5" %}
+            <a class="article-link" href="{{ item.link }}">
+                <article>
+                    <section>
+                        <h4>{{ item.title }}</h4>
+                        <p>Posted on {{ item.date_modified|date:"F j, Y" }} at {{ item.date_modified|date:"g:i A" }}</p>
+                    </section>
+                </article>
+            </a>
+        {% empty %}
+            <p>No recent posts.</p>
+        {% endfor %}
     </div>
-    {% empty %}
-    <div>
-        <p>No recent posts.</p>
-    </div>
-    {% endfor %}
 
-  <h4>Recent Questions <small><a href="{% url 'question-list' %}">View More</a></small></h4>
-    {% for question in questions|slice:"5" %}
-        <div class="well">
-            <h5><a href="{% url 'question' question.slug %}">{{ question.title }}</a></h5>
-            <p class="date">Posted on {{ question.publish_date|date:"F j, Y" }} at {{ question.publish_date|date:"g:i A" }} by <a href="{% url 'profile' question.user.username %}">{{ question.user }}</a></p>
-        </div>
-    {% empty %}
-        <div>
+    <div class="qanda span5 offset1">
+        <h3><a class="more" href="{% url 'question-list' %}">Questions &amp; Answers</a> <a class="ask" href="{% url 'question-create-edit' %}">Ask a question</a></h3>
+        {% for question in questions|slice:"5" %}
+            <a class="article-link" href="{% url 'question' question.slug %}">
+                <article>
+                    <section>
+                        <h4>{{ question.title }}</h4>
+                        <p>Posted on {{ question.publish_date|date:"F j, Y" }} at {{ question.publish_date|date:"g:i A" }}</p>
+                    </section>
+                </article>
+            </a>
+        {% empty %}
             <p>No questions have been asked.</p>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
