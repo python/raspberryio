@@ -1,0 +1,19 @@
+{% load i18n %}
+
+{% if current_page.has_previous or current_page.has_next %}
+<div class="pagination pagination-large">
+	<ul>
+		<li class="prev{% if not current_page.has_previous %} disabled{% endif %}">
+		    <a{% if current_page.has_previous %} href="?page={{ current_page.previous_page_number }}{% if querystring %}&{{ querystring }}{% endif %}"{% endif %}>&larr; Prev</a>
+		</li>
+		{% for page in current_page.visible_page_range %}
+		<li{% if page == current_page.number %} class="active"{% endif %}>
+		    <a href="?page={{ page }}{% if querystring %}&{{ querystring }}{% endif %}">{{ page }}</a>
+		</li>
+		{% endfor %}
+		<li class="next{% if not current_page.has_next %} disabled{% endif %}">
+		    <a{% if current_page.has_next %} href="?page={{ current_page.next_page_number }}{% if querystring %}&{{ querystring }}{% endif %}"{% endif %}>Next &rarr;</a>
+		</li>
+	</ul>
+</div>
+{% endif %}

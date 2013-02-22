@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
-{% load i18n future mezzanine_tags %}
-{% load profile_tags %}
+{% load i18n future mezzanine_tags profile_tags %}
 
 {% block meta_title %}{% trans "Search Results" %}{% endblock %}
 {% block title %}{% trans "Search Results" %}{% endblock %}
@@ -9,62 +8,63 @@
 {% block body_id %}search-results{% endblock %}
 
 {% block main %}
-    <div class="inner-content">
-        <p>
-            {% if results.paginator.count == 0 %}
-                No results were found {% if search_type != "Everything" %} in {{ search_type }} {% endif %}matching your query: {{ query }}
-            {% else %}
-                {% with start=results.start_index end=results.end_index total=results.paginator.count %}
-                    Showing {{ start }} to {{ end }} of {{ total }} results {% if search_type != "Everything" %} in {{ search_type }} {% endif %}matching your query: {{ query }}
-                {% endwith %}
+<header>
+    <h2>Search results</h2>
+    <p class="lead">
+        {% if results.paginator.count == 0 %}
+            No results were found {% if search_type != "Everything" %} in {{ search_type }} {% endif %}matching your query: {{ query }}
+        {% else %}
+            Found {{ results.paginator.count }} results for <span>"{{ query }}"</span>
+            {% if search_type != "Everything" %} 
+                in <span>{{ search_type }}</span> 
             {% endif %}
-        </p>
+        {% endif %}
+    </p>
+</header>
 
-        <div id="search-results">
-            {% for result in results.object_list %}
-                <div class="search-result">
+{% pagination_for results %}
 
-                    <h4>
-
-                    {# Search result number #}
-                        {{ forloop.counter0|add:results.start_index }})
-                        <a href="{{ result.get_absolute_url }}">
-                        {# User profile avatar #}
-                            {% if result.profile %}
-                                {% avatar result.profile 100 %}
-                            {% endif %}
-                        {# Project image #}
-                            {% if result.tldr %}
-                                {% if result.featured_photo %}
-                                    <img src="{{ MEDIA_URL }}{% thumbnail result.featured_photo.url 100 100 %}" alt="{{ result.title }}" width="100"/>
-                                {% else %}
-                                    <img src="{{ STATIC_URL }}img/no-featured-photo.png" alt="{{ project.title }}" width="100" />
-                                {% endif %}
-                            {% endif %}
-                        {# Human readable type and title #}
-                            {% if search_type == "Everything" %}
-                                {{ result.search_classname|capfirst }} - 
-                            {% endif %}
-                            {{ result }}
-                        </a>
-                    </h4>
-                    {# Use the content body for the given object, truncate it, and escape html if needed #}
-                    {% if result.description %}
-                        <p>{{ result.description|striptags|truncatewords:50 }}</p>
-                    {% elif result.profile.bio %}
-                        <p>{{ result.profile.bio|truncatewords:50 }}</p>
-                    {% elif result.content and result.search_classname == 'Project Step' %}
-                        <p>{{ result.content|striptags|truncatewords:50 }}</p>
-                    {% elif result.content and result.search_classname != 'Project Step' %}
-                        {# TODO: strip markdown for Wiki content #}
-                        <p>{{ result.content|truncatewords:50 }}</p>
-                    {% elif result.answer %}
-                        <p>{{ result.answer|striptags|truncatewords:50 }}</p>
-                    {% endif %}
-                </div>
-            {% endfor %}
+<div id="results-list">
+    {% for result in results.object_list %}
+    <a href="{{ result.get_absolute_url }}">
+        <div class="result">
+            {% if result.profile %}
+                {% avatar result.profile 100 %}
+            {% endif %}
+            {% if result.tldr %}
+                {% if result.featured_photo %}
+                    <img src="{{ MEDIA_URL }}{% thumbnail result.featured_photo.url 100 100 %}" alt="{{ result.title }}" width="50"/>
+                {% else %}
+                    <img src="{{ STATIC_URL }}img/no-featured-photo.png" alt="{{ project.title }}" width="50" />
+                {% endif %}
+            {% endif %}
+            <div class="details">
+                <h4>
+                {# Human readable type and title #}
+                {% if search_type == "Everything" %}
+                    {{ result.search_classname|capfirst }} - 
+                {% endif %}
+                {{ result }}
+                </h4>
+                {# Use the content body for the given object, truncate it, and escape html if needed #}
+                <p>
+                {% if result.description %}
+                    {{ result.description|striptags|truncatewords:50 }}
+                {% elif result.profile.bio %}
+                    {{ result.profile.bio|truncatewords:50 }}
+                {% elif result.content and result.search_classname == 'Project Step' %}
+                    {{ result.content|striptags|truncatewords:50 }}
+                {% elif result.content and result.search_classname != 'Project Step' %}
+                    {{ result.content|truncatewords:50 }}
+                {% elif result.answer %}
+                    {{ result.answer|striptags|truncatewords:50 }}
+                {% endif %}
+                </p>
+            </div>
         </div>
+    </a>
+    {% endfor %}
+</div>
 
-        {% pagination_for results %}
-    </div>
+{% pagination_for results %}
 {% endblock %}
