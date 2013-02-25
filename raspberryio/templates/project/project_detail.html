@@ -27,7 +27,7 @@
                 {% if request.user == project.user or request.user.is_superuser %}
                     <a href="{% url 'project-create-edit' project.slug %}"><i class="icon-edit icon-white"></i> Edit Project</a>
                     <a href="{% url 'project-step-create-edit' project.slug %}"><i class="icon-plus icon-white"></i> Add Step</a>
-                    <a href="{% url 'project-delete' project.id %}" class="btn-danger warning"><i class="icon-trash icon-white"></i> Delete Project</a>
+                    <a href="{% url 'project-delete' project.id %}"><i class="icon-trash icon-white"></i> Delete Project</a>
                 {% endif %}
                 {# Leaving in here for now. This is slated for Phase II work. #}
                 {% comment %}
@@ -105,7 +105,7 @@
                 <h3>Step {{ forloop.counter }}
                     {% if request.user == project.user or request.user.is_superuser %}
                         <a href="{% url 'project-step-create-edit' project.slug step.order %}"><i class="icon-edit icon-white"></i> Edit Step</a>
-                        <a href="{% url 'project-step-delete' step.id %}"><i class="icon-trash btn-danger icon-white"></i> Delete Step</a>
+                        <a href="{% url 'project-step-delete' step.id %}"><i class="icon-trash icon-white"></i> Delete Step</a>
                     {% endif %}
                 </h3>
                 {# FIXME: Determine the whitelist of html tags and assure this won't break the page #}
