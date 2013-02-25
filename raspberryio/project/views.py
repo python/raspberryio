@@ -116,6 +116,34 @@ def project_step_create_edit(request, project_slug, project_step_number=None):
 
 
 @login_required
+def project_delete(request, project_pk):
+    user = request.user
+    project = get_object_or_404(Project, id=project_pk)
+    if not user.is_superuser and project.user != user:
+        return HttpResponseForbidden('You are not the owner of this project.')
+    if 'ok' in request.POST:
+        project.delete()
+        return redirect(request.user)
+    return render(request, 'project/project_delete.html', {
+        'project': project,
+    })
+
+
+@login_required
+def project_step_delete(request, project_step_pk):
+    user = request.user
+    project_step = get_object_or_404(ProjectStep, id=project_step_pk)
+    if not user.is_superuser and project_step.project.user != user:
+        return HttpResponseForbidden('You are not the owner of this project.')
+    if 'ok' in request.POST:
+        project_step.delete()
+        return redirect(project_step.project)
+    return render(request, 'project/project_step_delete.html', {
+        'project_step': project_step,
+    })
+
+
+@login_required
 @ajax_only
 def publish_project(request, project_slug):
     user = request.user
