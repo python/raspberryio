@@ -13,8 +13,9 @@
             {{ project_form.media }}
             <input type="submit" id="submit-project-create-edit" name="save" value="Save &amp; preview" />
                 {% if not project.id %}
-                    <input type="submit" id="submit-project-create-edit" name="save-add-step" value="Save &amp; add project steps" />
+                    <input type="submit" id="submit-project-create-edit-and-add" name="save-add-step" value="Save &amp; add project steps" />
                 {% endif %}
+            <input type="button" id="submit-project-create-edit-cancel" name="cancel" value="Cancel" onclick="history.go(-1);" />
         </form>
     </div>
 </div>
