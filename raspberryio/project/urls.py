@@ -28,7 +28,18 @@ urlpatterns = patterns('raspberryio.project.views',
         name='project-step-create-edit'
     ),
 
-    # Ajax views
+    # Delete project
+    url(
+        r'^delete/(?P<project_pk>[\d]+)/$', 'project_delete',
+        name='project-delete'
+    ),
+    # Delete project step
+    url(
+        r'^delete-step/(?P<project_step_pk>[\d]+)/$', 'project_step_delete',
+        name='project-step-delete'
+    ),
+
+    # --- Ajax views
 
     # Publish a project
     url(

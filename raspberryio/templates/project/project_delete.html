@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block body_id %}project-delete{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="span12">
+            <h2>Delete project</h2>
+            <form class="project-delete-form" action="" method="post" accept-charset="utf-8" enctype="multipart/form-data"> {% csrf_token %}
+                Are you sure you want to delete the project "{{ project.title }}" permanently?
+                <input type="submit" id="submit-project-delete" name="ok" value="Ok" />
+                <input type="button" id="submit-project-cancel" name="cancel" value="Cancel" onclick="history.go(-1);"/>
+            </form>
+        </div>
+    </div>
+{% endblock %}

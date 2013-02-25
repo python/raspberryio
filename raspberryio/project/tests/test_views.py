@@ -12,7 +12,7 @@ from mezzanine.core.models import (CONTENT_STATUS_PUBLISHED,
     CONTENT_STATUS_DRAFT)
 
 from raspberryio.project.tests.base import ProjectBaseTestCase
-from raspberryio.project.models import Project, ProjectImage
+from raspberryio.project.models import Project, ProjectStep, ProjectImage
 
 
 class ProjectDetailViewTestCase(ViewTestMixin, ProjectBaseTestCase):
@@ -344,7 +344,7 @@ class ProjectStepCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
         )
 
 
-class ProjectDetailViewTestCase(ProjectBaseTestCase):
+class ProjectPublishViewTestCase(ProjectBaseTestCase):
     url_name = 'publish-project'
 
     def setUp(self):
@@ -386,6 +386,95 @@ class ProjectDetailViewTestCase(ProjectBaseTestCase):
         project = Project.objects.get(slug=self.project.slug)
         self.assertEqual(response.status_code, 404)
         self.assertEqual(project.status, CONTENT_STATUS_DRAFT)
+
+
+class ProjectDeleteViewTestCase(AuthViewMixin, ProjectBaseTestCase):
+    url_name = 'project-delete'
+
+    def setUp(self):
+        self.project = self.create_project()
+        super(ProjectDeleteViewTestCase, self).setUp()
+        self.project.user = self.user
+        self.project.save()
+
+    def get_url_args(self):
+        return (self.project.id,)
+
+    def test_bad_id(self):
+        self.client.login(username=self.user.username, password='password')
+        url = reverse(self.url_name, args=('999',))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(Project.objects.count(), 1)
+
+    def test_other_user_forbidden(self):
+        other_user = self.create_user(data={'password': 'password'})
+        self.client.login(username=other_user.username, password='password')
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(Project.objects.count(), 1)
+
+    def test_superuser_allowed(self):
+        superuser = self.create_superuser(data={'password': 'password'})
+        self.client.login(username=superuser.username, password='password')
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Project.objects.count(), 1)
+
+    def test_delete_post_no_confirm(self):
+        response = self.client.post(self.url, {'not_ok': 'not_ok'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Project.objects.count(), 1)
+
+    def test_delete_confirm(self):
+        response = self.client.post(self.url, {'ok': 'ok'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Project.objects.count(), 0)
+
+
+class ProjectStepDeleteViewTestCase(AuthViewMixin, ProjectBaseTestCase):
+    url_name = 'project-step-delete'
+
+    def setUp(self):
+        self.project = self.create_project()
+        self.project_step = self.create_project_step(project=self.project)
+        super(ProjectStepDeleteViewTestCase, self).setUp()
+        self.project.user = self.user
+        self.project.save()
+
+    def get_url_args(self):
+        return (self.project_step.id,)
+
+    def test_bad_id(self):
+        self.client.login(username=self.user.username, password='password')
+        url = reverse(self.url_name, args=('999',))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(ProjectStep.objects.count(), 1)
+
+    def test_other_user_forbidden(self):
+        other_user = self.create_user(data={'password': 'password'})
+        self.client.login(username=other_user.username, password='password')
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(ProjectStep.objects.count(), 1)
+
+    def test_superuser_allowed(self):
+        superuser = self.create_superuser(data={'password': 'password'})
+        self.client.login(username=superuser.username, password='password')
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(ProjectStep.objects.count(), 1)
+
+    def test_delete_post_no_confirm(self):
+        response = self.client.post(self.url, {'not_ok': 'not_ok'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(ProjectStep.objects.count(), 1)
+
+    def test_delete_confirm(self):
+        response = self.client.post(self.url, {'ok': 'ok'})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(ProjectStep.objects.count(), 0)
 
 
 class ProjectImageCreateViewTestCase(ProjectBaseTestCase):

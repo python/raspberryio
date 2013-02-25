@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block body_id %}project-delete{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="span12">
+            <h2>Delete project step</h2>
+            <form class="project-step-delete-form" action="" method="post" accept-charset="utf-8" enctype="multipart/form-data"> {% csrf_token %}
+                Are you sure you want to delete step {{ project_step.get_order_display }} of "{{ project_step.project.title }}" permanently?
+                <input type="submit" id="submit-project-step-delete" name="ok" value="Ok" />
+                <input type="button" id="submit-project-step-cancel" name="cancel" value="Cancel" onclick="history.go(-1);"/>
+            </form>
+        </div>
+    </div>
+{% endblock %}
