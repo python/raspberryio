@@ -1,3 +1,4 @@
+from raspberryio.aggregator.models import FeedType, Feed
 from raspberryio.project.tests.base import RaspberryIOBaseTestCase
 
 
@@ -13,3 +14,15 @@ class ProfileTestCase(RaspberryIOBaseTestCase):
         self.profile.clean()
         self.profile.save()
         self.assertFalse('@' in self.profile.twitter_id)
+
+    def test_feed_owner(self):
+        "Determine if the user owns and Aggregator.Feed instances"
+        self.assertFalse(self.profile.feed_owner)
+
+        self.feed_type = FeedType(name="Test Feed Type", slug="test-feed-type", can_self_add=True)
+        self.feed_type.save()
+        self.approved_feed = Feed(title="Approved", feed_url="foo.com/rss/", public_url="foo.com/", is_defunct=False,
+                             feed_type=self.feed_type, owner=self.profile.user)
+        self.approved_feed.save()
+        self.assertTrue(self.profile.feed_owner)
+
