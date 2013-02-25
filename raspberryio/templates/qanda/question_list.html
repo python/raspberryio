@@ -2,24 +2,26 @@
 {% load mezzanine_tags %}
 {% load url from future %}
 
+{% block meta_title %}Questions &amp; Answers{% endblock %}
+
 {% block body_id %}question-list{% endblock %}
 
 {% block main %}
 <header>
-    <h2>Questions and Answers</h2>
-    <p>Have a question about a Raspberry Pi project you are working on? Find or ask questions, plis submit answers in this portion of our community pages.</p>
+    <h2>Questions &amp; Answers</h2>
+    <p>Have a question about a Raspberry Pi project you are working on? Find or ask questions, plus submit answers too!</p>
+    <a href="{% url 'question-create-edit' %}">Ask a question</a>
 </header>
-
-<h3>Questions</h3>
-<a class="btn" href="{% url 'question-create-edit' %}">Ask a question</a>
+	
 {% if questions %}
+	<h3>Questions</h3>
     <ul>
         {% for question in questions %}
         <li><a href="{% url 'question' question.slug %}">{{ question.title }}</a></li>
         {% endfor %}
     </ul>
 {% else %}
-<p>No questions have been asked.</p>
+	<h3>No questions have been asked :(</h3>
 {% endif %}
 
 {% endblock %}

@@ -1,64 +1,73 @@
 {% extends "base.html" %}
-{% load mezzanine_tags %}
-{% load bootstrap_toolkit %}
-{% load profile_tags %}
-
+{% load mezzanine_tags bootstrap_toolkit profile_tags  %}
 {% load url from future %}
+
+{% block meta_title %}{{ question.title }}{% endblock %}
 
 {% block body_id %}question-detail{% endblock %}
 
 {% block main %}
-    <header>
-        <a href="{% url 'question-list' %}">Questions</a>
-        <h2>
-            {{ question.title }}
-            {% comment %}
-            {# Removing the ability for user's to edit their own question for now #}
-                {% if request.user == question.user or request.user.is_superuser %}
-                    <a href="{% url 'question-create-edit' question.slug %}"><i class="icon-edit icon-white"></i> Edit Question</a>
-                {% endif %}
-            {% endcomment %}
-        </h2>
-        {% with question.user.get_profile as profile %}
-        <div class="userinfo">
-            <a href="{% url 'profile' question.user.username %}">
-                {% avatar profile 35 %}
-            </a> Written by:
-            <a href="{% url 'profile' question.user.username %}">{{ question.user.username }}</a>
-        </div>
-        {% endwith %}
-    </header>
-
-    <div class="question">
-        {{ question.question|safe }}
-    </div>
-    <div class="answers">
-        {% for answer in answers %}
-            {% if answer.pk not in votes %}
-                <div id="upvote-answer-{{ answer.pk }}">
-                    <a class="upvote-answer" href="#" data-url="{% url 'upvote-answer' answer.pk %}" data-pk="{{ answer.pk }}">
-                        Upvote
-                        <i class="icon-thumbs-up icon-white"></i>
-                    </a>
-                </div>
+<a class="back" href="{% url 'question-list' %}">&larr; Back to questions</a>
+<header>
+    <h2>
+        Q: {{ question.title }}
+        {% comment %}
+        {# Removing the ability for user's to edit their own question for now #}
+            {% if request.user == question.user or request.user.is_superuser %}
+                <a href="{% url 'question-create-edit' question.slug %}"><i class="icon-edit icon-white"></i> Edit Question</a>
             {% endif %}
-            <div>
-                <p>Score: <span id="score-{{ answer.pk }}">{{ answer.score }}</span></p>
-            </div>
-            <div>
-                {{ answer.answer|safe }}
-            </div>
-        {% endfor %}
+        {% endcomment %}
+    </h2>
+    {% with question.user.get_profile as profile %} 
+    {{ question.question|safe }}
+    <div class="userinfo">
+        <a href="{% url 'profile' question.user.username %}">
+            {% avatar profile 35 %}
+        </a> Asked by:
+        <a href="{% url 'profile' question.user.username %}">{{ question.user.username }}</a>
     </div>
-    {% if answer_create_form %}
-        <div>
-            <form class="answer-create-edit-form" action="{% url 'answer-create-edit' question.slug %}" method="post" accept-charset="utf-8">{% csrf_token %}
-                {{ answer_create_form|as_bootstrap }}
-                {{ answer_create_form.media }}
-                <input type="submit" id="submit-answer-create-edit" name="save" value="Submit Answer"/>
-            </form>
-        </div>
-    {% endif %}
+    {% endwith %}
+</header>  
+
+
+
+
+{% if answers %}
+<div class="answers">
+    <h3>Answers</h3>
+    {% for answer in answers %}
+        <blockquote>
+            {{ answer.answer|safe }}
+            <a href="{% url 'profile' answer.user.username %}">
+                {% avatar answer.user.get_profile 25 %}
+            </a>
+            Answer by: 
+            <a href="{% url 'profile' answer.user.username %}">
+                {{ answer.user.username }}
+            </a>
+            <div class="score">
+                <div id="upvote-answer-{{ answer.pk }}">
+                {% if answer.pk not in votes %}
+                    <a class="upvote-answer" href="#" data-url="{% url 'upvote-answer' answer.pk %}" data-pk="{{ answer.pk }}">
+                        <i class="icon-thumbs-up icon-white"></i> Upvote
+                    </a>
+                {% endif %}
+            </div>
+                <strong>Votes:</strong> <span class="badge badge-success" id="score-{{ answer.pk }}">{{ answer.score }}</span></p>
+            </div>
+        </blockquote>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if answer_create_form %}
+    <form action="{% url 'answer-create-edit' question.slug %}" method="post" accept-charset="utf-8">
+        {% csrf_token %}
+        {{ answer_create_form|as_bootstrap }}
+        {{ answer_create_form.media }}
+         <input type="submit" name="save" value="Submit Answer"/>
+    </form>
+{% endif %}
 {% endblock %}
 
 {% block extra_js %}
@@ -71,7 +80,7 @@
                 var $this = $(this),
                     upvote_answer_url = $this.data('url'),
                     answer_pk = $this.data('pk'),
-                    $upvote_answer_div = $('div#upvote-answer-' + answer_pk),
+                    $upvote_answer_div = $('#upvote-answer-' + answer_pk),
                     score_selector = '#score-' + answer_pk;
                 $.post(upvote_answer_url, function(result) {
                     $upvote_answer_div.fadeOut();

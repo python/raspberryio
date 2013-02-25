@@ -31,6 +31,7 @@ $(function() {
 
     // User messages fading out after loading
     $('.user-message').delay(1000).fadeOut();
+    
 
     // Make jQuery POST requests exempt from CSRF if they're from same origin.
     $(document).ajaxSend(function(event, xhr, settings) {

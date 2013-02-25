@@ -17,5 +17,5 @@
     {% csrf_token %}
     {{ form|as_bootstrap }}
     <input type="submit" value="{% if adding %}Add feed{% else %}Save{% endif %}">
-    <input type="button" value="Cancel" onclick="javascript:history.go(-1); return false;">
+    <input type="button" value="Cancel" onclick="history.go(-1);">
 {% endblock %}
