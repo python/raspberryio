@@ -29,7 +29,6 @@
                     {% if project.steps.count > 20 %}
                     <a href="{% url 'project-step-create-edit' project.slug %}"><i class="icon-plus icon-white"></i> Add Step</a>
                     {% endif %}
-
                     <a href="{% url 'project-delete' project.id %}" class="btn-danger warning"><i class="icon-trash icon-white"></i> Delete Project</a>
                 {% endif %}
                 {# Leaving in here for now. This is slated for Phase II work. #}
