@@ -17,25 +17,25 @@ class ProjectTestCase(ProjectBaseTestCase):
     def test_is_published(self):
         self.project.status = CONTENT_STATUS_PUBLISHED
         self.project.save()
-        self.assertTrue(self.project.is_published,
+        self.assertTrue(self.project.is_published(),
             'Should return True since the default publish_date is past and the status is "Published"'
         )
 
     def test_is_published_false(self):
         self.project.publish_date = now() + timedelta(minutes=1)
         self.project.save()
-        self.assertFalse(self.project.is_published,
+        self.assertFalse(self.project.is_published(),
             'Should return False if publish_date is in the future'
         )
         self.project.publish_date = now() - timedelta(minutes=1)
         self.project.status = CONTENT_STATUS_DRAFT
         self.project.save()
-        self.assertFalse(self.project.is_published,
+        self.assertFalse(self.project.is_published(),
             'Should return False if status is "Draft"'
         )
         self.project_publish_date = now() + timedelta(minutes=1)
         self.project.save()
-        self.assertFalse(self.project.is_published,
+        self.assertFalse(self.project.is_published(),
             'Should return False if status is "Draft" and publish_date is in the future'
         )
 
