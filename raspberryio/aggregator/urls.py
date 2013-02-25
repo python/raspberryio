@@ -4,10 +4,6 @@ from django.conf.urls.defaults import *
 from . import views
 
 urlpatterns = patterns('',
-    url(r'^$',
-        views.index,
-        name='community-index'
-    ),
     url(r'^mine/$',
         views.my_feeds,
         name='community-my-feeds'
@@ -33,4 +29,3 @@ urlpatterns = patterns('',
         name='community-delete-feed'
     ),
 )
-

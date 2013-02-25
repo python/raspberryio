@@ -1,29 +1,53 @@
-{% extends "base.html" %}
+{% extends "aggregator/base.html" %}
 {% load i18n mezzanine_tags %}
 
-{% block meta_title %}Blogs{% endblock %}
-{% block title %}Blogs{% endblock %}
-{% block body_id %}community{% endblock %}
+{% block meta_title %}Manage your blog feeds{% endblock %}
+{% block title %}Manage your blog feeds{% endblock %}
+{% block body_id %}aggregator-userdashboard{% endblock %}
 
 {% block main %}
-  <h3>Blogs</h3>
+<header>
+  <h2>Manage your blog feed(s)</h2>
+  <p>{% if feeds %}Edit or delete your currently approved blogs to our aggregator.{% else %}You do not have any feeds in the aggregator at this time.{% endif %}</p>
+</header>
 
-  <div class="alert alert-info">Manage your blog feeds:</div>
-
-  <ul>
+{% if feeds %}
+<ul class="blogs">
     {% for feed in feeds %}
-      <li>
-      {{ feed }} (<code>{{ feed.feed_url }}</code> — <strong>{{ feed.get_approval_status_display }}</strong>) —
-      <a href="{% url community-edit-feed feed.id %}">edit</a> |
-      <a href="{% url community-delete-feed feed.id %}">delete</a>
-      </li>
-    {% endfor %}
-    <li>Add a new feed:
-      {% for t in feed_types %}
-        <a href="{% url community-add-feed t.slug %}">{{ t }}</a>
-        {% if not forloop.last %}|{% endif %}
+        <li>
+            <span class="label {{ feed.get_approval_status_display|lower }}">{{ feed.get_approval_status_display }}</span>
+            {{ forloop.counter }}) <strong>{{ feed|capfirst }}</strong> 
+            - <a href="{{ feed.feed_url }}" target="_blank">{{ feed.feed_url }}</a>
+            <a class="action edit" href="{% url community-edit-feed feed.id %}">
+                <i class="icon-edit icon-white"></i> Edit
+            </a> 
+            <a class="action delete" href="{% url community-delete-feed feed.id %}">
+                <i class="icon-trash icon-white"></i> Delete
+            </a>
+        </li>
       {% endfor %}
-    </li>
-    {# <li>Claim a feed already in the system.</li> #}
-  </ul>
+    </ul>
+{% endif %}
+
+<div class="add-blog">
+    <h3>Add a blog feed:</h3>
+    <form method="post" action=".">
+          <select name="select-choice-0" id="select-choice-0" class="feed-type">
+            <option value="#"> -- Select a feed type -- </option>
+            {% for t in feed_types %}
+            <option value="{% url community-add-feed t.slug %}">{{ t }}</option>
+            {% endfor %}
+          </select>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $('.feed-type').change(function (e) {
+    e.preventDefault();
+    location.href = $(this).val();
+  });
+</script>
 {% endblock %}

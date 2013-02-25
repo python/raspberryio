@@ -1,17 +1,18 @@
-{% extends "base.html" %}
+{% extends "aggregator/base.html" %}
 {% load i18n mezzanine_tags %}
 
-{% block meta_title %}Blogs{% endblock %}
-{% block title %}Blogs{% endblock %}
-{% block body_id %}community{% endblock %}
+{% block meta_title %}Delete "{{ feed }}" feed from blog aggregator{% endblock %}
+{% block title %}Delete "{{ feed }}" feed from blog aggregator{% endblock %}
+{% block body_id %}aggregator-delete{% endblock %}
 
 {% block main %}
-    <h3>Blogs: really delete {{ feed }}?</h3>
+<header>
+	<h2>Delete "{{ feed }}" feed from aggregator</h2>
+	<p class="alert alert-danger">All posts in the aggregator will be deleted, along with your blog.</p>
+</header>
 
-    <div class="alert">All items in the aggregator will be deleted, too.</div>
-
-    <form action="." method="post">
-      {% csrf_token %}
-      <p class="submit"><input type="submit" value="Yes, delete the feed."></p>
-    </form>
+<form action="." method="post">
+  {% csrf_token %}
+  <input type="submit" value="Yes, delete the feed.">
+</form>
 {% endblock %}

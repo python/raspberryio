@@ -15,6 +15,7 @@
 // -- Followers/Following
 // -- Search Results
 // -- Community homepage
+// -- Question/answer
 
 /* Bootstrap imports
 ==================== */
@@ -1129,3 +1130,70 @@ body#question-list {
 		margin: 0;
 	}
 }	
+
+/* Feed aggreagator
+========================= */
+body.blog-aggregator {
+	ul {
+		margin: 0;
+	}
+	header {
+		p { .lead; }
+	}
+	&#aggregator-create-edit {
+		form {
+			input[type="button"] {
+				.btn;
+			}
+		}
+	}
+	&#aggregator-userdashboard {
+		.add-blog {
+			margin-top: 40px;
+			h3 {
+				margin: 0;
+			}
+		}
+		ul.blogs {
+			font-size: 16px;
+			li {
+				border-bottom: 1px solid #ccc;
+				padding-bottom: 10px;
+				margin-bottom: 10px;
+				&:first-child {
+					border: none;
+				}
+				span {
+					.label;
+					&.approved {
+						background-color: @successText;
+					}
+					&.pending {
+						background-color: @orange;
+					}
+					&.denied {
+						background-color: @errorText;
+					}
+				}
+				a {
+					&.action {
+						.btn;
+						@media (max-width: 500px) {
+							.btn-small;
+						}
+					}
+					&.edit {
+						.btn-success;
+						margin-left: 25px;
+						@media (max-width: 500px) {
+							margin-left: 0;	
+						}
+					}
+					&.delete {
+						.btn-danger;
+					}
+				}
+			}
+		}
+	}
+}

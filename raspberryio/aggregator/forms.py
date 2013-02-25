@@ -6,11 +6,11 @@ from .models import Feed
 
 class FeedModelForm(forms.ModelForm):
     title = forms.CharField(max_length=250,
-                            help_text="title of the resource / blog.")
+                            help_text="Please enter the title of your blog.")
     feed_url = forms.URLField(label='Feed URL',
-                              help_text="link to the RSS/Atom feed. Please use only Raspberry Pi related feeds.")
+                              help_text="Link to RSS/Atom feed. Please use only Raspberry Pi related feeds.")
     public_url = forms.URLField(label='Public URL',
-                                help_text="link to main page (i.e. blog homepage)")
+                                help_text="Link to the homepage for your blog.")
 
     class Meta:
         model = Feed

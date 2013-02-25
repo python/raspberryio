@@ -1,21 +1,21 @@
-{% extends "base.html" %}
+{% extends "aggregator/base.html" %}
 {% load i18n mezzanine_tags %}
 {% load bootstrap_toolkit %}
 
-{% block meta_title %}Blogs{% endblock %}
-{% block title %}Blogs{% endblock %}
-{% block body_id %}community{% endblock %}
+{% block meta_title %}Add/edit your blogs feed to our aggregator{% endblock %}
+{% block title %}Add/edit your blogs feed to our aggregator{% endblock %}
+{% block body_id %}aggregator-create-edit{% endblock %}
 
 {% block main %}
-  {% if adding %}
-    <h3>Blogs: add a {{ feed_type }} feed</h3>
-  {% else %}
-    <h3>Blogs: edit {{ feed }}</h3>
-  {% endif %}
+{% if adding %}
+    <h2>Add your blogs feed to our community feed aggregator</h2>
+{% else %}
+    <h2>Edit "{{ feed }}" in our feed aggreagator</h2>
+{% endif %}
 
-  <form method="POST" action="" id="add_feed_form" class="wide">
+<form method="POST" action="" id="add_feed_form">
     {% csrf_token %}
     {{ form|as_bootstrap }}
-      <input type="submit" value="{% if adding %}Add Feed{% else %}Save{% endif %}">
-  </form>
+    <input type="submit" value="{% if adding %}Add feed{% else %}Save{% endif %}">
+    <input type="button" value="Cancel" onclick="javascript:history.go(-1); return false;">
 {% endblock %}

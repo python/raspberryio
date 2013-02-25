@@ -1,13 +1,14 @@
-{% extends "base.html" %}
+{% extends "aggregator/base.html" %}
 {% load i18n mezzanine_tags %}
 
-{% block meta_title %}Blogs{% endblock %}
-{% block title %}Blogs{% endblock %}
-{% block body_id %}community{% endblock %}
+{% block meta_title %}Access denied{% endblock %}
+{% block title %}Access denied{% endblock %}
+{% block body_id %}aggregator-denied{% endblock %}
 
 {% block main %}
-    <h3>Blogs</h3>
-
-    <div class="alert"><strong>Sorry, you can't do that.</strong></div>
-
+<header>
+	<h2>Access denied :(</h2>
+	<p class="alert alert-danger">Sorry, you can't do that.</p>
+	<a href="javascript:history.go(-1);">&larr; Go back</a>
+</header>
 {% endblock %}

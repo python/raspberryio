@@ -16,7 +16,7 @@
                 <a class="rss" href="{{ feed_type.feed.feed_url }}">
                 <img src="{{ STATIC_URL }}img/feed-icon.png" width="25"></a>
             </h3>
-            <p>These are a blog post collected around the interwebs about {{ feed_type }}. If you have one you would like to add, <a href="#">please fill out this form.</a></p>
+            <p>These are a blog post collected around the interwebs about {{ feed_type }}. If you have one you would like to add, <a href="{% url 'community-add-feed' feed_type.slug %}">please fill out this form.</a></p>
         </header>
         {% for item in feed_items|slice:"5" %}
             <a class="article-link" href="{{ item.link }}">
