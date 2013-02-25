@@ -1,5 +1,7 @@
 from django.db import models
 
+from raspberryio.aggregator.models import Feed
+
 
 class Profile(models.Model):
     """
@@ -26,3 +28,8 @@ class Profile(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('profile', (self.user.username,))
+
+    @property
+    def feed_owner(self):
+        "Determine if Profile.user manages feeds"
+        return True if Feed.objects.filter(owner=self.user) else False
