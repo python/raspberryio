@@ -23,7 +23,7 @@ def feed_list(request, feed_type_slug):
     feed_type = get_object_or_404(FeedType, slug=feed_type_slug)
     return object_list(request,
         queryset=FeedItem.objects.filter(feed__feed_type=feed_type, feed__approval_status=APPROVED_FEED),
-        paginate_by=25,
+        paginate_by=10,
         extra_context={'feed_type': feed_type},
     )
 

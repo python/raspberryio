@@ -1,38 +1,64 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags %}
 
-{% block meta_title %}Blogs{% endblock %}
-{% block title %}Blogs{% endblock %}
-{% block body_id %}community{% endblock %}
+{% block meta_title %}Community posts for {{ feed_type.name }}{% endblock %}
+{% block title %}Community posts for {{ feed_type.name }}{% endblock %}
+{% block body_id %}community-posts{% endblock %}
 
 {% block main %}
-  <h3>Blogs: {{ feed_type.name }}
-    <a class="rss" href="{% url aggregator-feed feed_type.slug %}">RSS</a></h3>
-  <div class="alert alert-info">
-    This page, updated regularly, aggregates posts from the {{ feed_type.name }} community.
-  </div>
+<header>
+    <h2>Community posts for {{ feed_type.name }}
+        <a class="rss" href="{% url aggregator-feed feed_type.slug %}">
+            <img src="{{ STATIC_URL }}img/feed-icon.png" width="25">
+        </a>
+    </h2>
+    <p class="alert alert-info">
+        This page, updated regularly, aggregates posts from the {{ feed_type.name }} community.
+    </p>
+</header>
 
-  {% for item in object_list %}
-    <div class="well">
-      <h4><a href="{{ item.link }}">{{ item.title }}</a></h4>
-      <p class='date'>Posted on {{ item.date_modified|date:"F j, Y" }} at {{ item.date_modified|date:"g:i A" }} by <a href="{{ item.feed.public_url }}">{{ item.feed.title }}</a> <a class="rss" href="{{ item.feed.feed_url }}">RSS</a></p>
-      <div>
-      {{ item.summary|safe|truncatewords:"100" }}
-      </div>
-      <p class="small"><a href="{{ item.link }}">Read this post in context &raquo;</a></p>
+{% if is_paginated %}
+    <div class="pagination pagination-large">
+        <ul>
+          {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}">&larr; Older post</a></li>
+          {% endif %}
+          {% if page_obj.has_previous %}
+            <li><a href="?page={{ page_obj.previous_page_number }}">Newer posts &rarr;</a></li>
+          {% endif %}
+        </ul>
     </div>
-  {% endfor %}
+{% endif %}
 
-  {% if is_paginated %}
-    <div class="pagination">
-      {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">&larr; Older entries</a>
-      {% endif %}
-      {% if page_obj.has_previous and page_obj.has_next %}|{% endif %}
-      {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}">Newer entries &rarr;</a>
-      {% endif %}
+<div class="item-list"> 
+    {% for item in object_list %}
+        <article>
+            <section>
+                <a href="{{ item.link }}"><h4>{{ item.title }}</h4></a>
+                <p>Posted on {{ item.date_modified|date:"F j, Y" }} at {{ item.date_modified|date:"g:i A" }} by 
+                    <a class="rss" href="{{ item.feed.feed_url }}">
+                        {{ item.feed.title }}
+                        <img src="{{ STATIC_URL }}img/feed-icon.png" width="15">
+                    </a>
+                </p>
+                {{ item.summary|safe|truncatewords:"100" }}
+                <p><a class="more" href="{{ item.link }}">Read more</a></p>
+            </section>
+        </article>
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+    <div class="pagination pagination-large">
+        <ul>
+          {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}">&larr; Older post</a></li>
+          {% endif %}
+          {% if page_obj.has_previous %}
+            <li><a href="?page={{ page_obj.previous_page_number }}">Newer posts &rarr;</a></li>
+          {% endif %}
+        </ul>
     </div>
-  {% endif %}
+{% endif %}
 
 {% endblock %}
