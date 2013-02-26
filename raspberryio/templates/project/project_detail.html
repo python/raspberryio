@@ -26,7 +26,9 @@
                 {{ project.title }}
                 {% if request.user == project.user or request.user.is_superuser %}
                     <a href="{% url 'project-create-edit' project.slug %}"><i class="icon-edit icon-white"></i> Edit Project</a>
+                    {% if project.steps.count > 20 %}
                     <a href="{% url 'project-step-create-edit' project.slug %}"><i class="icon-plus icon-white"></i> Add Step</a>
+                    {% endif %}
                 {% endif %}
                 {# Leaving in here for now. This is slated for Phase II work. #}
                 {% comment %}
@@ -46,7 +48,7 @@
     </div>
 </div>
 
-    
+
     <div class="steps-timeline row">
         <div class="span12">
             <hr />
