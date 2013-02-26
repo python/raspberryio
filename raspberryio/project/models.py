@@ -21,7 +21,7 @@ class Project(Displayable, Ownable, AdminThumbMixin):
     A project submission
     """
 
-    featured_photo = models.ImageField(
+    featured_photo = models.ImageField('Cover Photo',
         upload_to='images/project_featured_photos', blank=True, null=True,
         help_text='Upload an image for the home page. Suggested ' \
                   'dimensions are 1252x626px and max 5MB filesize.'
