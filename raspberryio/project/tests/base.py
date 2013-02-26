@@ -46,6 +46,7 @@ class RaspberryIOBaseTestCase(TestCase):
         data = data or {}
         user = self.create_user(data=data)
         user.is_superuser = True
+        user.is_staff = True
         user.save()
         return user
 
