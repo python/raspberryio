@@ -332,6 +332,17 @@ class ProjectStepCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
             "Didn't redirect to {0}, redirected to {1}".format(expected_url, url)
         )
 
+    def test_redirect_after_limit(self):
+        "Redirect to the Project Detail Page when attempting to add the 21st step"
+        [self.create_project_step(project=self.project) for x in range(20)]
+        response = self.client.get(self.url, follow=True)
+        url, status_code = response.redirect_chain[0]
+        expected_url = reverse('project-detail', args=[self.project.slug])
+        self.assertEqual(status_code, 302)
+        self.assertTrue(expected_url in url,
+            "Didn't redirect to {0}, redirected to {1}".format(expected_url, url)
+        )
+
 
 class ProjectDetailViewTestCase(ProjectBaseTestCase):
     url_name = 'publish-project'

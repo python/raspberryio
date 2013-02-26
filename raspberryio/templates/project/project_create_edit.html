@@ -27,9 +27,11 @@
             </a>
             <br>
         {% endfor %}
+        {% if project.steps.all > 20 %}
         <a href="{% url 'project-step-create-edit' project.slug %}">
             Create a new project step
         </a>
+        {% endif %}
     {% endif %}
     </div>
 </div>

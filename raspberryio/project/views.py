@@ -2,6 +2,7 @@ from operator import itemgetter
 
 from django.http import HttpResponseForbidden, Http404
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -83,6 +84,10 @@ def project_step_create_edit(request, project_slug, project_step_number=None):
     project = get_object_or_404(Project, slug=project_slug)
     if project.user != user and not user.is_superuser:
         return HttpResponseForbidden('You are not the owner of this project.')
+    if 'add' in request.path and project.steps.count() >= 20:
+        messages.add_message(request, messages.WARNING,
+                    'This project already contains 20 steps.')
+        return redirect('project-detail', project.slug)
     if project_step_number is not None:
         project_step = get_object_or_404(
             ProjectStep, project=project, _order=project_step_number
