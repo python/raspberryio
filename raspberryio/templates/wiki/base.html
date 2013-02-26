@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load sekizai_tags i18n %}{% load url from future %}
 
+{% block body_class %}wiki{% endblock %}
+
 {% block meta_title %}
   {% block pagetitle %}{% endblock %}
 {% endblock %}
@@ -16,7 +18,6 @@
       {% endblock %}
 
       <footer id="wiki-footer">
-        <hr />
         {% block wiki_footer_logo %}
         {% endblock %}
         {% block wiki_footer_prepend %}

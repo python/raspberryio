@@ -50,7 +50,8 @@
 <body id="{% block body_id %}{% endblock %}" class="{% block body_class %}{% endblock %}">
 
 <div id="page">
-    
+{% block page %}
+
     {% block jumbotron %}{% endblock %}
 
     {% block global_nav %}
@@ -162,7 +163,9 @@
         </footer>
     </div>
     {% endblock %}
-
+    
+{% endblock %}
+</div>
 
     <script src="//code.jquery.com/jquery-1.8.3.min.js"></script>
     {% include "includes/footer_scripts.html" %}

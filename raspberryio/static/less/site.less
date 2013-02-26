@@ -16,6 +16,7 @@
 // -- Search Results
 // -- Community homepage
 // -- Question/answer
+// -- Wiki
 
 /* Bootstrap imports
 ==================== */
@@ -63,7 +64,6 @@ html, body {
 h1 {
 	font-family: 'Harabara';
  	font-weight: normal;
- 	letter-spacing: 0.06em;
  	padding-bottom: 20px;
 }
 
@@ -177,7 +177,6 @@ hr {
 	.brand {
 		font-family: 'Harabara';
  		font-weight: normal;
- 		letter-spacing: 0.06em;
  		font-size: 24px;
  		color: @gray;
  		&:hover {
@@ -479,6 +478,8 @@ hr {
 	    position: relative;
 	    font-size: 22px;
 	    font-weight: bold;
+	    font-family: Helvetica, Arial, sans-serif !important;
+	    letter-spacing: normal;
 		&:before, &:after {
 			border-top: 10px solid darken(@purpleDark, 20%);
 		    bottom: -11px;
@@ -1173,7 +1174,7 @@ body#question-detail {
 	}
 }	
 
-/* Feed aggreagator
+/* Feed aggregator
 ========================= */
 body.blog-aggregator {
 	ul {
@@ -1236,4 +1237,68 @@ body.blog-aggregator {
 			}
 		}
 	}
+}
+
+/* Wiki
+========================= */
+body.wiki {
+	a {
+		color: @raspberry;
+	}
+	.btn {
+		color: @gray;
+		&.btn-primary {
+			color: @white;
+		}
+	}
+	.nav-pills {
+		a { 
+			color: @gray; 
+			&:hover {
+				background-color: lighten(@gray, 65%);
+			}
+		}
+		> .active > a, .active > a:hover {
+			background-color: @raspberry;
+			color: @white;
+		}
+	}
+	ul#article-menu {
+		border-bottom: 1px solid @grayLight;
+		margin-bottom: 25px;
+		a { 
+			color: @gray; 
+			&:hover {
+				background-color: lighten(@gray, 50%);
+			}
+		}
+		> .active > a, .active > a:hover {
+			background-color: @raspberry;
+			color: @white;
+		}
+		h2#article-title {
+			border-bottom: none;
+			margin: 0;
+			a {
+				font-size: 14px;
+				letter-spacing: normal;
+				font-family: Helvetica, Arial, sans-serif;
+			}
+		}
+	}
+	.accordion-heading, .accordion-body {
+		background-color: @white;
+	}
+	.accordion-heading {
+		.accordion-toggle {
+			padding: 15px 15px 8px;
+		}
+		button {
+			margin-top: 5px;
+		}
+	}
+}
+
+body#wiki-preview {
+	padding: 40px 25px;
 }
