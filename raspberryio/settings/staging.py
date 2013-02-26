@@ -28,6 +28,13 @@ CACHES = {
 
 EMAIL_SUBJECT_PREFIX = '[Raspberryio Staging] '
 
+# Django Compressor configuration
+COMPRESS_ENABLED = True
+COMPRESS_OFFLINE = True
+COMPRESS_OFFLINE_CONTEXT = {
+    'STATIC_URL': STATIC_URL
+}
+
 # import secrets
 try:
     SECRETS_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, os.pardir))

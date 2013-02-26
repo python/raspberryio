@@ -284,6 +284,7 @@ def syncdb():
 @task
 def collectstatic():
     """Collect static files."""
+    manage_run('compress')
     manage_run('collectstatic --noinput')
 
 
