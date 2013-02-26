@@ -24,7 +24,7 @@
     {% if project.id %}
         {% for step in project.steps.all %}
             <a href="{% url 'project-step-create-edit' project.slug step.order %}">
-                Edit step {{ step.order|add:"1" }}
+                Edit step {{ step.order|add:"1" }} - {{ step.title }}
             </a>
             <br>
         {% endfor %}

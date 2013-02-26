@@ -72,6 +72,7 @@ class ProjectBaseTestCase(RaspberryIOBaseTestCase):
     def create_project_step(self, **kwargs):
         defaults = {
             'project': kwargs.pop('project', self.create_project()),
+            'title': self.get_random_string(length=500),
             'content': self.get_random_string(),
         }
         return self.create_instance(
