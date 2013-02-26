@@ -101,7 +101,7 @@
     <div id="step{{ forloop.counter }}" class="steps">
         <div class="row">
             <div class="span12">
-                <h3>Step {{ forloop.counter }}
+                <h3>Step {{ forloop.counter }} - {{ step.title }}
                     {% if request.user == project.user or request.user.is_superuser %}
                         <a href="{% url 'project-step-create-edit' project.slug step.order %}"><i class="icon-edit icon-white"></i> Edit Step</a>
                     {% endif %}
