@@ -22,7 +22,9 @@ class Project(Displayable, Ownable, AdminThumbMixin):
     """
 
     featured_photo = models.ImageField(
-        upload_to='images/project_featured_photos', blank=True, null=True
+        upload_to='images/project_featured_photos', blank=True, null=True,
+        help_text='Upload an image for the home page. Suggested ' \
+                  'dimensions are 1252x626px and max 5MB filesize.'
     )
     featured_video = models.URLField(blank=True, default='',
                                      help_text='Youtube Video URL')
@@ -202,8 +204,8 @@ class FeaturedProject(models.Model):
                 help_text='A terse description to be used on the home page.'
                 )
     photo = models.ImageField(upload_to='images/project_featured_photos',
-                help_text='Upload an image for the home page. Minimum ' \
-                          'dimensions are 1252x626.')
+                help_text='Upload an image for the home page. Suggested ' \
+                          'dimensions are 1252x626px and max 5MB filesize.')
     featured_start_date = models.DateTimeField(default=now(),
                 help_text='Date the Project will start being featured on the' \
                           'homepage.')

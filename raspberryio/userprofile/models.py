@@ -15,7 +15,7 @@ class Profile(models.Model):
     use_gravatar = models.BooleanField(default=True)
     avatar = models.ImageField(upload_to="images/avatars",
                                blank=True, null=True,
-                               help_text="Upload an avatar")
+                               help_text="Upload an image no larger than 500x500px and 1MB.")
 
     def clean(self):
         # strip twitter_id of @ symbol, if present
