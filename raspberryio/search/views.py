@@ -41,7 +41,7 @@ def search(request):
     results = search_model.objects.search(query, for_user=request.user)
     results = [
         result for result in results
-        if getattr(result, 'is_published', True)
+        if getattr(result, 'is_published', lambda: True)()
     ]
     # paginate the results
     per_page = settings.SEARCH_PER_PAGE

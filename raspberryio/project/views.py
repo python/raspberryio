@@ -29,22 +29,15 @@ def index(request):
 
 
 def project_list(request):
-    user = request.user
-    if user.is_superuser:
-        projects = Project.objects.all()
-    else:
-        projects = Project.objects.published()
     return render(request, 'project/project_list.html', {
-        'projects': projects,
+        'projects': Project.objects.published(request.user),
     })
 
 
 def project_detail(request, project_slug):
-    user = request.user
     project = get_object_or_404(Project, slug=project_slug)
-    if not project.is_published:
-        if not user.is_superuser and project.user != user:
-            raise Http404('There is no project here')
+    if not project.is_published(request):
+        raise Http404('There is no project here')
     return render(request, 'project/project_detail.html', {
         'project': project,
     })
@@ -58,14 +51,14 @@ def project_create_edit(request, project_slug=None):
         project = get_object_or_404(Project, slug=project_slug)
     else:
         project = Project(user=user, site=site)
-    if project.user != user and not user.is_superuser:
+    if not project.is_editable(request):
         return HttpResponseForbidden('You are not the owner of this project.')
     project_form = ProjectForm(
         request.POST or None, request.FILES or None, instance=project
     )
     if project_form.is_valid():
         project_form.save()
-        if project.is_published:
+        if project.is_published():
             action.send(user, verb='updated', target=project)
         if 'save-add-step' in request.POST:
             redirect_args = ('project-step-create-edit', project.slug)
@@ -82,7 +75,7 @@ def project_create_edit(request, project_slug=None):
 def project_step_create_edit(request, project_slug, project_step_number=None):
     user = request.user
     project = get_object_or_404(Project, slug=project_slug)
-    if project.user != user and not user.is_superuser:
+    if not project.is_editable(request):
         return HttpResponseForbidden('You are not the owner of this project.')
     if 'add' in request.path and project.steps.count() >= 20:
         messages.add_message(request, messages.WARNING,
@@ -99,7 +92,7 @@ def project_step_create_edit(request, project_slug, project_step_number=None):
     )
     if project_step_form.is_valid():
         project_step_form.save()
-        if project.is_published:
+        if project.is_published():
             action.send(user, verb='updated', action_object=project_step, target=project)
         # User clicked "save and add another"
         if 'save-add' in request.POST:
@@ -116,16 +109,41 @@ def project_step_create_edit(request, project_slug, project_step_number=None):
 
 
 @login_required
+def project_delete(request, project_pk):
+    project = get_object_or_404(Project, id=project_pk)
+    if not project.is_editable(request):
+        return HttpResponseForbidden('You are not the owner of this project.')
+    if 'ok' in request.POST:
+        project.delete()
+        return redirect(request.user)
+    return render(request, 'project/project_delete.html', {
+        'project': project,
+    })
+
+
+@login_required
+def project_step_delete(request, project_step_pk):
+    project_step = get_object_or_404(ProjectStep, id=project_step_pk)
+    if not project_step.is_editable(request):
+        return HttpResponseForbidden('You are not the owner of this project.')
+    if 'ok' in request.POST:
+        project_step.delete()
+        return redirect(project_step.project)
+    return render(request, 'project/project_step_delete.html', {
+        'project_step': project_step,
+    })
+
+
+@login_required
 @ajax_only
 def publish_project(request, project_slug):
-    user = request.user
     project = get_object_or_404(Project, slug=project_slug)
-    if user != project.user and user.is_superuser == False:
+    if not project.is_editable(request):
         return HttpResponseForbidden('You are not the owner of this project.')
     else:
         project.status = CONTENT_STATUS_PUBLISHED
         project.save()
-        action.send(user, verb='published', target=project)
+        action.send(request.user, verb='published', target=project)
     return AjaxResponse(request, {})
 
 
@@ -138,7 +156,7 @@ def gallery_image_create(request, project_slug=None, project_step_number=None):
         project_step = get_object_or_404(
             ProjectStep, project=project, _order=project_step_number
         )
-        if request.user != project.user and not request.user.is_superuser:
+        if not project.is_editable(request):
             return HttpResponseForbidden(
                 'You are not the owner of this project.'
             )
@@ -167,7 +185,6 @@ def gallery_image_download(request, project_slug, project_step_number):
 @login_required
 @ajax_only
 def gallery_image_delete(request, project_image_id):
-    user = request.user
     project_image = get_object_or_404(ProjectImage, id=project_image_id)
     try:
         project_step = project_image.projectstep_set.all()[0]
@@ -176,8 +193,7 @@ def gallery_image_delete(request, project_image_id):
         # permission (and it isn't possible)
         pass
     else:
-        project_user = project_step.project.user
-        if user != project_user:
+        if not project_step.is_editable(request):
             return HttpResponseForbidden('You are not the owner of this image.')
     # Remove the actual file, then the database record and return True
     project_image.file.delete()

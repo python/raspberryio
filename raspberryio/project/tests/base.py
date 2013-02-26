@@ -46,6 +46,7 @@ class RaspberryIOBaseTestCase(TestCase):
         data = data or {}
         user = self.create_user(data=data)
         user.is_superuser = True
+        user.is_staff = True
         user.save()
         return user
 
@@ -72,6 +73,7 @@ class ProjectBaseTestCase(RaspberryIOBaseTestCase):
     def create_project_step(self, **kwargs):
         defaults = {
             'project': kwargs.pop('project', self.create_project()),
+            'title': self.get_random_string(length=500),
             'content': self.get_random_string(),
         }
         return self.create_instance(

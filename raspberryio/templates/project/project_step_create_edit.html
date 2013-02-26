@@ -21,7 +21,10 @@
         {{ project_step_form|as_bootstrap }}
         {{ project_step_form.media }}
         <input type="submit" name="save" id="submit-project-step-create-edit" value="Save & view"/>
+        {% if project.steps.count < 20 %}
         <input type="submit" name="save-add" id="submit-project-step-create-edit-add-another" value="Save &amp; add a step" />
+        {% endif %}
+        <a id="cancel-step" href="{% url 'project-create-edit' project.slug %}" id="project-step-create-edit-cancel">Cancel</a>
     </form>
 {% endblock %}
 

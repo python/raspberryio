@@ -21,7 +21,7 @@ class Project(Displayable, Ownable, AdminThumbMixin):
     A project submission
     """
 
-    featured_photo = models.ImageField(
+    featured_photo = models.ImageField('Cover Photo',
         upload_to='images/project_featured_photos', blank=True, null=True,
         help_text='Upload an image for the home page. Suggested ' \
                   'dimensions are 1252x626px and max 5MB filesize.'
@@ -52,8 +52,19 @@ class Project(Displayable, Ownable, AdminThumbMixin):
         self.modified_datetime = now()
         super(Project, self).save(*args, **kwargs)
 
-    @property
-    def is_published(self):
+    def is_published(self, request=None):
+        """
+        Returns True/False if the Project is published for the user in the
+        given request. Staff users can see any projects while regular users can
+        see any of their own projects
+
+        If no request is given, or the user is not staff and viewing another
+        user's project, returns True if publish_date <= now() and status ==
+        CONTENT_STATUS_PUBLISHED otherwise False.
+        """
+        if request is not None:
+            if request.user.is_staff or request.user == self.user:
+                return True
         return (self.publish_date <= now() and
             self.status == CONTENT_STATUS_PUBLISHED)
 
@@ -84,6 +95,7 @@ class ProjectStep(Orderable, RichText):
     """
 
     project = models.ForeignKey('Project', related_name='steps')
+    title = models.CharField(max_length=500)
     gallery = models.ManyToManyField('ProjectImage', blank=True, null=True)
     video = models.URLField(blank=True, default='',
                             help_text='Enter a valid Youtube URL')
@@ -96,6 +108,8 @@ class ProjectStep(Orderable, RichText):
     def is_editable(self, request):
         """
         Restrict in-line editing to the owner of the project and superusers.
+
+        N.B. This is implemented for projects in Ownable.is_editable
         """
         user = request.user
         return user.is_superuser or user.id == self.project.user_id

@@ -273,7 +273,7 @@ def manage_shell():
 @task
 def syncdb():
     """Run syncdb and South migrations."""
-    manage_run('syncdb --noinput')
+    manage_run('syncdb')
     manage_run('migrate --noinput')
 
 

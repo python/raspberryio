@@ -25,6 +25,7 @@ class ProjectStepFormTestCase(ProjectBaseTestCase):
 
     def test_images_empty(self):
         post_data = {
+            'title': self.get_random_string(),
             'content': self.get_random_string(),
             'images': []
         }
@@ -39,6 +40,7 @@ class ProjectStepFormTestCase(ProjectBaseTestCase):
     def test_images_bad_format(self):
         self.create_project_image()
         post_data = {
+            'title': self.get_random_string(),
             'content': self.get_random_string(),
             'images': ['not']
         }
@@ -53,6 +55,7 @@ class ProjectStepFormTestCase(ProjectBaseTestCase):
     def test_images_bad_ids(self):
         self.create_project_image()
         post_data = {
+            'title': self.get_random_string(),
             'content': self.get_random_string(),
             'images': ['99,100']
         }
@@ -67,6 +70,7 @@ class ProjectStepFormTestCase(ProjectBaseTestCase):
     def test_images_valid(self):
         project_image = self.create_project_image()
         post_data = {
+            'title': self.get_random_string(),
             'content': self.get_random_string(),
             'images': [str(project_image.id)]
         }
@@ -83,6 +87,7 @@ class ProjectStepFormTestCase(ProjectBaseTestCase):
         project_image2 = self.create_project_image()
         project_images = (project_image1, project_image2)
         post_data = {
+            'title': self.get_random_string(),
             'content': self.get_random_string(),
             'images': ','.join([str(image.id) for image in project_images])
         }
