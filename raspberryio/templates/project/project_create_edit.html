@@ -11,10 +11,11 @@
         <form class="project-create-edit-form" action="" method="post" accept-charset="utf-8" enctype="multipart/form-data"> {% csrf_token %}
             {{ project_form|as_bootstrap }}
             {{ project_form.media }}
-            <input type="submit" id="submit-project-create-edit" name="save" value="Save &amp; preview" />
+            <input type="submit" id="submit-project-create-edit" name="save" value="Save {% if not project.is_published%}&amp; preview{% endif %}" />
                 {% if not project.id %}
-                    <input type="submit" id="submit-project-create-edit" name="save-add-step" value="Save &amp; add project steps" />
+                    <input type="submit" id="submit-project-create-edit-and-add" name="save-add-step" value="Save &amp; add project steps" />
                 {% endif %}
+            <input type="button" id="submit-project-create-edit-cancel" name="cancel" value="Cancel" onclick="history.go(-1);" />
         </form>
     </div>
 </div>
@@ -27,7 +28,7 @@
             </a>
             <br>
         {% endfor %}
-        {% if project.steps.count > 20 %}
+        {% if project.steps.count < 20 %}
         <a href="{% url 'project-step-create-edit' project.slug %}">
             Create a new project step
         </a>
