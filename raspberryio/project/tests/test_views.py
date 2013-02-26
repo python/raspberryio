@@ -271,19 +271,24 @@ class ProjectStepCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
 
     def test_create_valid(self):
         form_data = {
+            'title': self.get_random_string(),
             'content': self.get_random_string(),
         }
         response = self.client.post(self.url, form_data)
         self.assertEqual(response.status_code, 302)
 
     def test_create_invalid(self):
-        response = self.client.post(self.url, {'content': ''})
+        response = self.client.post(self.url, {
+            'title': self.get_random_string(),
+            'content': ''
+        })
         project_step_form = response.context['project_step_form']
         self.assertEqual(response.status_code, 200)
         self.assertTrue(project_step_form.errors)
 
     def test_edit_valid_form(self):
         form_data = {
+            'title': self.get_random_string(),
             'content': self.get_random_string(),
         }
         project_step = self.create_project_step(project=self.project)
@@ -308,6 +313,7 @@ class ProjectStepCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
         other_user = self.create_user(data={'password': 'password'})
         self.client.login(username=other_user.username, password='password')
         form_data = {
+            'title': self.get_random_string(),
             'content': self.get_random_string(),
         }
         project_step = self.create_project_step(project=self.project)
@@ -317,6 +323,7 @@ class ProjectStepCreateEditTestCase(AuthViewMixin, ProjectBaseTestCase):
 
     def test_add_another_redirect(self):
         form_data = {
+            'title': self.get_random_string(),
             'content': self.get_random_string(),
             'save-add': 'Anything',
         }

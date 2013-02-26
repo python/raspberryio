@@ -96,8 +96,11 @@ class ProjectStepForm(PlaceHolderMixin, forms.ModelForm):
 
     class Meta(object):
         model = ProjectStep
+        placeholders = {
+            'title': 'The title of this step in the project',
+        }
         fields = (
-            'content', 'video', 'images'
+            'title', 'content', 'video', 'images'
         )
 
 

@@ -84,6 +84,7 @@ class ProjectStep(Orderable, RichText):
     """
 
     project = models.ForeignKey('Project', related_name='steps')
+    title = models.CharField(max_length=500)
     gallery = models.ManyToManyField('ProjectImage', blank=True, null=True)
     video = models.URLField(blank=True, default='',
                             help_text='Enter a valid Youtube URL')
