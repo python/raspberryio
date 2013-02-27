@@ -1015,11 +1015,12 @@ body#project-step-create-edit {
 									.hide;
 								}
 							}
-							&.delete {
-								button {
-									@media (max-width: 979px) {
-										.btn-small;
-									}
+							button {
+								@media (max-width: 979px) {
+									.btn-small;
+								}
+								@media (max-width: 480px) {
+									i { .hide; }
 								}
 							}
 							img {
@@ -1030,6 +1031,12 @@ body#project-step-create-edit {
 				}
 				.files .progress {
 				    width: 200px;
+				    @media (max-width: 480px) {
+				    	width: 70px;
+				    } 
+				    @media (max-width: 320px) {
+				    	width: 50px;
+				    }
 				}
 			}
 		}
