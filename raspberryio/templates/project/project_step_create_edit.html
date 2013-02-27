@@ -5,13 +5,16 @@
 {% block body_id %}project-step-create-edit{% endblock %}
 
 {% block main %}
+    <a class="back" href="{% url 'project-detail' project.slug %}">&larr; View project page</a>
     <h2>
         {% if project_step.order != None %}
-            Editing Step: {{ project_step.get_order_display }} of {{ project.title }}
+            Editing: Step {{ project_step.get_order_display }}
         {% else %}
-            Creating Step {{ project_step.get_steps_count|add:"1" }} for {{ project.title }}
+            Creating: Step {{ project_step.get_steps_count|add:"1" }}
         {% endif %}
+        <span>{{ project.title }}</span>
     </h2>
+    
 
     {# Ajax Multifile uploader form #}
     {% include 'includes/file_upload/uploader_form.html' %}
@@ -20,11 +23,13 @@
         {% csrf_token %}
         {{ project_step_form|as_bootstrap }}
         {{ project_step_form.media }}
-        <input type="submit" name="save" id="submit-project-step-create-edit" value="Save & view"/>
+        <div class="btn-group">
+        <input type="submit" name="save" value="Save &amp; view"/>
         {% if project.steps.count < 20 %}
-        <input type="submit" name="save-add" id="submit-project-step-create-edit-add-another" value="Save &amp; add a step" />
+        <input type="submit" name="save-add" value="Save &amp; add a step" />
         {% endif %}
-        <a id="cancel-step" href="{% url 'project-create-edit' project.slug %}" id="project-step-create-edit-cancel">Cancel</a>
+        <input type="button" name="cancel" value="Cancel" class="cancel" onclick="history.go(-1);">
+        </div>
     </form>
 {% endblock %}
 

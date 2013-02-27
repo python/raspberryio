@@ -79,6 +79,15 @@ h1 {
 h2 {
 	.page-header;
 	border-bottom: 1px solid lighten(@gray, 40%);
+	a, span {
+		font-size: 14px;
+		letter-spacing: normal;
+		font-family: Helvetica, Arial, sans-serif;
+	}
+	span {
+		display: block;
+		font-size: 18px;
+	}
 }
 
 ul {
@@ -104,6 +113,9 @@ hr {
 			color: @gray;
 			text-decoration: none;
 		}
+		&.back {
+			.btn;
+		}
 	}
 	// Generic form styles
 	form {
@@ -121,7 +133,7 @@ hr {
 			label:after {
 				content: "*"; 
 				color: @raspberry;
-				font-size: 18px;
+				font-size: 24px;
 			}
 		}
 		input[type="submit"], input[type="button"] {
@@ -129,13 +141,28 @@ hr {
 			.btn-success;
 			font-weight: bold;
 		}
+		input[type="button"] {
+			&.cancel {
+				.btn-danger;
+			}
+		}
 		input[type="text"], input[type="password"], textarea  { 
-			.input-large;
+			.input-xlarge;
+			line-height: 30px;
 			height: 30px;
-			font-size: 18px;
+			font-size: 16px;
+			&#id_title {
+				.input-xxlarge;
+				@media (max-width: 579px) {
+					.input-xlarge;
+				}
+			}
 		}
 		input[type="file"] {
 			cursor: pointer;
+		}
+		input[type="checkbox"] {
+			margin: -2px 0 0 10px;
 		}
 		textarea {
 			width: 90%;
@@ -143,6 +170,16 @@ hr {
 			padding: 8px;
 		}
 		label {
+			font-size: 18px;
+			margin-top: 25px;
+			&[for="featured_photo-clear_id"] {
+				margin: 0;
+				width: 40px;
+				display: inline-block;
+				font-size: 14px;
+				line-height: 24px;
+				font-weight: bold;
+			}
 		}
 		.add-on {
 			font-size: 18px;
@@ -884,36 +921,13 @@ body#project-detail {
 /* Project create/edit
 ========================= */
 body#project-create-edit {
-	h2 {
-		.page-header;
-	}
-	form.project-create-edit-form {
-		input[type="text"] { 
-			.input-large;
-			height: 30px;
-			width: 50%;
-			font-size: 18px;
-		}
-		input[type="submit"] { 
-			.btn-success; 
-		}
-		label {
-			font-size: 18px;
-			line-height: 32px;
-		}
-	}
+
+	
 }
 
 /* Project step create/edit
 ========================= */
 body#project-step-create-edit {
-	h2 {
-		.page-header;
-	}
-	a#cancel-step {
-		.btn;
-		.btn-success;
-	}
 	form {
 		&#fileupload {
 			.fileupload-buttonbar {
@@ -991,20 +1005,46 @@ body#project-step-create-edit {
 				tbody {
 					padding: 25px;
 					tr {
-						padding: 15px;
 						&:first-child {
 							td {
 								border-top: 0 none;
 							}
 						}
 						td {
-							padding: 15px;
+							padding: 10px;
 							border-top: 2px solid #DDDDDD;
+							@media (max-width: 767px) {
+								font-size: 12px;
+							}
+							&.name, &.size {
+								@media (max-width: 767px) {
+									.hide;
+								}
+							}
+							&.delete {
+								button {
+									@media (max-width: 979px) {
+										.btn-small;
+									}
+								}
+							}
+							img {
+								width: 300px;
+							}
 						}
 					}
 				}
 				.files .progress {
 				    width: 200px;
+				}
+			}
+		}
+		.btn-group {
+			margin: 25px 0;
+			input {
+				margin-right: 5px;
+				@media (max-width: 320px) {
+					.btn-small;
 				}
 			}
 		}
@@ -1015,6 +1055,15 @@ body#project-step-create-edit {
 /* Dashboard
 ========================= */
 body#dashboard {
+	h1 {
+		@media (max-width: 767px) {
+			font-size: 48px;
+		}
+		@media (max-width: 480px) {
+			font-size: 36px;
+			padding-bottom: 0;
+		}
+	}
 	.activity {
 		.banner-content;
 		ul {
@@ -1022,13 +1071,16 @@ body#dashboard {
 			margin: 0;
 			li {
 				padding-bottom: 15px;
-				font-size: 18px;
+				font-size: 16px;
 				font-weight: 150;
+				@media (max-width: 767px) {
+					font-size: 14px;
+				}
 				.time {
 					font-size: 14px;
 				}
 				a {
-					color: @grayLightest;
+					color: @white;
 					&:hover {
 						text-decoration: underline;
 					}
@@ -1037,6 +1089,9 @@ body#dashboard {
 		}
 	}
 	.projects {
+		@media (max-width: 767px){
+			margin-bottom: 40px;
+		}
 		.time {
 			font-style: italic;
 		}
@@ -1148,7 +1203,6 @@ body#question-list {
 }
 
 body#question-detail {
-	a.back { .btn; }
 	header {
 		p { .lead; }
 		a { 
@@ -1286,11 +1340,6 @@ body.wiki {
 		h2#article-title {
 			border-bottom: none;
 			margin: 0;
-			a {
-				font-size: 14px;
-				letter-spacing: normal;
-				font-family: Helvetica, Arial, sans-serif;
-			}
 		}
 	}
 	.accordion-heading, .accordion-body {
