@@ -31,9 +31,6 @@ EMAIL_SUBJECT_PREFIX = '[Raspberryio Staging] '
 # Django Compressor configuration
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
-COMPRESS_OFFLINE_CONTEXT = {
-    'STATIC_URL': STATIC_URL
-}
 
 # import secrets
 try:
