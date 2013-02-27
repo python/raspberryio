@@ -107,19 +107,22 @@ Linode use a user/password combination.
 Vagrant Testing
 ------------------------
 
-You can test the provisioning/deployment using `Vagrant <http://vagrantup.com/>`_.
-Using the Vagrantfile you can start up the VM. This requires the ``lucid32`` box::
+You can test the provisioning/deployment using
+`Vagrant <http://vagrantup.com/>`_. Using the Vagrantfile you can start up the
+VM. This requires the ``precise64`` box::
 
     vagrant up
 
 With the VM up and running, you can create the necessary users.
 Put the developers' keys in ``conf/users`` as before, then
-use these commands to create the users. The location of the key file
-(/usr/lib/ruby/gems/1.8/gems/vagrant-1.0.2/keys/vagrant)
-may vary on your system.  Running ``locate keys/vagrant`` might
-help find it::
+use these commands to create the users. The location of the key file might be:
 
-    fab -H 33.33.33.10 -u vagrant -i /usr/lib/ruby/gems/1.8/gems/vagrant-1.0.2/keys/vagrant create_users
+/usr/lib/ruby/gems/1.8/gems/vagrant-1.0.2/keys/vagrant - if gem installed
+/usr/share/vagrant/keys/vagrant - if apt-get installed
+
+This may vary on your system. Running ``locate keys/vagrant`` might help find it::
+
+    fab -H 33.33.33.10 -u vagrant -i /usr/share/vagrant/keys/vagrant create_users
     fab vagrant setup_server:all
     fab vagrant deploy
 
