@@ -9,7 +9,6 @@
 // -- Account pages
 // -- Project list
 // -- Project detail
-// -- Project create/edit 
 // -- Project step create/edit
 // -- Dashboard
 // -- Followers/Following
@@ -350,11 +349,13 @@ hr {
 		h4 {
 			margin: 0;
 			font-size: 16px;
+			text-overflow: ellipse;
+			white-space: nowrap;
 			@media (max-width: 979px) {
 				font-size: 11px;
 			}
 			@media (max-width: 767px) {
-				font-size: 20px;
+				font-size: 24px;
 			}
 		}
 		p { 
@@ -368,11 +369,11 @@ hr {
 	}
 	.gallery {
 		position: relative;
-		@media (min-width: 320px) and (max-width: 767px) {
-			.show;
-		}
 		@media (min-width: 767px) {
 			.hide;
+		}
+		@media (min-width: 320px) and (max-width: 767px) {
+			.show;
 		}
 		.no-swipe {
 			margin: 0;
@@ -916,13 +917,6 @@ body#project-detail {
 			}
 		}
 	}
-}
-
-/* Project create/edit
-========================= */
-body#project-create-edit {
-
-	
 }
 
 /* Project step create/edit
