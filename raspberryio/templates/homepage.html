@@ -11,9 +11,9 @@
 <div class="homepage-hero-wrap">
     <div class="container">
         <div class="message">
-            <img src="{{ STATIC_URL }}img/razzy-large.png" alt="Hi! I am Razzy." width="125">
+            <img src="{{ STATIC_URL }}img/razzy-large.png" alt="Hi! I am Razzy.">
             <h1>Raspberry IO</h1>
-            <p>A place for learning, sharing and creating your Raspberry Pi project.</p>
+            <p>Create, Share, Learn, and Teach. Opening the circuitry of the mind with open culture, open source, Python, and the Raspberry Pi.</p>
         </div>
     </div>
 </div>
@@ -36,9 +36,9 @@
         </div>
         
         <div class="row">
-            <div class="active-users">
+            <div class="active-users hidden-phone">
                 <hr>
-               <h2>Most Active Users</h2>
+               <h3>Most Active Users</h3>
                <ul>
                {% for num, user in active_users|slice:"4" %}
                    <li class="span3">
@@ -56,14 +56,14 @@
             {% featured_projects 1 %}
             {% for featured in featured_projects %}
                 <div class="project">
-                    <h2>{{ featured.project.title }}</h2>
+                    <h3>{{ featured.project.title }}</h3>
                     <p>{{ featured.byline }}</p>
                     <a href="{% url 'project-detail' featured.project.slug %}"><img src="{{ MEDIA_URL }}{% thumbnail featured.photo.url 800 400 %}" alt="{{ featured.project.title }}"/></a>
                 </div>
                 </a>
             {% empty %}
                 <div class="project">
-                    <h2>Featured Project name</h2>
+                    <h3>Featured Project name</h3>
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                     <a href="#"><img src="http://placekitten.com/800/400"></a>
                 </div>
@@ -78,11 +78,19 @@
 <script src="{{ STATIC_URL }}js/libs/jquery.stickyPanel.min.js"></script>
 <script>
     $(function () {
-        var stickyPanelOptions = {
-            afterDetachCSSClass: "",
-            savePanelSpace: true
-        };
-        $("#global-nav").stickyPanel(stickyPanelOptions);
+        var $window = $(window);
+        function checkWidth() {
+            var windowsize = $window.width();
+            if (windowsize > 767) {
+                var stickyPanelOptions = {
+                    afterDetachCSSClass: "",
+                    savePanelSpace: true
+                };
+                $("#global-nav").stickyPanel(stickyPanelOptions);
+            }
+        }
+        checkWidth();
+        $(window).resize(checkWidth);
     });
 </script>
 {% endblock %}

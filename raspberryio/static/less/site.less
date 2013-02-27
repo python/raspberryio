@@ -64,6 +64,8 @@ html, body {
 h1 {
 	font-family: 'Harabara';
  	font-weight: normal;
+ 	font-size: 48px;
+ 	letter-spacing: 0.06em;
  	padding-bottom: 20px;
 }
 
@@ -215,9 +217,6 @@ hr {
 #footer-nav.navbar {
 	font-size: 18px;
 	min-height: 50px;
-	@media (max-width: 320px) {
-		font-size: 14px;
-	}
 	@media (max-width: 979px) {
 		position: fixed;
 	}
@@ -242,20 +241,7 @@ hr {
 			&:last-child {
 				border-right: 1px solid @grayLighter;
 				}
-			> a {
-		    	padding: 15px 20px;
-		    	@media (min-width: 480px) and (max-width: 600px) {
-		    		padding: 10px;
-		    		font-size: 14px;
-		    	}
-		    	@media (min-width: 320px) and (max-width: 480px) {
-		    		padding: 5px 0 5px 5px;
-		    		font-size: 12px;
-		    		&:last-child {
-		    			padding: 5px;
-		    		}
-		    	}
-			}
+			> a { padding: 15px 20px; }
 			&.about {
 				z-index: 1;
 				border-left: 0 none;
@@ -272,9 +258,6 @@ hr {
 						border-left: 1px solid #d4d4d4;
 						.border-radius(50px 50px 0 0);
 						padding: 25px 25px 35px 25px;
-						@media (min-width: 320px) and (max-width: 400px) { 
-							padding: 25px 15px 35px;
-						}
 					}
 					.tabContent {
 						#gradient > .vertical(@navbarBackgroundHighlight, @navbarBackground);
@@ -294,25 +277,12 @@ hr {
 							right: -150px;
 							padding-top: 3px;
 						}
-						@media (min-width: 400px) and (max-width: 480px) {
-							width: 350px;
-							right: -150px;
-							padding-top: 3px;
-						}
-						@media (min-width: 320px) and (max-width: 400px) {
-							width: 275px;
-							right: -125px;
-							padding-top: 3px;
-						}
 					}
 				}
 			}
 			&.learn {
 				border-left: 0 none;
 				margin-left: 100px;
-				@media (max-width: 355px) {
-					margin-left: 75px;
-				}
 			}
 		}
 	}
@@ -455,6 +425,9 @@ hr {
 
 #push {
 	height: 125px;
+	@media (max-width: 767px) {
+		height: 25px;
+	}
 }
 
 [class^="icon-"], [class*=" icon-"] {
@@ -561,7 +534,6 @@ body#homepage {
 		padding-right: 0px;
 	}
 	h2 {
-		
 		border: none;
 		margin: 0;
 	}
@@ -570,33 +542,44 @@ body#homepage {
 		width: 100%;
 		top: 0;
 		left: 0;
-		height: 340px;
+		height: 375px;
 		margin: 0 auto;
 		z-index: -9999;
 		background: url('../img/background.png');
 		@media (max-width: 979px) {
-			height: 350px;
+			height: 400px;
 		}
 		@media (max-width: 767px) {
 			position: relative;
 			top: 40px;
-			height: 400px;
-		}
-		@media (max-width: 655px) {
-			height: 415px;
-		}
-		@media (max-width: 480px) {
-			height: 440px;
 		}
 		.message {
 			position: relative;
 			margin: 30px auto 0;
 			text-align: center;
 			padding: 0 10%;
-			width: 72.916666666667%;
 			color: @white;
-			h1 { padding-bottom: 0; }
-			p { .lead; }
+			h1 { 
+				padding-bottom: 0; 
+				@media (max-width: 480px) {
+					font-size: 40px;
+				}
+			}
+			p { 
+				.lead; 
+				@media (max-width: 480px) {
+					font-size: 16px;
+					line-height: 22px;
+				}
+			}
+			img {
+				@media (min-width: 767px) {
+					width: 125px;
+				}
+				@media (max-width: 767px) {
+					width: 100px;
+				}
+			}
 		}
 	}
 	#global-nav {
@@ -608,9 +591,9 @@ body#homepage {
 		box-shadow: 0 1px 5px -1px #333;
 		clear: both;
 		z-index: 9999 !important;
-		top: 340px;
+		top: 375px;
 		@media (max-width: 979px) {
-			top: 350px;
+			top: 400px;
 		}
 		@media (max-width: 767px) {
 			top: 0;
@@ -618,7 +601,7 @@ body#homepage {
 		}
 	}
     #homepage-content{
-		margin: 340px auto 0;
+		margin: 375px auto 0;
 		background-color: @grayLightest;
 		display: block;
 		padding-top: 40px;
@@ -627,19 +610,18 @@ body#homepage {
 			color: @raspberry;
 			font-weight: bold;
 		}
-		p { .lead; }
+		p { 
+			.lead; 
+		}
 		hr {
-			margin: 60px 0;
+			margin: 40px 0;
 		}
 		h2 {
-			font-family: 'Harabara';
-		 	font-weight: normal;
-		 	letter-spacing: 0.06em;
-		 	padding-bottom: 20px;
+		 	letter-spacing: 0.03em;
 		 	font-size: 36px;
 		}
 		@media (max-width: 979px) {
-			margin: 350px auto 0;
+			margin: 400px auto 0;
 		}
 		@media (max-width: 767px) {
 			margin: auto 0;
@@ -648,17 +630,16 @@ body#homepage {
 			padding-right: 20px;
 		}
 		.get-started {
-			width: 65%;
 			margin: auto;
+			p {
+				@media (max-width: 767px) {
+					.hide;
+				}
+			}
 			a {
 				.btn;
 				.btn-large;
 				.btn-success;
-			}
-		}
-		.featured, .active-users {
-			@media (max-width: 480px) {
-				.hide;
 			}
 		}
 		.active-users {
@@ -668,6 +649,20 @@ body#homepage {
 			}
 			img {
 				width: 100%;
+			}
+		}
+		.active-users, .featured {
+			p {
+				@media (max-width: 767px) {
+					font-size: 16px;
+					line-height: 22px;
+				}
+			}
+			h3 {
+				@media (max-width: 767px) {
+					font-size: 20px;
+					line-height: 22px;
+				}
 			}
 		}
     }
