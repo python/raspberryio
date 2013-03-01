@@ -109,18 +109,19 @@ Vagrant Testing
 
 You can test the provisioning/deployment using
 `Vagrant <http://vagrantup.com/>`_. Using the Vagrantfile you can start up the
-VM. This requires the ``precise64`` box::
+VM. This uses the ``precise64`` box::
 
     vagrant up
 
 With the VM up and running, you can create the necessary users.
 Put the developers' keys in ``conf/users`` as before, then
-use these commands to create the users. The location of the key file might be:
+use these commands to create the users. The location of the vagrant key file might be::
 
-/usr/lib/ruby/gems/1.8/gems/vagrant-1.0.2/keys/vagrant - if gem installed
-/usr/share/vagrant/keys/vagrant - if apt-get installed
+    if gem installed: /usr/lib/ruby/gems/1.8/gems/vagrant-1.0.2/keys/vagrant
+    if apt-get installed: /usr/share/vagrant/keys/vagrant
 
-This may vary on your system. Running ``locate keys/vagrant`` might help find it::
+This may vary on your system. Running ``locate keys/vagrant`` might help find it.
+Use the full path to the keys/vagrant file as the value in the -i option::
 
     fab -H 33.33.33.10 -u vagrant -i /usr/share/vagrant/keys/vagrant create_users
     fab vagrant setup_server:all
