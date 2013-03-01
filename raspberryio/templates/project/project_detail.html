@@ -1,122 +1,118 @@
 {% extends "base.html" %}
-{% load mezzanine_tags %}
+{% load mezzanine_tags profile_tags %}
 {% load url from future %}
-{% load profile_tags %}
 
 {% block body_id %}project-detail{% endblock %}
 
 {% block main %}
 {% if not project.is_published %}
-<div class="row">
-    <div class="span12">
     {% if request.user == project.user or request.user.is_superuser %}
         <div id="publish">
             <h4>This project is saved as a draft. <a id="publish-project" href="#">Publish Now</a>
             </h4>
         </div>
     {% endif %}
-    </div>
+{% endif %}
+
+<header>
+    <h2>
+        {{ project.title }}
+        {% if request.user == project.user or request.user.is_superuser %}
+            <a href="{% url 'project-create-edit' project.slug %}"><i class="icon-edit icon-white"></i> Edit Project</a>
+            {% if project.steps.count > 20 %}
+            <a href="{% url 'project-step-create-edit' project.slug %}"><i class="icon-plus icon-white"></i> Add Step</a>
+            {% endif %}
+            <a class="delete" href="{% url 'project-delete' project.id %}"><i class="icon-trash icon-white"></i> Delete Project</a>
+        {% endif %}
+        {# Leaving in here for now. This is slated for Phase II work. #}
+        {% comment %}
+        <a class="follow" href="#">Follow</a>
+        <a class="upvote" href="#">Upvote</a>
+        {% endcomment %}
+    </h2>
+    
+</header>
+
+{% if project.steps.count > 1 %}
+<div class="steps-timeline hidden-phone">
+    <hr />
+    <ul>
+        <li><a href="#overview">Overview</a></li>
+        {% for step in project.steps.all %}
+        <li><a href="#step{{ forloop.counter }}">{{ forloop.counter }}</a></li>
+        {% endfor %}
+    </ul>
 </div>
 {% endif %}
 
-<div class="row">
-    <div class="span12">
-        <header>
-            <h2>
-                {{ project.title }}
-                {% if request.user == project.user or request.user.is_superuser %}
-                    <a href="{% url 'project-create-edit' project.slug %}"><i class="icon-edit icon-white"></i> Edit Project</a>
-                    {% if project.steps.count > 20 %}
-                    <a href="{% url 'project-step-create-edit' project.slug %}"><i class="icon-plus icon-white"></i> Add Step</a>
-                    {% endif %}
-                    <a class="delete" href="{% url 'project-delete' project.id %}"><i class="icon-trash icon-white"></i> Delete Project</a>
-                {% endif %}
-                {# Leaving in here for now. This is slated for Phase II work. #}
-                {% comment %}
-                <a class="follow" href="#">Follow</a>
-                <a class="upvote" href="#">Upvote</a>
-                {% endcomment %}
-            </h2>
-            {% with project.user.get_profile as profile %}
+<div class="overview row">
+    {% if project.featured_video or project.featured_photo %}
+    <div class="featured span7">
+        {% if project.featured_video %}
+            <div id="VideoDiv">
+                <iframe type="text/html" width="100%" height="300"
+                        src="{{ project.embed_url }}"
+                        frameborder="0">
+                </iframe>
+            </div>
+        {% elif project.featured_photo %}
+            <img src="{{ MEDIA_URL }}{% thumbnail project.featured_photo.url 600 400 %}" alt="{{ project.featured_photo.slug }}">
+        {% endif %}
+    </div>
+    <div class="span5">
+        {% with project.user.get_profile as profile %}
             <div class="userinfo">
                 <a href="{% url 'profile' project.user.username %}">
                     {% avatar profile 35 %}
-                </a> Written by:
-                <a href="{% url 'profile' project.user.username %}">{{ project.user.username }}</a>
+                </a>
+                <p>
+                    <strong>Created by:</strong>
+                    <a href="{% url 'profile' project.user.username %}">
+                        {{ project.user.username }}
+                    </a>
+                </p>
+                <p class="date">Published {{ project.created_datetime|date:"M. d, Y" }}</p>
             </div>
-            {% endwith %}
-        </header>
+        {% endwith %}
+        {{ project.tldr|safe }}
+        <p class="categories">
+            <strong>Related categories:</strong>
+            {% for category in project.categories.all %}
+                {{ category.title }}
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
     </div>
+    {% else %}
+    <div class="span12">
+        {{ project.tldr|safe }}
+        <p class="categories">
+            <strong>Categories:</strong>
+            {% for category in project.categories.all %}
+                {{ category.title }}
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+    </div>
+    {% endif %}
 </div>
-
-
-    <div class="steps-timeline row">
-        <div class="span12">
-            <hr />
-            <ul>
-                <li><a href="#overview">Overview</a></li>
-                {% for step in project.steps.all %}
-                <li><a href="#step{{ forloop.counter }}">{{ forloop.counter }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-
-    <div class="overview row">
-        {% if project.featured_video or project.featured_photo %}
-        <div class="span7">
-            {{ project.tldr|safe }}
-            <p class="categories">
-                <strong>Categories:</strong>
-                {% for category in project.categories.all %}
-                    {{ category.title }}
-                {% endfor %}
-            </p>
-        </div>
-        <div class="featured span5">
-        {# Intro Video #}
-            {% if project.featured_video %}
-                <div id="VideoDiv">
-                    {# Use if flash not located #}
-                    <iframe type="text/html" width="100%" height="250"
-                            src="{{ project.embed_url }}"
-                            frameborder="0">
-                    </iframe>
-                </div>
-            {% elif project.featured_photo %}
-                <img src="{{ MEDIA_URL }}{% thumbnail project.featured_photo.url 600 400 %}" alt="{{ project.featured_photo.slug }}">
-            {% endif %}
-        </div>
-        {% else %}
-        <div class="span12">
-            {{ project.tldr|safe }}
-            <p class="categories">
-                <strong>Categories:</strong>
-                {% for category in project.categories.all %}
-                    {{ category.title }}
-                {% endfor %}
-            </p>
-        </div>
-        {% endif %}
-    </div>
 
     {% for step in project.steps.all %}
     <div id="step{{ forloop.counter }}" class="steps">
         <div class="row">
             <div class="span12">
-                <h3>Step {{ forloop.counter }} - {{ step.title }}
+                <h3>Step {{ forloop.counter }}: {{ step.title }}
                     {% if request.user == project.user or request.user.is_superuser %}
                         <a href="{% url 'project-step-create-edit' project.slug step.order %}"><i class="icon-edit icon-white"></i> Edit Step</a>
                         <a href="{% url 'project-step-delete' step.id %}" class="delete"><i class="icon-trash icon-white"></i> Delete Step</a>
                     {% endif %}
                 </h3>
-                {# FIXME: Determine the whitelist of html tags and assure this won't break the page #}
-                {{ step.content|safe }}
             </div>
         </div>
-        {% if step.video %}
+        
         <div class="row">
-            <div class="span12">
+            {% if step.video %}
+            <div class="span7">
                 <div id="videoDiv{{ forloop.counter}}">
                  {# Use if flash not located #}
                  <iframe type="text/html" width="50%" height="300"
@@ -125,16 +121,29 @@
                  </iframe>
                 </div>
             </div>
+            <div class="span5">
+                {# FIXME: Determine the whitelist of html tags and assure this won't break the page #}
+                {{ step.content|safe }}
+            </div>
+            {% else %}
+            <div class="span12">
+                {{ step.content|safe }}
+            </div>
+            {% endif %}
         </div>
-        {% endif %}
+        
         {% if step.gallery.all %}
         <div class="row">
-            <div class="gallery-display span12">
+            <div class="gallery-display">
                 <div class="gallery">
                     {% if step.gallery.count > 1 %}
                     <div class="swipe" id="slider{{ forloop.counter }}">
                         <ul class="swipe-wrap">
-                            {% include 'includes/step-gallery.html' %}
+                            {% for photo in step.gallery.all %}
+                            <li class="span5">
+                                <a href="{{ photo.get_thumbnail_url }}"><img src="{{ MEDIA_URL }}{% thumbnail photo.get_thumbnail_url 600 400 %}" alt="{{ photo.get_filename }}" /></a>
+                            </li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <nav>
@@ -142,13 +151,21 @@
                         <a onclick="swipes[{{ forloop.counter0 }}].next()" id="next" href="javascript:void(0)">></a>
                     </nav>
                     {% else %}
-                    <ul class="no-swipe">
-                        {% include 'includes/step-gallery.html' %}
+                    <ul class="no-swipe span12">
+                        {% for photo in step.gallery.all %}
+                            <li>
+                                <a href="{{ photo.get_thumbnail_url }}"><img src="{{ MEDIA_URL }}{% thumbnail photo.get_thumbnail_url 600 400 %}" alt="{{ photo.get_filename }}" /></a>
+                            </li>
+                        {% endfor %}
                     </ul>
                     {% endif %}
                 </div>
                 <ul class="tiled">
-                    {% include 'includes/step-gallery.html' %}
+                    {% for photo in step.gallery.all %}
+                        <li class="span6">
+                            <a href="{{ photo.get_thumbnail_url }}"><img src="{{ MEDIA_URL }}{% thumbnail photo.get_thumbnail_url 600 400 %}" alt="{{ photo.get_filename }}" /></a>
+                         </li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
