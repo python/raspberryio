@@ -43,8 +43,8 @@ Then create a local settings file and set your ``DJANGO_SETTINGS_MODULE`` to use
     echo "export DJANGO_SETTINGS_MODULE=raspberryio.settings.local" >> $VIRTUAL_ENV/bin/postactivate
     echo "unset DJANGO_SETTINGS_MODULE" >> $VIRTUAL_ENV/bin/postdeactivate
 
-Exit the virtualenv, add the project directory to the virtualenv and reactivate
-it to activate the settings just changed::
+Add the project directory to the virtualenv, deactivate and reactivate it to
+activate the settings just changed::
 
     add2virtualenv .
     deactivate
@@ -164,8 +164,8 @@ Testing
 ------------------------
 
 The Raspberry I/O test suite only tests internal apps by default and prints a
-coverage when complete. To run the test suite, assure you've installed the
-local development requirements as follows::
+coverage report when complete. To run the test suite, assure you've installed
+the local development requirements as follows::
 
     cd raspberryio
     workon raspberryio
