@@ -142,7 +142,7 @@
           <span class="icon-random"></span>
           {% trans "Merge selected with current..." %}
         </button>
-        <button type="submit" name="save" value="1" class="btn btn-large btn-primary" onclick="this.form.action=$('input[type=radio]:checked').attr('switch-button-href');">
+        <button id="switch-version-submit" type="submit" name="save" value="1" class="btn btn-large btn-primary">
           <span class="icon-flag"></span>
           {% trans "Switch to selected version" %}
         </button>
@@ -204,4 +204,18 @@
   </div>
 </form>
   
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        (function() {
+            $('#switch-version-submit').click(function(e) {
+                var $this = $(this),
+                    $form = $this.parents('form'),
+                    $choice = $('input[type=radio]:checked'),
+                    target = $choice.attr('switch-button-href');
+                $form.attr('action', target);
+            });
+        })();
+    </script>
 {% endblock %}
