@@ -89,7 +89,7 @@ Linode use a user/password combination.
 
         fab -H <fresh-server-ip> -u <root-user> create_users
 
-    This will create a project user and users for all the developers.
+This will create a project user and users for all the developers.
 
 3. Lock down SSH connections: disable password login and move
     the default port from 22 to ``env.ssh_port``::
