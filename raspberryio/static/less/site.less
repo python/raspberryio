@@ -278,7 +278,7 @@ h1 {
 	font-family: 'Harabara';
  	font-weight: normal;
  	font-size: 48px;
- 	letter-spacing: 0.06em;
+ 	letter-spacing: 0.03em;
  	padding-bottom: 20px;
 }
 
@@ -858,14 +858,30 @@ body#project-detail {
 				.btn-success;
 			}
 			a.delete {
-				.btn;
 				.btn-danger;
 			}
 		}
+	}
+	.overview {
 		.userinfo {
-			img { border: 3px solid @white; }
-			font-size: 18px;
-			margin-bottom: 20px;
+			@media (max-width: 767px) {
+				margin-top: 20px;
+			}
+			img { 
+				border: 3px solid @white;
+				.pull-left;
+				.clearfix;
+				margin-right: 10px; 
+			}
+			p { margin: 0; }
+			.date { 
+				font-style: italic;
+				font-color: @grayLight; 
+			}
+			margin-bottom: 15px;
+		}
+		.categories {
+			margin-top: 10px;
 		}
 	}
 	.steps-timeline {
@@ -880,27 +896,27 @@ body#project-detail {
 		ul {
 			position: absolute;
 			width: 90%;
-			top: 10px;
+			top: -15px;
 			left: 10px;
 			.clearfix;
 			z-index: 1;
 			li {
 				.pull-left;
 				text-align: center;
-				font-size: 11px;
+				font-size: 14px;
 				font-weight: normal;
-				line-height: 24px;
+				line-height: 30px;
 				padding-right: 8px;
 				&:last-child {
 					padding-right: 0;
 				}
 				a {
 					color: @white;
-					background-color: @purpleDark;
+					background-color: @raspberry;
 					.border-radius(30px);
 					padding: 5px 10px;
 					&:hover {
-						background-color: lighten(@purpleDark, 20%);
+						background-color: darken(@raspberry, 20%);
 						text-decoration: none;
 					}
 				}
@@ -908,6 +924,7 @@ body#project-detail {
 		}
 	}
 	.steps {
+		margin-top: 40px;
 		.photo {
 			margin-bottom: 25px;
 		}
@@ -919,18 +936,6 @@ body#project-detail {
 			a.delete {
 				.btn;
 				.btn-danger;
-			}
-		}
-	}
-	.gallery-display {
-		ul.tiled {
-			li { width: 50%; }
-		}
-		.swipe-wrap {
-			padding: 0;
-			margin: 0;
-			li {
-				padding-bottom: 25px;
 			}
 		}
 	}
