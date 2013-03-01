@@ -6,10 +6,9 @@ import string
 
 from getpass import getpass
 
-from argyle import rabbitmq, postgres, nginx, system
-from argyle.postgres import create_db_user, create_db
+from argyle import postgres, nginx, system
 from argyle.supervisor import supervisor_command, upload_supervisor_app_conf
-from argyle.system import service_command, start_service, stop_service, restart_service
+from argyle.system import service_command
 
 from fabric import utils
 from fabric.api import cd, env, get, hide, local, put, require, run, settings, sudo, task
@@ -361,7 +360,7 @@ def reset_local_media():
     require('environment', provided_by=('staging', 'production'))
     media = os.path.join(env.code_root, 'public/media')
     local("rsync -rvaze 'ssh -p %s' %s@%s:%s %s/public" %
-                    (env.ssh_port, env.user, env.hosts[0], media, PROJECT_ROOT))
+        (env.ssh_port, env.user, env.hosts[0], media, PROJECT_ROOT))
 
 
 @task
