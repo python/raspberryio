@@ -253,11 +253,11 @@
 ================= */
 @font-face {
     font-family: 'Harabara';
-    src: url('../fonts/harabara-webfont.eot');
-    src: url('../fonts/harabara-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/harabara-webfont.woff') format('woff'),
-         url('../fonts/harabara-webfont.ttf') format('truetype'),
-         url('../fonts/harabara-webfont.svg#harabararegular') format('svg');
+    src: url('/static/fonts/harabara-webfont.eot');
+    src: url('/static/fonts/harabara-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/static/fonts/harabara-webfont.woff') format('woff'),
+         url('/static/fonts/harabara-webfont.ttf') format('truetype'),
+         url('/static/fonts/harabara-webfont.svg#harabararegular') format('svg');
     font-weight: normal;
     font-style: normal;
     letter-spacing: 5px;
@@ -426,7 +426,7 @@ hr {
 		}
 		form {
 			input.search-query {
-				background: white url("../img/spyglass.png") no-repeat 10px 50%;
+				background: white url("/static//img/spyglass.png") no-repeat 10px 50%;
 				padding-left: 30px;	
 				line-height: 25px;
 			}
@@ -515,7 +515,7 @@ hr {
 		font-size: 9px;
 		color: @white;
 		padding: 3px 0;
-		background: url('../img/background.png');
+		background: url('/static/img/background.png');
 		position: relative;
 		z-index: 2;
 		a {
@@ -557,11 +557,11 @@ hr {
 .no-projects { text-align: center; }
 
 [class^="icon-"], [class*=" icon-"] {
-	background-image: url('../img/glyphicons-halflings.png')
+	background-image: url('/static/img/glyphicons-halflings.png')
 	}
 
 .icon-white {
-	background-image: url('../img/glyphicons-halflings-white.png')
+	background-image: url('/static/img/glyphicons-halflings-white.png')
 }
 
 .user-message {
@@ -588,7 +588,7 @@ body#homepage {
 		height: 375px;
 		margin: 0 auto;
 		z-index: -9999;
-		background: url('../img/background.png');
+		background: url('/static/img/background.png');
 		@media (max-width: 979px) {
 			height: 400px;
 		}
@@ -823,7 +823,7 @@ body#project-list {
 		text-align: center;
 		form {
 			input.search-query {
-				background: white url("../img/spyglass-large.png") no-repeat 10px 50%;
+				background: white url("/static/img/spyglass-large.png") no-repeat 10px 50%;
 				.border-radius(30px);
 				font-size: 24px;
 				line-height: 50px;
@@ -1019,7 +1019,7 @@ body#project-step-create-edit {
 				}
 			}
 			.fileupload-loading {
-			    background: url("../img/loading.gif") no-repeat scroll center center transparent;
+			    background: url("/static/img/loading.gif") no-repeat scroll center center transparent;
 			    display: none;
 			    height: 128px;
 			    left: 50%;
