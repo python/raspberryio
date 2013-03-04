@@ -6,11 +6,22 @@
 {% block body_id %}dashboard{% endblock %}
 
 {% block main %}
-
 <h1>Welcome {{ user.username }}!</h1>
 
 <div class="row">
-    <div class="projects span5">
+    <div class="activity span7">
+        <h2>Recent Activity</h2>
+        <ul>
+            {% for action in actions|slice:":10" %}
+                <li>{% include 'includes/account_action.html' %}</li>
+            {% empty %}
+            <p>
+            {% trans "You are not following anyone yet." %}
+            </p>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="projects span4 offset1">
         <h3><img src="{{ STATIC_URL }}img/razzy-head.png" width="35"> My Projects</h3>
         {% if user.projects.all %}
         <ul class="nav nav-tabs nav-stacked">
@@ -24,19 +35,6 @@
         {% else %}
         <a class="create" href="{% url 'project-create-edit' %}"><i class="icon-plus icon-white"></i> Create Project &rarr;</a>
         {% endif %}
-    </div>
-    <div class="activity span6 offset1">
-        <div class="top"></div>
-        <h2>Recent Activity</h2>
-        <ul>
-            {% for action in actions|slice:":10" %}
-                <li>{% include 'includes/account_action.html' %}</li>
-            {% empty %}
-            <p>
-            {% trans "You are not following anyone yet." %}
-            </p>
-            {% endfor %}
-        </ul>
     </div>
 </div>
 {% endblock %}

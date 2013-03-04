@@ -208,7 +208,7 @@
 
 .item-list {
  	a.article-link,  {
- 		color: @gray !important;
+ 		&:hover { text-decoration: none; }
  		article {
  			&:hover {
 	 			background-color: @raspberry;
@@ -308,16 +308,18 @@ hr {
 	padding-top: 15px;
 	a {
 		font-weight: bold;
-		color: @raspberry;
-		&:hover {
-			color: @gray;
-			text-decoration: none;
-		}
-		&.back {
+		color: @gray;
+		&.back, &.more {
 			.btn;
 		}
-		&.more {
-			.btn;
+	}
+	p {
+		a {
+			font-weight: bold;
+			color: @raspberry;
+			&:hover {
+				color: @gray;
+			}
 		}
 	}
 	// Generic form styles
@@ -751,6 +753,7 @@ body#account {
 			}
 		}
 		&.login {
+			label { margin: 0; }
 			input[type="submit"]{
 				.btn-large;
 			}
@@ -791,9 +794,13 @@ body#account {
 					padding: 10px 0;
 					li {
 						text-align: center;
+						.follow-btn {
+							margin-bottom: 8px;
+						}
 						a.url, a.twitter {
 							color: @white;
 							font-size: 18px;
+							line-height: 24px;
 							font-weight: 300;
 						}
 					}
@@ -847,11 +854,18 @@ body#project-list {
 ====================== */
 body#project-detail {
 	#publish {
-		border-bottom: 3px dotted lighten(@red, 30%);
-		margin-bottom: 25px;
+		.alert;
+		.alert-info;
+		margin-bottom: 20px;
 		a { 
 			.btn; 
 			.btn-primary;
+			.pull-right;
+			margin-top: -5px;
+			@media (max-width: 480px) {
+				float: none;
+				margin-top: 5px;
+			}
 		}
 	}
 	header {
@@ -1103,26 +1117,29 @@ body#dashboard {
 		}
 	}
 	.activity {
-		.banner-content;
 		ul {
-			padding: 15px 25px;
 			margin: 0;
 			li {
-				padding-bottom: 15px;
-				font-size: 16px;
-				font-weight: 150;
-				@media (max-width: 767px) {
-					font-size: 14px;
-				}
-				.time {
-					font-size: 14px;
-				}
+				font-weight: bold;
+				.clearfix;
 				a {
-					color: @white;
-					&:hover {
-						text-decoration: underline;
+					color: @raspberry;
+					&.avatar img {
+						.pull-left;
+						margin-right: 8px;
+						padding: 3px;
+						background-color: @white;
+						.box-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
 					}
 				}
+				.time {
+					font-weight: normal;
+					font-style: italic;
+					font-size: 14px;
+				}
+				border-bottom: 2px solid #DDDDDD;
+				margin-bottom: 15px;
+				padding-bottom: 10px;
 			}
 		}
 	}
@@ -1141,9 +1158,6 @@ body#dashboard {
 			background-color: @white;
     		.box-shadow(0 1px 4px rgba(0, 0, 0, 0.067));
     		.border-radius(6px);
-    		a {
-    			color: @purpleDark;
-    		}
 		}
 	}
 }

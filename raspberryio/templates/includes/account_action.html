@@ -1,4 +1,12 @@
 {% load i18n future%}
+{% load mezzanine_tags %}
+{% load profile_tags %}
+
+{% with action.actor.get_profile as profile %}
+    <a class="avatar" href="{{ action.actor.get_absolute_url }}">
+        {% avatar profile 40 %}
+    </a>
+{% endwith %}
 
 {% if action.actor.get_absolute_url %}
 	<a href="{{ action.actor.get_absolute_url }}">
