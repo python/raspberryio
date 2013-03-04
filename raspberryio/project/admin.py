@@ -1,4 +1,7 @@
-import Image
+try:
+    from PIL import Image
+except ImportError:
+    import Image
 
 from django import forms
 from django.contrib import admin
