@@ -58,9 +58,11 @@ def staging():
 def production():
     env.environment = 'production'
     env.vagrant = False
-    env.hosts = []  # FIXME: Add production hosts
+    env.hosts = ['raspberry.io', ]
     env.branch = 'master'
-    env.server_name = ''  # FIXME: Add production server name
+    env.server_name = 'raspberry.io'
+    # Provided machine uses default port
+    env.ssh_port = 22
     setup_path()
 
 
