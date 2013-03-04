@@ -30,7 +30,7 @@ def index(request):
 
 def project_list(request):
     return render(request, 'project/project_list.html', {
-        'projects': Project.objects.published(request.user),
+        'projects': Project.objects.published(request.user).order_by('-created_datetime'),
     })
 
 
