@@ -237,6 +237,14 @@ COMPRESS_PRECOMPILERS = (
     ('text/less', 'lessc {infile} {outfile}'),
 )
 
+COMPRESS_CSS_FILTERS = (
+    'compressor.filters.cssmin.CSSMinFilter',
+)
+
+COMPRESS_JS_FILTERS = (
+    'compressor.filters.jsmin.JSMinFilter',
+)
+
 # Mezzanine settings
 AUTH_PROFILE_MODULE = "userprofile.Profile"
 ACCOUNTS_PROFILE_FORM_CLASS = "raspberryio.userprofile.forms.UserProfileForm"
