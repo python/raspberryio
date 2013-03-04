@@ -39,7 +39,7 @@ def vagrant():
     env.vagrant = True
     env.hosts = ['33.33.33.10', ]
     env.branch = 'develop'
-    env.server_name = 'dev.example.com'
+    env.server_name = 'vagrant.raspberry.io'
     setup_path()
 
 
@@ -293,13 +293,13 @@ def match_changes(changes, match):
 
 
 @task
-def deploy(branch=None):
+def deploy(branch=None, full=False):
     """Deploy to a given environment."""
     require('environment')
     if branch is not None:
         env.branch = branch
-    requirements = False
-    migrations = False
+    requirements = False if not full else True
+    migrations = False if not full else True
     # Fetch latest changes
     with cd(env.code_root):
         with settings(user=env.project_user):

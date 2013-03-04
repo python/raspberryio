@@ -96,12 +96,28 @@ This will create a project user and users for all the developers.
 
         fab -H <fresh-server-ip> configure_ssh
 
-4. Add the IP to the appropriate environment
-    function and provision it for its role. You can provision a new server with the
-    ``setup_server`` fab command. It takes a list of roles for this server
-    ('app', 'db', 'lb') or you can say 'all'::
+4. Add the IP to the appropriate environment function and provision it for its
+    role. You can provision a new server with the ``setup_server`` fab command.
+    It takes a list of roles for this server ('app', 'db', 'lb') or you can
+    say 'all'. The name of the environment can now be used in fab commands
+    (such as production, staging, and so on.) To setup a server with all roles
+    use::
 
         fab staging setup_server:all
+
+5. Deploy the latest code to the newly setup server::
+
+        fab staging deploy
+
+6. If a new database is desired for this environment, use syncdb::
+
+        fab staging syncdb
+
+Otherwise, a database can be moved to the new environment using get_db_dump and
+load_db_dump as in the following example::
+
+    fab production get_db_dump
+    fab staging load_db_dump:production.sql
 
 
 Vagrant Testing
@@ -126,6 +142,11 @@ Use the full path to the keys/vagrant file as the value in the -i option::
     fab -H 33.33.33.10 -u vagrant -i /usr/share/vagrant/keys/vagrant create_users
     fab vagrant setup_server:all
     fab vagrant deploy
+    fab vagrant syncdb
+
+When prompted, do not make a superuser during the syncdb, but do make a site.
+To make a superuser, you'll need to run
+```fab vagrant manage_run:createsuperuser```
 
 It is not necessary to reconfigure the SSH settings on the vagrant box.
 
@@ -135,7 +156,7 @@ by visiting localhost:8080 in your browser.
 
 You may also want to add::
 
-    33.33.33.10 dev.example.com
+    33.33.33.10 vagrant.raspberry.io
 
 to your hosts (/etc/hosts) file.
 
