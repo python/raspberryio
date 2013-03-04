@@ -52,7 +52,7 @@
 
 <div id="page">
 {% block page %}
-
+    {% spaceless %}
     {% block jumbotron %}{% endblock %}
 
     {% block global_nav %}
@@ -170,7 +170,7 @@
         </footer>
     </div>
     {% endblock %}
-    
+    {% endspaceless %}
 {% endblock %}
 </div>
 

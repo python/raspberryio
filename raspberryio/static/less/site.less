@@ -240,7 +240,6 @@
  		p {
  			.clearfix;
  			a.more {
-	 			.btn;
 	 			color: @gray !important;
 	 			.pull-right;
  			}
@@ -306,7 +305,7 @@ hr {
 }
 
 #content {
-	padding-top: 25px;
+	padding-top: 15px;
 	a {
 		font-weight: bold;
 		color: @raspberry;
@@ -315,6 +314,9 @@ hr {
 			text-decoration: none;
 		}
 		&.back {
+			.btn;
+		}
+		&.more {
 			.btn;
 		}
 	}
@@ -341,6 +343,7 @@ hr {
 			.btn;
 			.btn-success;
 			font-weight: bold;
+			margin-right: 8px;
 		}
 		input[type="button"] {
 			&.cancel {
@@ -856,6 +859,7 @@ body#project-detail {
 			a { 
 				.btn; 
 				.btn-success;
+				margin-right: 8px;
 			}
 			a.delete {
 				.btn-danger;
@@ -932,6 +936,7 @@ body#project-detail {
 			a {
 				.btn;
 				.btn-success;
+				margin-right: 8px;
 			}
 			a.delete {
 				.btn;
@@ -1213,6 +1218,22 @@ body#community-home {
 			a.ask {
 				.btn;
 				.btn-success;
+				margin-left: 8px;
+			}
+		}
+	}
+	.feed {
+		@media (max-width: 767px) {
+			margin-bottom: 50px;
+		}
+		header {
+			a.rss {
+				font-size: 18px;
+				line-height: 24px;
+				margin-left: 8px;
+				img {
+					margin: -2px 0 0 8px;
+				}
 			}
 		}
 	}
@@ -1319,6 +1340,7 @@ body.blog-aggregator {
 					&.edit {
 						.btn-success;
 						margin-left: 25px;
+						margin-right: 8px;
 						@media (max-width: 500px) {
 							margin-left: 0;	
 						}
