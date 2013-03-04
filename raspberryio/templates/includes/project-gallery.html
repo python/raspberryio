@@ -23,7 +23,7 @@
                     {% endif %}
                 </a>
                 <div class="details">
-                    <h4>{{ project.title|truncatechars:"25" }}</h4>
+                    <h4>{{ project.title }}</h4>
                     <p><a href="{% url 'profile' project.user.username %}">{{ project.user }}</a></p>
                 </div>
             </li>

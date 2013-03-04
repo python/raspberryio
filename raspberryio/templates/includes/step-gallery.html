@@ -1,8 +1,0 @@
-{% load url from future %}
-{% load mezzanine_tags %}
-
- {% for photo in step.gallery.all %}
- <li>
-    <img src="{{ MEDIA_URL }}{% thumbnail photo.get_thumbnail_url 600 400 %}" alt="{{ photo.get_filename }}" />
- </li>
- {% endfor %}
