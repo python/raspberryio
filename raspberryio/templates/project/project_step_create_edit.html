@@ -23,10 +23,10 @@
         {% csrf_token %}
         {{ project_step_form|as_bootstrap }}
         {{ project_step_form.media }}
-        <div class="btn-group">
-        <input type="submit" name="save" value="Save &amp; view"/>
+        <div class="form-actions">
+        <input type="submit" name="save" value="Save"/>
         {% if project.steps.count < 20 %}
-        <input type="submit" name="save-add" value="Save &amp; add a step" />
+            <input type="submit" name="save-add" value="Save &amp; add another step" />
         {% endif %}
         <input type="button" name="cancel" value="Cancel" class="cancel" onclick="history.go(-1);">
         </div>
