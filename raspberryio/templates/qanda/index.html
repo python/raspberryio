@@ -13,9 +13,9 @@
             <h3>Posts for 
                 <a href="{% url 'community-feed-list' feed_type.slug %}">{{ feed_type }}</a> 
                 <a class="rss" href="{{ feed_type.feed.feed_url }}">
-                <img src="{{ STATIC_URL }}img/feed-icon.png" width="25"></a>
+                <img src="{{ STATIC_URL }}img/feed-icon.png" width="20"> RSS</a>
             </h3>
-            <p>These are a blog post collected around the interwebs about {{ feed_type }}. If you have one you would like to add, <a href="{% url 'community-add-feed' feed_type.slug %}">please fill out this form.</a></p>
+            <p>These are a few blog posts collected around the interwebs about {{ feed_type }}. If you have one you would like to add, <a href="{% url 'community-add-feed' feed_type.slug %}">please fill out this form.</a></p>
         </header>
         {% for item in feed_items|slice:"5" %}
             <a class="article-link" href="{{ item.link }}">
@@ -26,13 +26,17 @@
                     </section>
                 </article>
             </a>
+            
         {% empty %}
             <p>No recent posts.</p>
         {% endfor %}
+        {% if feed_items.count >= 5 %}
+            <a class="more" href="{% url 'community-feed-list' feed_type.slug %}">See all posts &rarr;</a>
+       {% endif %}
     </div>
 
     <div class="qanda span5 offset1">
-        <h3><a class="more" href="{% url 'question-list' %}">Questions &amp; Answers</a> <a class="ask" href="{% url 'question-create-edit' %}">Ask a question</a></h3>
+        <h3><a href="{% url 'question-list' %}">Questions &amp; Answers</a><a class="ask" href="{% url 'question-create-edit' %}">Ask a question</a></h3>
         {% for question in questions|slice:"5" %}
             <a class="article-link" href="{% url 'question' question.slug %}">
                 <article>

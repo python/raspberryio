@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n mezzanine_tags %}
+{% load i18n mezzanine_tags compress %}
 {% load bootstrap_toolkit %}
 
 {% block meta_title %}{{ title }}{% endblock %}
@@ -22,7 +22,8 @@
 {% endblock %}
 
 {% block extra_js %}
-<script type="text/javascript">
+{% compress js %}
+<script>
     $(function() {
         var $use_gravatar = $('#id_use_gravatar');
 
@@ -37,4 +38,5 @@
         $use_gravatar.click(toggle_avatar);
     });
 </script>
+{% endcompress %}
 {% endblock %}

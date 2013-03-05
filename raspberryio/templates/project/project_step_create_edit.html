@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load url from future %}
-{% load bootstrap_toolkit %}
+{% load bootstrap_toolkit compress %}
 
 {% block body_id %}project-step-create-edit{% endblock %}
 
@@ -34,10 +34,10 @@
 {% endblock %}
 
 {% block extra_js %}
+{# Load jquery file upload JS dependencies and file_upload.js #}
+{% include 'includes/file_upload/js_requirements.html' %}
 
-    {# Load jquery file upload JS dependencies and file_upload.js #}
-    {% include 'includes/file_upload/js_requirements.html' %}
-
+{% compress js %}
     <script>
         /*
         Declare the image upload and download urls. download_url should be an
@@ -66,4 +66,5 @@
             );
         })();
     </script>
+{% endcompress %}
 {% endblock %}

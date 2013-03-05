@@ -52,7 +52,7 @@
 
 <div id="page">
 {% block page %}
-
+    {% spaceless %}
     {% block jumbotron %}{% endblock %}
 
     {% block global_nav %}
@@ -170,24 +170,20 @@
         </footer>
     </div>
     {% endblock %}
-    
+    {% endspaceless %}
 {% endblock %}
 </div>
 
-    <script src="//code.jquery.com/jquery-1.8.3.min.js"></script>
-    {% include "includes/footer_scripts.html" %}
+<script src="//code.jquery.com/jquery-1.8.3.min.js"></script>
+{% include "includes/footer_scripts.html" %}
+<script src="{{ STATIC_URL }}js/libs/bootstrap.min.js"></script>
 
-    <script src="{{ STATIC_URL }}js/libs/bootstrap.min.js"></script>
+{% compress js %}
+    <script src="{{ STATIC_URL }}js/site.js"></script>
+{% endcompress %}
 
-    {% if debug %}
-        <script src="{{ STATIC_URL }}js/site.js"></script>
-    {% else %}
-        {% compress js %}
-            <script src="{{ STATIC_URL }}js/site.js"></script>
-        {% endcompress %}
-    {% endif %}
+{% block extra_js %}{% endblock %}
 
-    {% block extra_js %}{% endblock %}
-    {% render_block "js" %}
+{% render_block "js" %}
 </body>
 </html>
