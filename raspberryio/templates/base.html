@@ -174,16 +174,16 @@
 {% endblock %}
 </div>
 
-    <script src="//code.jquery.com/jquery-1.8.3.min.js"></script>
-    {% include "includes/footer_scripts.html" %}
+<script src="//code.jquery.com/jquery-1.8.3.min.js"></script>
+{% include "includes/footer_scripts.html" %}
+<script src="{{ STATIC_URL }}js/libs/bootstrap.min.js"></script>
 
-    <script src="{{ STATIC_URL }}js/libs/bootstrap.min.js"></script>
+{% compress js %}
+    <script src="{{ STATIC_URL }}js/site.js"></script>
+{% endcompress %}
 
-    {% compress js %}
-        <script src="{{ STATIC_URL }}js/site.js"></script>
-        {% block extra_js %}{% endblock %}
-    {% endcompress %}
-    
-    {% render_block "js" %}
+{% block extra_js %}{% endblock %}
+
+{% render_block "js" %}
 </body>
 </html>
