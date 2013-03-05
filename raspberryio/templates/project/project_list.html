@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load compress %}
 {% load url from future %}
 
 {% block body_id %}project-list{% endblock %}
@@ -16,7 +15,6 @@
 {% endblock %}
 
 {% block extra_js %}
-{% compress js %}
     <script src="{{ STATIC_URL }}js/libs/swipe.js"></script>
     <script>
 
@@ -24,5 +22,4 @@
     window.mySwipe = $('#slider').data('Swipe');
 
     </script>
-{% endcompress %}
 {% endblock %}

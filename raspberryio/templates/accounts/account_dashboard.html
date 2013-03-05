@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n future mezzanine_tags compress %}
+{% load i18n future mezzanine_tags %}
 
 {% block meta_title %}Dashboard{% endblock %}
 {% block title %}Dashboard{% endblock %}
@@ -41,7 +41,6 @@
 
 {% if user.projects.all %}
 {% block extra_js %}
-{% compress js %}
     <script src="{{ STATIC_URL }}js/update_relationship.js"></script>
     <script src="{{ STATIC_URL }}js/libs/swipe.js"></script>
     <script>
@@ -50,6 +49,5 @@
     window.mySwipe = $('#slider').data('Swipe');
 
     </script>
-{% endcompress %}
 {% endblock %}
 {% endif %}

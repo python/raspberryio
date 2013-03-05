@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load mezzanine_tags bootstrap_toolkit profile_tags compress  %}
+{% load mezzanine_tags bootstrap_toolkit profile_tags  %}
 {% load url from future %}
 
 {% block meta_title %}{{ question.title }}{% endblock %}
@@ -71,7 +71,6 @@
 {% endblock %}
 
 {% block extra_js %}
-{% compress js %}
     <script>
         $(function() {
 
@@ -124,5 +123,4 @@
             });
         });
     </script>
-{% endcompress %}
 {% endblock %}

@@ -1,5 +1,5 @@
 {% extends "aggregator/base.html" %}
-{% load i18n mezzanine_tags compress %}
+{% load i18n mezzanine_tags %}
 
 {% block meta_title %}Manage your blog feeds{% endblock %}
 {% block title %}Manage your blog feeds{% endblock %}
@@ -44,12 +44,10 @@
 {% endblock %}
 
 {% block extra_js %}
-{% compress js %}
 <script>
   $('.feed-type').change(function (e) {
     e.preventDefault();
     location.href = $(this).val();
   });
 </script>
-{% endcompress %}
 {% endblock %}

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load mezzanine_tags profile_tags compress %}
+{% load mezzanine_tags profile_tags %}
 {% load url from future %}
 
 {% block body_id %}project-detail{% endblock %}
@@ -174,7 +174,6 @@
 {% endblock %}
 
 {% block extra_js %}
-{% compress js %}
     {# JS for slider gallery, works if there are multiple swipping galleries. #}
     <script src="{{ STATIC_URL }}js/libs/swipe.js"></script>
     <script>
@@ -229,5 +228,4 @@
             });
         });
     </script>
-{% endcompress %}
 {% endblock %}
