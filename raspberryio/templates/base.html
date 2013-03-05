@@ -178,9 +178,14 @@
 {% include "includes/footer_scripts.html" %}
 <script src="{{ STATIC_URL }}js/libs/bootstrap.min.js"></script>
 
-{% compress js %}
+
+{% if debug %}
     <script src="{{ STATIC_URL }}js/site.js"></script>
-{% endcompress %}
+    {% else %}
+        {% compress js %}
+            <script src="{{ STATIC_URL }}js/site.js"></script>
+        {% endcompress %}
+{% endif %}
 
 {% block extra_js %}{% endblock %}
 

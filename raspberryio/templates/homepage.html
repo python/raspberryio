@@ -75,24 +75,28 @@
 {% endblock %}
 
 {% block extra_js %}
-{% compress js %}
-<script src="{{ STATIC_URL }}js/libs/jquery.stickyPanel.min.js"></script>
-<script>
-    $(function () {
-        var $window = $(window);
-        function checkWidth() {
-            var windowsize = $window.width();
-            if (windowsize > 767) {
-                var stickyPanelOptions = {
-                    afterDetachCSSClass: "",
-                    savePanelSpace: true
-                };
-                $("#global-nav").stickyPanel(stickyPanelOptions);
+    {% if debug %}
+        <script src="{{ STATIC_URL }}js/libs/jquery.stickyPanel.min.js"></script>
+    {% else %}
+        {% compress js %}
+            <script src="{{ STATIC_URL }}js/libs/jquery.stickyPanel.min.js"></script>
+        {% endcompress %}
+    {% endif %}
+    <script>
+        $(function () {
+            var $window = $(window);
+            function checkWidth() {
+                var windowsize = $window.width();
+                if (windowsize > 767) {
+                    var stickyPanelOptions = {
+                        afterDetachCSSClass: "",
+                        savePanelSpace: true
+                    };
+                    $("#global-nav").stickyPanel(stickyPanelOptions);
+                }
             }
-        }
-        checkWidth();
-        $(window).resize(checkWidth);
-    });
-</script>
-{% endcompress %}
+            checkWidth();
+            $(window).resize(checkWidth);
+        });
+    </script>
 {% endblock %}
