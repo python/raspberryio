@@ -179,15 +179,11 @@
 
     <script src="{{ STATIC_URL }}js/libs/bootstrap.min.js"></script>
 
-    {% if debug %}
+    {% compress js %}
         <script src="{{ STATIC_URL }}js/site.js"></script>
-    {% else %}
-        {% compress js %}
-            <script src="{{ STATIC_URL }}js/site.js"></script>
-        {% endcompress %}
-    {% endif %}
-
-    {% block extra_js %}{% endblock %}
+        {% block extra_js %}{% endblock %}
+    {% endcompress %}
+    
     {% render_block "js" %}
 </body>
 </html>
