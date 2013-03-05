@@ -26,10 +26,13 @@
                     </section>
                 </article>
             </a>
+            
         {% empty %}
             <p>No recent posts.</p>
         {% endfor %}
-        <a class="more" href="{% url 'community-feed-list' feed_type.slug %}">See all posts &rarr;</a>
+        {% if feed_items.count >= 5 %}
+            <a class="more" href="{% url 'community-feed-list' feed_type.slug %}">See all posts &rarr;</a>
+       {% endif %}
     </div>
 
     <div class="qanda span5 offset1">
