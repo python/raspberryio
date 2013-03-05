@@ -1,5 +1,5 @@
 {% extends "wiki/article.html" %}
-{% load wiki_tags i18n sekizai_tags %}
+{% load wiki_tags i18n sekizai_tags compress %}
 {% load url from future %}
 
 {% block pagetitle %}{% trans "History" %}: {{ article.current_revision.title }}{% endblock %}
@@ -7,11 +7,12 @@
 {% block wiki_contents_tab %}
 
 {% addtoblock "js" %}
+{% compress js %}
 <script type="text/javascript" src="{{ STATIC_URL }}wiki/js/diffview.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}wiki/js/diff.js"></script>
 <script type="text/javascript">
-  $(document).ready(
-    function() {
+
+  $(function() {
       $('.accordion input[disabled!="disabled"][type="radio"]').first().attr('checked', 'true');
       // Fix modal heights
       $('.modal').css('height', $(window).height()*0.70 + 'px');
@@ -25,8 +26,11 @@
       });
     });
 </script>
+{% endcompress %}
 {% endaddtoblock %}
+
 {% addtoblock "css" %}
+{% compress css %}
 <style type="text/css">
   td.linenumber {
     width: 20px;
@@ -57,6 +61,7 @@
     border-top: 1px solid #DDD;    
   }
 </style>
+{% endcompress %}
 {% endaddtoblock %}
 
 <p class="lead">
@@ -207,6 +212,7 @@
 {% endblock %}
 
 {% block extra_js %}
+{% compress js %}
     <script>
         (function() {
             $('#switch-version-submit').click(function(e) {
@@ -218,4 +224,5 @@
             });
         })();
     </script>
+{% encompress %}
 {% endblock %}
