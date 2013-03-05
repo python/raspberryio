@@ -10,24 +10,27 @@
     {% csrf_token %}
     {{ project_form|as_bootstrap }}
     {{ project_form.media }}
-    <input type="submit" name="save" value="Save {% if not project.is_published%}&amp; preview{% endif %}" />
-        {% if not project.id %}
-            <input type="submit" name="save-add-step" value="Save &amp; add project steps" />
+   
+    <div class="project-steps">
+    {% if not project.id %}
+        <h4>Are there steps in your project?</h4>
+        <input type="submit" name="save-add-step" value="Save &amp; add project steps" />
+    {% else %}
+        <h4>Edit your steps</h4>
+        {% for step in project.steps.all %}
+            <a class="edit" href="{% url 'project-step-create-edit' project.slug step.order %}">
+                <i class="icon-edit icon-white"></i> Step {{ step.order|add:"1" }}: {{ step.title }}
+            </a><br>
+        {% endfor %}
+        {% if project.steps.count < 20 %}
+            <a class="create" href="{% url 'project-step-create-edit' project.slug %}"><i class="icon-plus icon-white"></i>Create a new project step</a>
         {% endif %}
-    <input type="button" class="cancel" name="cancel" value="Cancel" onclick="history.go(-1);" />
-</form>
+    {% endif %} 
+    </div>
 
-{% if project.id %}
-    {% for step in project.steps.all %}
-        <a href="{% url 'project-step-create-edit' project.slug step.order %}">
-            Edit step {{ step.order|add:"1" }} - {{ step.title }}
-        </a>
-        <br>
-    {% endfor %}
-    {% if project.steps.count < 20 %}
-    <a href="{% url 'project-step-create-edit' project.slug %}">
-        Create a new project step
-    </a>
-    {% endif %}
-{% endif %}
+    <div class="form-actions">
+        <input type="submit" name="save" value="Save {% if not project.is_published%}&amp; preview{% endif %}" />
+        <input type="button" class="cancel" name="cancel" value="Cancel" onclick="history.go(-1);" />
+    </div>
+</form>
 {% endblock %}

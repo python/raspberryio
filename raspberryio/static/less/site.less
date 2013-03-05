@@ -574,6 +574,10 @@ hr {
 	top: 30px;
 }
 
+.thumbnail {
+	background: @white;
+}
+
 /* Homepage
 ================= */
 body#homepage {
@@ -890,6 +894,7 @@ body#project-detail {
 				.pull-left;
 				.clearfix;
 				margin-right: 10px; 
+				background-color: @white;
 			}
 			p { margin: 0; }
 			.date { 
@@ -964,11 +969,25 @@ body#project-detail {
 ========================= */
 body#project-create-edit {
 	form {
-		input[type="submit"], input[type="cancel"] {
-			@media (max-width: 480px) {
-				display: block;
-				margin: 10px 0;
+		input[type="submit"], input.cancel {
+			.btn-large;
+		}
+		.project-steps {
+			input[type="submit"] {
+				.btn-large;
+				.btn-success;
 			}
+			a {
+				.btn;
+				margin-bottom: 8px;
+				&.create {
+					.btn-success;
+				}
+				&.edit {
+					.btn-primary;
+				}
+			}
+			
 		}
 	}
 }
@@ -1092,13 +1111,15 @@ body#project-step-create-edit {
 				}
 			}
 		}
-		.btn-group {
+		.form-actions {
 			margin: 25px 0;
 			input {
 				margin-right: 5px;
-				@media (max-width: 320px) {
-					.btn-small;
+				.btn-large;
+				@media (max-width: 595px) {
+					margin-bottom: 10px;
 				}
+				
 			}
 		}
 	}
