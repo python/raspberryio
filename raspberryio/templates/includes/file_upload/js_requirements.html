@@ -1,3 +1,5 @@
+{% load compress %}
+
 <!--
     Template for jquery file uploader. Requires tmpl.js
 -->
@@ -64,6 +66,7 @@
     </script>
 {% endverbatim %}
 
+{% compress js %}
 <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/vendor/jquery.ui.widget.js"></script>
 <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/tmpl.min.js"></script>
 <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/load-image.min.js"></script>
@@ -74,3 +77,4 @@
 <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/jquery.fileupload-ui.js"></script>
 <script src="{{ STATIC_URL }}js/libs/jqueryfileuploader/locale.js"></script>
 <script src="{{ STATIC_URL }}js/file_upload.js"></script>
+{% endcompress %}
