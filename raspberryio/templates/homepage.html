@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load future project_tags mezzanine_tags %}
+{% load future project_tags mezzanine_tags compress %}
 {% load url from future %}
 {% load profile_tags %}
 
@@ -75,6 +75,7 @@
 {% endblock %}
 
 {% block extra_js %}
+{% compress js %}
 <script src="{{ STATIC_URL }}js/libs/jquery.stickyPanel.min.js"></script>
 <script>
     $(function () {
@@ -93,4 +94,5 @@
         $(window).resize(checkWidth);
     });
 </script>
+{% endcompress %}
 {% endblock %}
