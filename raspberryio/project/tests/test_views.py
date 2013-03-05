@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from hilbert.test import ViewTestMixin, AuthViewMixin
 
 from actstream.actions import follow
+from actstream.models import Action
 
 from mezzanine.utils.timezone import now
 from mezzanine.core.models import (CONTENT_STATUS_PUBLISHED,
@@ -745,6 +746,9 @@ class IndexTestCase(ProjectBaseTestCase):
     def setUp(self):
         self.user = self.create_user(data={'password': 'password'})
         self.user1 = self.create_user(data={'password': 'password'})
+        self.user.actor_actions.add(Action())
+        self.user.actor_actions.add(Action())
+        self.user1.actor_actions.add(Action())
         self.url = reverse(self.url_name)
 
     def test_active_users(self):
@@ -758,4 +762,4 @@ class IndexTestCase(ProjectBaseTestCase):
     def test_sorted_active_users(self):
         follow(self.user, self.user1)
         response = self.client.get(self.url)
-        self.assertEqual([1, self.user], response.context['active_users'][0])
+        self.assertEqual(self.user, response.context['active_users'][0])

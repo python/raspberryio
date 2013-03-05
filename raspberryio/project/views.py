@@ -1,3 +1,5 @@
+from collections import Counter
+from datetime import timedelta
 from operator import itemgetter
 
 from django.http import HttpResponseForbidden, Http404
@@ -8,7 +10,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from actstream import action
+from actstream.models import Action
 
+from mezzanine.utils.timezone import now
 from mezzanine.utils.sites import current_site_id
 from mezzanine.core.models import CONTENT_STATUS_PUBLISHED
 from hilbert.decorators import ajax_only
@@ -21,10 +25,14 @@ from raspberryio.project.utils import AjaxResponse
 
 def index(request):
     "Custom view for site homepage"
-    users = User.objects.filter(is_active=True, profile__isnull=False)
-    users = [[x.actor_actions.all().count(), x] for x in users]
-    active_users = sorted(users, key=itemgetter(0))
-    active_users.reverse()
+    week_ago = now() - timedelta(days=7)
+    actions = Action.objects.model_actions(User) \
+        .filter(timestamp__gte=week_ago) \
+        .values_list('actor_object_id', flat=True)
+    most_active_user_pks = map(itemgetter(0), Counter(actions).most_common(10))
+    active_users = User.objects.filter(
+        pk__in=most_active_user_pks, is_active=True, profile__isnull=False
+    )[:4]
     return render(request, 'homepage.html', {'active_users': active_users})
 
 
