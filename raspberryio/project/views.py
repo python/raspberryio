@@ -1,19 +1,12 @@
-from collections import Counter
-from datetime import timedelta
-from operator import itemgetter
-
 from django.http import HttpResponseForbidden, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.sites.models import Site
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 
 from actstream import action
-from actstream.models import Action
 
-from mezzanine.utils.timezone import now
 from mezzanine.utils.sites import current_site_id
 from mezzanine.core.models import CONTENT_STATUS_PUBLISHED
 from hilbert.decorators import ajax_only
@@ -21,20 +14,15 @@ from hilbert.decorators import ajax_only
 from raspberryio.project.models import Project, ProjectStep, ProjectImage
 from raspberryio.project.forms import (ProjectForm, ProjectStepForm,
     ProjectImageForm)
-from raspberryio.project.utils import AjaxResponse
+from raspberryio.project.utils import AjaxResponse, get_active_users
 
 
-@cache_page(60 * 60)
 def index(request):
     "Custom view for site homepage"
-    week_ago = now() - timedelta(days=7)
-    actions = Action.objects.model_actions(User) \
-        .filter(timestamp__gte=week_ago) \
-        .values_list('actor_object_id', flat=True)
-    most_active_user_pks = map(itemgetter(0), Counter(actions).most_common(10))
-    active_users = User.objects.filter(
-        pk__in=most_active_user_pks, is_active=True, profile__isnull=False
-    )[:4]
+    active_users = cache.get('active_users')
+    if active_users is None:
+        active_users = get_active_users(days=7, number=4)
+        cache.set('active_users', active_users, 60 * 180)
     return render(request, 'homepage.html', {'active_users': active_users})
 
 

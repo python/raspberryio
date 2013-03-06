@@ -1,7 +1,14 @@
+from collections import Counter
+from datetime import timedelta
+from operator import itemgetter
 import urlparse
 
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.utils import simplejson
+
+from actstream.models import Action
+from mezzanine.utils.timezone import now
 
 
 YOUTUBE_SHORT_URL = "youtu.be"
@@ -36,3 +43,20 @@ class AjaxResponse(HttpResponse):
             if 'application/json' in http_accept else 'text/plain'
         super(AjaxResponse, self).__init__(content, mimetype, *args, **kwargs)
         self['Content-Disposition'] = 'inline; filename=files.json'
+
+
+def get_active_users(days=7, number=4):
+    """
+    Return a queryset of the most active users for the given `days` and limited
+    to `number` users. Defaults to 7 days and 4 users.
+    """
+    week_ago = now() - timedelta(days=days)
+    actions = Action.objects.model_actions(User) \
+        .filter(timestamp__gte=week_ago) \
+        .values_list('actor_object_id', flat=True)
+    most_active_user_pks = map(
+        itemgetter(0), Counter(actions).most_common(number * 2)
+    )
+    return User.objects.filter(
+        pk__in=most_active_user_pks, is_active=True, profile__isnull=False
+    )[:number]
