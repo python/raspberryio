@@ -17,4 +17,6 @@ if 'test' in sys.argv:
 
     DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
 
+    CACHES['default']['BACKEND'] = 'django.core.cache.backends.dummy.DummyCache'
+
     SOUTH_TESTS_MIGRATE = False

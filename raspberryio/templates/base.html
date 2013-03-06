@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load pages_tags mezzanine_tags sekizai_tags i18n future %}
+{% load cache %}
 <html lang="en">
 <head>
 
@@ -56,58 +57,60 @@
     {% block jumbotron %}{% endblock %}
 
     {% block global_nav %}
-    <div id="global-nav" class="navbar navbar-static-top">
-        <div class="navbar-inner">
-            <div class="container">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-                <a class="brand" href="/">
-                    <img src="{{ STATIC_URL }}img/razzy-head.png" alt="Razzy head" width="20"> 
-                    {{ settings.SITE_TITLE }}
-                </a>
-                <div class="nav-collapse collapse">
-                    <div class="right-block">
-                        <ul class="nav">
-                            {% if request.user.is_authenticated %}
-                                <li class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Hi {{ request.user }}!<b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="{% url 'profile-dashboard' %}">My Dashboard</a></li>
-                                        <li><a href="{% url 'profile' user.username %}">My Profile</a></li>
-                                        <li><a href="{% url 'profile_update' %}">Edit Profile</a></li>
-                                        <li><a href="{% url 'project-create-edit' %}">Create new project</a></li>
-                                        {% if user.get_profile.feed_owner %}
-                                            <li><a href="{% url 'community-my-feeds' %}">Edit blog feeds</a></li>
-                                        {% endif %}
-                                    </ul>
-                                </li>
-                            {% endif %}
-                            <li class="visible-phone"><a href="{% url 'project-create-edit' %}">Create</a></li>
-                            <li class="visible-phone"><a href="{% url 'project-list' %}">Explore</a></li>
-                            <li class="visible-phone"><a href="{% url 'wiki:root' %}">Learn</a></li>
-                            <li class="visible-phone"><a href="{% url 'community-index' %}">Community</a></li>
-                            {% if request.user.is_authenticated %}
-                                <li><a href="{% url 'logout' %}">Log Out</a></li>
-                            {% else %}
-                                <li><a href="{% url 'login' %}">Log In</a></li>
-                                <li><a href="{% url 'signup' %}">Sign Up</a></li>
-                            {% endif %}
-                        </ul>
-                        <form action="{% url 'search' %}" class="navbar-search">
-                            <input type="text" name="q" class="search-query" placeholder="Search" 
-                            {% if query %}
-                                value="{{ query }}"
-                            {% endif %}
-                            >
-                        </form>
+        {% cache 360 globalnav request.user %}
+            <div id="global-nav" class="navbar navbar-static-top">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </a>
+                        <a class="brand" href="/">
+                            <img src="{{ STATIC_URL }}img/razzy-head.png" alt="Razzy head" width="20"> 
+                            {{ settings.SITE_TITLE }}
+                        </a>
+                        <div class="nav-collapse collapse">
+                            <div class="right-block">
+                                <ul class="nav">
+                                    {% if request.user.is_authenticated %}
+                                        <li class="dropdown">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Hi {{ request.user }}!<b class="caret"></b></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="{% url 'profile-dashboard' %}">My Dashboard</a></li>
+                                                <li><a href="{% url 'profile' user.username %}">My Profile</a></li>
+                                                <li><a href="{% url 'profile_update' %}">Edit Profile</a></li>
+                                                <li><a href="{% url 'project-create-edit' %}">Create new project</a></li>
+                                                {% if user.get_profile.feed_owner %}
+                                                    <li><a href="{% url 'community-my-feeds' %}">Edit blog feeds</a></li>
+                                                {% endif %}
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+                                    <li class="visible-phone"><a href="{% url 'project-create-edit' %}">Create</a></li>
+                                    <li class="visible-phone"><a href="{% url 'project-list' %}">Explore</a></li>
+                                    <li class="visible-phone"><a href="{% url 'wiki:root' %}">Learn</a></li>
+                                    <li class="visible-phone"><a href="{% url 'community-index' %}">Community</a></li>
+                                    {% if request.user.is_authenticated %}
+                                        <li><a href="{% url 'logout' %}">Log Out</a></li>
+                                    {% else %}
+                                        <li><a href="{% url 'login' %}">Log In</a></li>
+                                        <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                                    {% endif %}
+                                </ul>
+                                <form action="{% url 'search' %}" class="navbar-search">
+                                    <input type="text" name="q" class="search-query" placeholder="Search" 
+                                    {% if query %}
+                                        value="{{ query }}"
+                                    {% endif %}
+                                    >
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        {% endcache %}
     {% endblock %}
 
     {% if page.title or messages %}
@@ -140,35 +143,37 @@
     <div id="push"></div>
 
     {% block navbar %}
-    <div id="footer-nav" class="navbar navbar-fixed-bottom hidden-phone">
-        <div class="navbar-inner">
-            <div class="container">
-                <ul class="nav">
-                    <li class="create"><a href="{% url 'project-create-edit' %}">Create</a></li>
-                    <li class="explore"><a href="{% url 'project-list' %}">Explore</a></li>
-                    <li class="about">
-                        <div class="tabWrapper">
-                            <a class="tab" href="#">
-                                <img src="{{ STATIC_URL }}img/razzy-small.png" alt="About Raspberry IO" width="50" height="60">
-                            </a>
-                            <div class="tabContent">
-                                <h4>Raspberry IO</h4>
-                                Create, Share, Learn, and Teach. Opening the circuitry of the mind with open culture, open source, Python, and the Raspberry Pi.
-                            </div>
-                        </div>
-                    </li>
-                    <li class="learn"><a href="{% url 'wiki:root' %}">Learn</a></li>
-                    <li class="community"><a href="{% url 'community-index' %}">Community</a></li>
-                </ul>
+        {% cache 720 footer %}
+            <div id="footer-nav" class="navbar navbar-fixed-bottom hidden-phone">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <ul class="nav">
+                            <li class="create"><a href="{% url 'project-create-edit' %}">Create</a></li>
+                            <li class="explore"><a href="{% url 'project-list' %}">Explore</a></li>
+                            <li class="about">
+                                <div class="tabWrapper">
+                                    <a class="tab" href="#">
+                                        <img src="{{ STATIC_URL }}img/razzy-small.png" alt="About Raspberry IO" width="50" height="60">
+                                    </a>
+                                    <div class="tabContent">
+                                        <h4>Raspberry IO</h4>
+                                        Create, Share, Learn, and Teach. Opening the circuitry of the mind with open culture, open source, Python, and the Raspberry Pi.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="learn"><a href="{% url 'wiki:root' %}">Learn</a></li>
+                            <li class="community"><a href="{% url 'community-index' %}">Community</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <footer>
+                    {% block footer %}
+                    &copy;{% now "Y" %} <a href="http://www.python.org/psf/">Python Software Foundation</a>
+                    {% page_menu "pages/menus/dropdown.html" %}
+                    {% endblock %}
+                </footer>
             </div>
-        </div>
-        <footer>
-            {% block footer %}
-            &copy;{% now "Y" %} <a href="http://www.python.org/psf/">Python Software Foundation</a>
-            {% page_menu "pages/menus/dropdown.html" %}
-            {% endblock %}
-        </footer>
-    </div>
+        {% endcache %}
     {% endblock %}
     {% endspaceless %}
 {% endblock %}
