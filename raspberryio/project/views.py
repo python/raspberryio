@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_page
 
 from actstream import action
 from actstream.models import Action
@@ -23,6 +24,7 @@ from raspberryio.project.forms import (ProjectForm, ProjectStepForm,
 from raspberryio.project.utils import AjaxResponse
 
 
+@cache_page(60 * 60)
 def index(request):
     "Custom view for site homepage"
     week_ago = now() - timedelta(days=7)
