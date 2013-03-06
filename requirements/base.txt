@@ -11,4 +11,3 @@ gdata==2.0.17
 django-activity-stream==0.4.4
 django-bootstrap-toolkit==2.8.0
 -e git+https://github.com/daaray/django-wiki.git#egg=wiki
-python-memcached==1.48
