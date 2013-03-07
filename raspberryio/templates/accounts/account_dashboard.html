@@ -23,31 +23,31 @@
     </div>
     <div class="projects span4 offset1">
         <h3><img src="{{ STATIC_URL }}img/razzy-head.png" width="35"> My Projects</h3>
-        {% if user.projects.all %}
-        <ul class="nav nav-tabs nav-stacked">
-        {% with user.projects.all as projects %}
-        {% for project in projects|slice:":10" %}
-            <li><a href="{% url 'project-detail' project.slug %}">{{ project.title }}</a></li>
-        {% endfor %}
-        {% endwith %}
-            <li><a href="{% url 'profile' user.username %}">View your profile &rarr;</a></li>
-        </ul>
-        {% else %}
-        <a class="create" href="{% url 'project-create-edit' %}"><i class="icon-plus icon-white"></i> Create Project &rarr;</a>
+        {% if user.projects.exists %}
+            <ul class="nav nav-tabs nav-stacked">
+            {% with user.projects.all as projects %}
+            {% for project in projects|slice:":10" %}
+                <li><a href="{% url 'project-detail' project.slug %}">{{ project.title }}</a></li>
+            {% endfor %}
+            {% endwith %}
+                <li><a href="{% url 'profile' user.username %}">View your profile &rarr;</a></li>
+            </ul>
+            {% else %}
+            <a class="create" href="{% url 'project-create-edit' %}"><i class="icon-plus icon-white"></i> Create Project &rarr;</a>
         {% endif %}
     </div>
 </div>
 {% endblock %}
 
-{% if user.projects.all %}
-{% block extra_js %}
-    <script src="{{ STATIC_URL }}js/update_relationship.min.js"></script>
-    <script src="{{ STATIC_URL }}js/libs/swipe.js"></script>
-    <script>
+{% if user.projects.exists %}
+    {% block extra_js %}
+        <script src="{{ STATIC_URL }}js/update_relationship.min.js"></script>
+        <script src="{{ STATIC_URL }}js/libs/swipe.js"></script>
+        <script>
 
-    $('#slider').Swipe();
-    window.mySwipe = $('#slider').data('Swipe');
+        $('#slider').Swipe();
+        window.mySwipe = $('#slider').data('Swipe');
 
-    </script>
-{% endblock %}
+        </script>
+    {% endblock %}
 {% endif %}
