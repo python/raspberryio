@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load url from future %}
 {% load bootstrap_toolkit %}
+{% load cache %}
 
 {% block body_id %}project-step-create-edit{% endblock %}
 
@@ -21,8 +22,15 @@
 
     <form id="project-step-form" class="project-step-create-edit-form" action="" method="post" accept-charset="utf-8">
         {% csrf_token %}
-        {{ project_step_form|as_bootstrap }}
-        {{ project_step_form.media }}
+        {% if project_step.order != None %}
+            {{ project_step_form|as_bootstrap }}
+            {{ project_step_form.media }}
+        {% else %}
+            {% cache 18000 create-project-step %}
+                {{ project_step_form|as_bootstrap }}
+                {{ project_step_form.media }}
+            {% endcache %}
+        {% endif %}
         <div class="form-actions">
         <input type="submit" name="save" value="Save"/>
         {% if project.steps.count < 20 %}
