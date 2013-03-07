@@ -3,7 +3,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required
+from django.views.generic.list_detail import object_list
 from django.core.cache import cache
+from django.views.decorators.cache import cache_page
 
 from actstream import action
 
@@ -21,15 +23,16 @@ def index(request):
     "Custom view for site homepage"
     active_users = cache.get('active_users')
     if active_users is None:
-        active_users = get_active_users(days=7, number=4)
+        active_users = get_active_users(days=7, number=6)
         cache.set('active_users', active_users, 60 * 180)
     return render(request, 'homepage.html', {'active_users': active_users})
 
 
+@cache_page(60 * 2)
 def project_list(request):
-    return render(request, 'project/project_list.html', {
-        'projects': Project.objects.published(request.user).order_by('-created_datetime'),
-    })
+    "Show a list of published projects and order them by most recently created"
+    projects = Project.objects.published(request.user).order_by('-created_datetime')
+    return object_list(request, queryset=projects, paginate_by=12)
 
 
 def project_detail(request, project_slug):

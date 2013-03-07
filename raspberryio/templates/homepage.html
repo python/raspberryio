@@ -36,38 +36,38 @@
         </div>
         {% cache 1440 active_users %}
             <div class="row">
-                <div class="active-users hidden-phone">
-                    <hr>
-                   <h3>Most Active Users</h3>
-                   <ul>
-                   {% for user in active_users %}
-                       <li class="span3">
-                           <a href="{% url 'profile' user %}">{% avatar user.get_profile 200 %}
-                               {{ user.username }}</a>
-                       </li>
-                   {% endfor %}
-                   </ul>
-                </div>
-            </div>
-
-            <div class="row">
                 <div class="featured">
                 <hr>
                 {% featured_projects 1 %}
                 {% for featured in featured_projects %}
                     <div class="project">
-                        <h3>{{ featured.project.title }}</h3>
-                        <p>{{ featured.byline }}</p>
+                        <h3>Featured Project</h3>
+                        <p>{{ featured.project.title }}</p>
                         <a href="{% url 'project-detail' featured.project.slug %}"><img src="{{ MEDIA_URL }}{% thumbnail featured.photo.url 800 400 %}" alt="{{ featured.project.title }}"/></a>
                     </div>
                     </a>
                 {% empty %}
                     <div class="project">
-                        <h3>Featured Project name</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        <h3>Featured Project</h3>
+                        <p>Featured Project name goes here.</p>
                         <a href="#"><img src="http://placekitten.com/800/400"></a>
                     </div>
                 {% endfor %}
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="active-users hidden-phone">
+                    <hr>
+                   <h3>Most Active Users</h3>
+                   <ul>
+                   {% for user in active_users %}
+                       <li class="span2">
+                           <a href="{% url 'profile' user %}">{% avatar user.get_profile 200 %}
+                               {{ user.username }}</a>
+                       </li>
+                   {% endfor %}
+                   </ul>
                 </div>
             </div>
         {% endcache %}
