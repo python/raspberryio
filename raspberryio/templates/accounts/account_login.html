@@ -12,12 +12,10 @@
         <h2>{% trans "You're already logged in." %}</h2>
     {% else %}
         <h2>{{ title }} </h2>
-        {% nevercache %}
-            <form class="login"  method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
-                {{ form|as_bootstrap }}
-            <input type="submit" value="{{ title }}">
-            </form>
-        {% endnevercache %}
+        <form class="login"  method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
+            {{ form|as_bootstrap }}
+        <input type="submit" value="{{ title }}">
+        </form>
         <div class="extra">
             {% url "signup" as signup_url %}
             <p>{% blocktrans with request.GET.next as next %}If you don't have an account you can <a href="{{ signup_url }}?next={{ next }}">sign up</a> for one now.{% endblocktrans %}</p>
