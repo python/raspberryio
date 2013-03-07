@@ -9,9 +9,47 @@
         <input type="hidden" name='type' value="project.project">
     </form>
 
+    {% if is_paginated %}
+        <div class="pagination pagination-large">
+            <ul>
+                {% if page_obj.has_next %}
+                    <li><a href="?page={{ page_obj.next_page_number }}">&larr; Prev</a></li>
+                {% endif %}
+                {% for page in page_obj.paginator.page_range %}
+                    <li>
+                        <a href="?page={{ page }}">{{ page }}</a>
+                    </li>
+                {% endfor %}
+              {% if page_obj.has_previous %}
+                <li><a href="?page={{ page_obj.previous_page_number }}">More &rarr;</a></li>
+              {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+
     <div class="row">
+    {% with object_list as projects %}
 	{% include 'includes/project-gallery.html' %}
-	</div>	
+    {% endwith %}
+	</div> 
+
+    {% if is_paginated %}
+        <div class="pagination pagination-large">
+            <ul>
+                {% if page_obj.has_next %}
+                    <li><a href="?page={{ page_obj.next_page_number }}">&larr; Prev</a></li>
+                {% endif %}
+                {% for page in page_obj.paginator.page_range %}
+                    <li>
+                        <a href="?page={{ page }}">{{ page }}</a>
+                    </li>
+                {% endfor %}
+              {% if page_obj.has_previous %}
+                <li><a href="?page={{ page_obj.previous_page_number }}">More &rarr;</a></li>
+              {% endif %}
+            </ul>
+        </div>
+    {% endif %}	
 {% endblock %}
 
 {% block extra_js %}
