@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n future %}
 {% load bootstrap_toolkit %}
+{% load mezzanine_tags %}
 
 {% block body_class %}login{% endblock %}
 {% block title %}{{ title }}{% endblock %}
@@ -11,7 +12,7 @@
         <h2>{% trans "You're already logged in." %}</h2>
     {% else %}
         <h2>{{ title }} </h2>
-        <form class="login"  method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
+        <form class="login"  method="post" accept-charset="utf-8" enctype="multipart/form-data">{% nevercache %}{% csrf_token %}{% endnevercache %}
             {{ form|as_bootstrap }}
         <input type="submit" value="{{ title }}">
         </form>
