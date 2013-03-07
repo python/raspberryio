@@ -1,15 +1,22 @@
 {% extends "base.html" %}
 {% load url from future %}
 {% load bootstrap_toolkit %}
+{% load cache %}
 
 {% block body_id %}project-create-edit{% endblock %}
 
 {% block main %}
 <h2>Create your project</h2>
-<form class="project-create-edit-form" action="" method="post" accept-charset="utf-8" enctype="multipart/form-data"> 
-    {% csrf_token %}
-    {{ project_form|as_bootstrap }}
-    {{ project_form.media }}
+<form class="project-create-edit-form" action="" method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
+    {% if project.id %}
+        {{ project_form|as_bootstrap }}
+        {{ project_form.media }}
+    {% else %}
+        {% cache 10800 create-project %}
+            {{ project_form|as_bootstrap }}
+            {{ project_form.media }}
+        {% endcache %}
+    {% endif %}
    
     <div class="project-steps">
     {% if not project.id %}

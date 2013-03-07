@@ -1,16 +1,23 @@
 {% extends "base.html" %}
 {% load url from future %}
 {% load bootstrap_toolkit %}
+{% load cache %}
 
 {% block meta_title %}Create or edit your question{% endblock %}
 
 {% block main %}
 <h2>Ask a question</h2>
 <p class="lead">User the form below to share your question with the community.</p>
-<form method="post" accept-charset="utf-8"> 
-	{% csrf_token %}
-    {{ question_form|as_bootstrap }}
-    {{ project_form.media }}
+<form method="post" accept-charset="utf-8">{% csrf_token %}
+    {% if question.id %}
+        {{ question_form|as_bootstrap }}
+        {{ project_form.media }}
+    {% else %}
+        {% cache 10800 create-question %}
+            {{ question_form|as_bootstrap }}
+            {{ project_form.media }}
+        {% endcache %}
+    {% endif %}
     <input type="submit" name="save" value="Save" />
     <input type="button" name="cancel" value="Cancel" onClick="history.go(-1);"/>
 </form>

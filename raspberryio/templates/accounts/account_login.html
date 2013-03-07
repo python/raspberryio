@@ -13,7 +13,9 @@
     {% else %}
         <h2>{{ title }} </h2>
         <form class="login"  method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
-            {{ form|as_bootstrap }}
+            {% cache 10800 login-form %}
+                {{ form|as_bootstrap }}
+            {% endcache %}
         <input type="submit" value="{{ title }}">
         </form>
         <div class="extra">
