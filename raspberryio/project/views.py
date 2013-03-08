@@ -5,7 +5,6 @@ from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required
 from django.views.generic.list_detail import object_list
 from django.core.cache import cache
-from django.views.decorators.cache import cache_page
 
 from actstream import action
 
@@ -28,7 +27,6 @@ def index(request):
     return render(request, 'homepage.html', {'active_users': active_users})
 
 
-@cache_page(60 * 2)
 def project_list(request):
     "Show a list of published projects and order them by most recently created"
     projects = Project.objects.published(request.user).order_by('-created_datetime')

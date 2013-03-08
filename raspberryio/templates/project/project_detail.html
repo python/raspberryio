@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load mezzanine_tags profile_tags %}
 {% load url from future %}
+{% load cache %}
 
 {% block body_id %}project-detail{% endblock %}
 
@@ -14,24 +15,20 @@
     {% endif %}
 {% endif %}
 
-<header>
-    <h2>
-        {{ project.title }}
-        {% if request.user == project.user or request.user.is_superuser %}
-            <a href="{% url 'project-create-edit' project.slug %}"><i class="icon-edit icon-white"></i> Edit Project</a>
-            {% if not project.steps.count >= 20 %}
-            <a href="{% url 'project-step-create-edit' project.slug %}"><i class="icon-plus icon-white"></i> Add Step</a>
+{% cache 120 project-header project.id %}
+    <header>
+        <h2>
+            {{ project.title }}
+            {% if request.user == project.user or request.user.is_superuser %}
+                <a href="{% url 'project-create-edit' project.slug %}"><i class="icon-edit icon-white"></i> Edit Project</a>
+                {% if not project.steps.count >= 20 %}
+                <a href="{% url 'project-step-create-edit' project.slug %}"><i class="icon-plus icon-white"></i> Add Step</a>
+                {% endif %}
+                <a class="delete" href="{% url 'project-delete' project.id %}"><i class="icon-trash icon-white"></i> Delete Project</a>
             {% endif %}
-            <a class="delete" href="{% url 'project-delete' project.id %}"><i class="icon-trash icon-white"></i> Delete Project</a>
-        {% endif %}
-        {# Leaving in here for now. This is slated for Phase II work. #}
-        {% comment %}
-        <a class="follow" href="#">Follow</a>
-        <a class="upvote" href="#">Upvote</a>
-        {% endcomment %}
-    </h2>
-    
-</header>
+        </h2>
+    </header>
+{% endcache %}
 
 {% if project.steps.count > 1 %}
 <div class="steps-timeline hidden-phone">
@@ -122,7 +119,6 @@
                 </div>
             </div>
             <div class="span5">
-                {# FIXME: Determine the whitelist of html tags and assure this won't break the page #}
                 {{ step.content|safe }}
             </div>
             {% else %}

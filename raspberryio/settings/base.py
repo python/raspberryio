@@ -107,6 +107,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.cache.UpdateCacheMiddleware',
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.redirects.middleware.RedirectFallbackMiddleware",
@@ -121,6 +122,7 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the following if using any of the SSL settings:
     # "mezzanine.core.middleware.SSLRedirectMiddleware",
     "mezzanine.pages.middleware.PageMiddleware",
+    'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 # Store these package names here as they may change in the future since
@@ -229,6 +231,7 @@ LOGGING = {
 }
 
 
+# Cache settings
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
@@ -236,6 +239,11 @@ CACHES = {
         'KEY_PREFIX': 'raspberryio',
     },
 }
+
+CACHE_MIDDLEWARE_ALIAS = 'default'
+CACHE_MIDDLEWARE_SECONDS = 600
+CACHE_MIDDLEWARE_KEY_PREFIX = 'generic-site-cache'
+CACHE_MIDDLEWARE_ANONYMOUS_ONLY = True
 
 # Application settings
 SKIP_SOUTH_TESTS = True

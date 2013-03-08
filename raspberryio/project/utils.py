@@ -1,3 +1,4 @@
+from functools import wraps
 from collections import Counter
 from datetime import timedelta
 from operator import itemgetter
@@ -6,6 +7,7 @@ import urlparse
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.utils import simplejson
+from django.views.decorators.cache import cache_page
 
 from actstream.models import Action
 from mezzanine.utils.timezone import now
@@ -60,3 +62,17 @@ def get_active_users(days=7, number=4):
     return User.objects.filter(
         pk__in=most_active_user_pks, is_active=True, profile__isnull=False
     )[:number]
+
+
+def cache_on_auth(timeout):
+    def decorated(view_func):
+        @wraps(view_func)
+        def _(request, *args, **kwargs):
+            # Anonymous might be a better user_key, but is a valid username
+            user_key = '~~~~' if not request.user.is_authenticated \
+                else request.user.username
+            return cache_page(
+                timeout, key_prefix="user:%s" % user_key
+            )(view_func)(request, *args, **kwargs)
+        return _
+    return decorated

@@ -1,11 +1,41 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render, get_object_or_404, redirect
 
 from actstream import models
 
 from raspberryio.userprofile.models import Profile
+
+from django.contrib.auth import login as auth_login
+from django.contrib.messages import info
+from django.utils.translation import ugettext_lazy as _
+from django.views.decorators.cache import cache_page
+from django.views.decorators.csrf import csrf_protect
+
+from mezzanine.utils.models import get_user_model
+from mezzanine.accounts.forms import LoginForm
+from mezzanine.utils.urls import login_redirect
+
+
+User = get_user_model()
+
+
+@cache_page(60 * 30)
+@csrf_protect
+def login(request, template="accounts/account_login.html"):
+    """
+    Login Form
+    """
+    # Copied from mezzanine/accounts/views so we can override cacheing behavior
+    # as it related to the CSRF cookie.
+    form = LoginForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        authenticated_user = form.save()
+        info(request, _("Successfully logged in"))
+        auth_login(request, authenticated_user)
+        return login_redirect(request)
+    context = {"form": form, "title": _("Login")}
+    return render(request, template, context)
 
 
 def profile_related_list(request, username, relation):

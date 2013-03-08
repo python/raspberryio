@@ -57,7 +57,7 @@
     {% block jumbotron %}{% endblock %}
 
     {% block global_nav %}
-        {% cache 360 globalnav request.user %}
+        {% cache 1800 globalnav request.user %}
             <div id="global-nav" class="navbar navbar-static-top">
                 <div class="navbar-inner">
                     <div class="container">
@@ -143,7 +143,7 @@
     <div id="push"></div>
 
     {% block navbar %}
-        {% cache 720 footer %}
+        {% cache 1800 footer %}
             <div id="footer-nav" class="navbar navbar-fixed-bottom hidden-phone">
                 <div class="navbar-inner">
                     <div class="container">
