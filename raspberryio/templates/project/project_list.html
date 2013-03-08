@@ -5,7 +5,7 @@
 {% block body_id %}project-list{% endblock %}
 
 {% block main %}
-    {% cache 720 project-list request.user.is_authenticated %}
+    {% cache 720 project-list request.user.is_staff %}
         <form action="{% url 'search' %}" class="search form-search">
             <input name='q' type="text" class="search-query" placeholder="Find projects">
             <input type="hidden" name='type' value="project.project">
