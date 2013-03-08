@@ -9,7 +9,7 @@
 <h2>Ask a question</h2>
 <p class="lead">User the form below to share your question with the community.</p>
 <form method="post" accept-charset="utf-8">{% csrf_token %}
-    {% if question.id %}
+    {% if question.id or question_form.errors %}
         {{ question_form|as_bootstrap }}
         {{ project_form.media }}
     {% else %}

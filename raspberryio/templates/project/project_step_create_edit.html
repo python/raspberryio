@@ -22,7 +22,7 @@
 
     <form id="project-step-form" class="project-step-create-edit-form" action="" method="post" accept-charset="utf-8">
         {% csrf_token %}
-        {% if project_step.order != None %}
+        {% if project_step.order != None or project_step_form.errors %}
             {{ project_step_form|as_bootstrap }}
             {{ project_step_form.media }}
         {% else %}

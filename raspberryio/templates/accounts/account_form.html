@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags %}
 {% load bootstrap_toolkit %}
+{% load cache %}
 
 {% block meta_title %}{{ title }}{% endblock %}
 {% block title %}{{ title }}{% endblock %}
@@ -11,7 +12,13 @@
     <div class="span12">
         <h2>{{ title }}</h2>
         <form class="registration"  method="post" accept-charset="utf-8" enctype="multipart/form-data">{% csrf_token %}
-            {{ form|as_bootstrap }}
+            {% if form.errors %}
+                {{ form|as_bootstrap }}
+            {% else %}
+                {% cache 3600 signup-form %}
+                    {{ form|as_bootstrap }}
+                {% endcache %}
+            {% endif %}
             <div id="change_gravatar">
                 <a href="http://gravatar.com" target="_blank">Change your gravatar image</a>
             </div>
