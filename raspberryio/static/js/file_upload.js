@@ -39,12 +39,14 @@ var initialize_file_uploader = function(
             {
                 action: 'load',
                 fileTypes: /^image\/(gif|jpeg|png)$/,
-                maxFileSize: 10000000 // 10 MB
+                maxFileSize: 5000000 // 5 MB
             },
             {
                 action: 'resize',
-                maxWidth: 1440,
-                maxHeight: 900
+                maxWidth: 1200,
+                maxHeight: 800,
+                minWidth: 800,
+                minHeight: 600
             },
             {
                 action: 'save'

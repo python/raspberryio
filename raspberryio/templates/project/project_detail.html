@@ -128,7 +128,7 @@
             {% endif %}
         </div>
         
-        {% if step.gallery.all %}
+        {% if step.gallery.exists %}
         <div class="row">
             <div class="gallery-display">
                 <div class="gallery">
@@ -137,7 +137,7 @@
                         <ul class="swipe-wrap">
                             {% for photo in step.gallery.all %}
                             <li class="span5">
-                                <a href="{{ photo.get_thumbnail_url }}"><img src="{{ MEDIA_URL }}{% thumbnail photo.get_thumbnail_url 600 400 %}" alt="{{ photo.get_filename }}" /></a>
+                                <a href="{{ photo.get_absolute_url }}"><img src="{{ photo.get_absolute_url }}" alt="{{ photo.get_filename }}" /></a>
                             </li>
                             {% endfor %}
                         </ul>
@@ -150,7 +150,7 @@
                     <ul class="no-swipe span12">
                         {% for photo in step.gallery.all %}
                             <li>
-                                <a href="{{ photo.get_thumbnail_url }}"><img src="{{ MEDIA_URL }}{% thumbnail photo.get_thumbnail_url 600 400 %}" alt="{{ photo.get_filename }}" /></a>
+                                <a href="{{ photo.get_absolute_url }}"><img src="{{ photo.get_absolute_url}}" alt="{{ photo.get_filename }}" /></a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -159,7 +159,7 @@
                 <ul class="tiled">
                     {% for photo in step.gallery.all %}
                         <li class="span6">
-                            <a href="{{ photo.get_thumbnail_url }}"><img src="{{ MEDIA_URL }}{% thumbnail photo.get_thumbnail_url 600 400 %}" alt="{{ photo.get_filename }}" /></a>
+                            <a href="{{ photo.get_absolute_url }}"><img src="{{ photo.get_absolute_url }}" alt="{{ photo.get_filename }}" /></a>
                          </li>
                     {% endfor %}
                 </ul>
