@@ -15,10 +15,10 @@ from raspberryio.qanda.forms import QuestionForm, AnswerForm
 @cache_on_auth(60 * 5)
 def index(request):
     questions = Question.objects.all()[:20]
-    feed_type = get_object_or_404(FeedType, slug='raspberry-pi')[:20]
+    feed_type = get_object_or_404(FeedType, slug='raspberry-pi')
     feed_items = FeedItem.objects.filter(
         feed__feed_type=feed_type, feed__approval_status=APPROVED_FEED
-    )
+    )[:20]
     return render(request, 'qanda/index.html', {
         'questions': questions,
         'feed_items': feed_items,
