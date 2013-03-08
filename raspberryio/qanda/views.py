@@ -7,13 +7,13 @@ from django.views.decorators.cache import cache_page
 from hilbert.decorators import ajax_only
 from mezzanine.utils.sites import current_site_id
 
-from raspberryio.project.utils import AjaxResponse
+from raspberryio.project.utils import AjaxResponse, cache_on_auth
 from raspberryio.aggregator.models import FeedType, FeedItem, APPROVED_FEED
 from raspberryio.qanda.models import Question, Answer
 from raspberryio.qanda.forms import QuestionForm, AnswerForm
 
 
-@cache_page(60 * 2)
+@cache_on_auth(60 * 5)
 def index(request):
     questions = Question.objects.all()
     feed_type = get_object_or_404(FeedType, slug='raspberry-pi')
@@ -24,7 +24,7 @@ def index(request):
     })
 
 
-@cache_page(60 * 2)
+@cache_on_auth(60 * 2)
 def question_list(request):
     questions = Question.objects.all()
     return render(request, 'qanda/question_list.html', {
