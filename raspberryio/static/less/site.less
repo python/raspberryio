@@ -18,6 +18,7 @@
 // -- Question and Answer
 // -- Feed aggregator
 // -- Wiki
+// -- Generic page
 
 /* Bootstrap imports
 ==================== */
@@ -1459,4 +1460,23 @@ body.wiki {
 
 body#wiki-preview {
 	padding: 40px 25px;
+}
+
+/* Generic page
+========================= */
+body.page {
+	h1 {
+		padding-top: 25px;
+	}
+	#content {
+		ol {
+			padding: 10px 0;
+			li {
+				margin-bottom: 1em;
+				a {
+					color: @raspberry;
+				}
+			}
+		}
+	}
 }
