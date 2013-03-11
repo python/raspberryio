@@ -133,34 +133,34 @@
             <div class="gallery-display">
                 <div class="gallery">
                     {% if step.gallery.count > 1 %}
-                    <div class="swipe" id="slider{{ forloop.counter }}">
-                        <ul class="swipe-wrap">
+                        <div class="swipe" id="slider{{ forloop.counter }}">
+                            <ul class="swipe-wrap">
+                                {% for photo in step.gallery.all %}
+                                    <li class="span5">
+                                        <img src="{{ photo.get_absolute_url }}" alt="{{ photo.get_filename }}" />
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <nav>
+                            <a onclick="swipes[{{ forloop.counter0 }}].prev()" id="prev" href="javascript:void(0)">&lt;<</a>
+                            <a onclick="swipes[{{ forloop.counter0 }}].next()" id="next" href="javascript:void(0)">&gt;</a>
+                        </nav>
+                        {% else %}
+                        <ul class="no-swipe span12">
                             {% for photo in step.gallery.all %}
-                            <li class="span5">
-                                <a href="{{ photo.get_absolute_url }}"><img src="{{ photo.get_absolute_url }}" alt="{{ photo.get_filename }}" /></a>
-                            </li>
+                                <li>
+                                    <img src="{{ photo.get_absolute_url}}" alt="{{ photo.get_filename }}" />
+                                </li>
                             {% endfor %}
                         </ul>
-                    </div>
-                    <nav>
-                        <a onclick="swipes[{{ forloop.counter0 }}].prev()" id="prev" href="javascript:void(0)"><</a>
-                        <a onclick="swipes[{{ forloop.counter0 }}].next()" id="next" href="javascript:void(0)">></a>
-                    </nav>
-                    {% else %}
-                    <ul class="no-swipe span12">
-                        {% for photo in step.gallery.all %}
-                            <li>
-                                <a href="{{ photo.get_absolute_url }}"><img src="{{ photo.get_absolute_url}}" alt="{{ photo.get_filename }}" /></a>
-                            </li>
-                        {% endfor %}
-                    </ul>
                     {% endif %}
                 </div>
                 <ul class="tiled">
                     {% for photo in step.gallery.all %}
                         <li class="span6">
-                            <a href="{{ photo.get_absolute_url }}"><img src="{{ photo.get_absolute_url }}" alt="{{ photo.get_filename }}" /></a>
-                         </li>
+                            <img src="{{ photo.get_absolute_url }}" alt="{{ photo.get_filename }}" />
+                        </li>
                     {% endfor %}
                 </ul>
             </div>
