@@ -53,7 +53,7 @@
                 </iframe>
             </div>
         {% elif project.featured_photo %}
-            <img src="{{ MEDIA_URL }}{% thumbnail project.featured_photo.url 600 400 %}" alt="{{ project.featured_photo.slug }}">
+            <img src="{{ project.featured_photo.url }}" alt="{{ project.featured_photo.file }}">
         {% endif %}
     </div>
     <div class="span5">
@@ -106,7 +106,7 @@
                 </h3>
             </div>
         </div>
-        
+
         <div class="row">
             {% if step.video %}
             <div class="span7">
@@ -127,45 +127,45 @@
             </div>
             {% endif %}
         </div>
-        
+
         {% if step.gallery.exists %}
-        <div class="row">
-            <div class="gallery-display">
-                <div class="gallery">
-                    {% if step.gallery.count > 1 %}
-                        <div class="swipe" id="slider{{ forloop.counter }}">
-                            <ul class="swipe-wrap">
+            <div class="row">
+                <div class="gallery-display">
+                    <div class="gallery">
+                        {% if step.gallery.count > 1 %}
+                            <div class="swipe" id="slider{{ forloop.counter }}">
+                                <ul class="swipe-wrap">
+                                    {% for photo in step.gallery.all %}
+                                        <li class="span5">
+                                            <img src="{{ photo.get_absolute_url }}" alt="{{ photo.get_filename }}" />
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <nav>
+                                <a onclick="swipes[{{ forloop.counter0 }}].prev()" id="prev" href="javascript:void(0)">&lt;<</a>
+                                <a onclick="swipes[{{ forloop.counter0 }}].next()" id="next" href="javascript:void(0)">&gt;</a>
+                            </nav>
+                            {% else %}
+                            <ul class="no-swipe span12">
                                 {% for photo in step.gallery.all %}
-                                    <li class="span5">
-                                        <img src="{{ photo.get_absolute_url }}" alt="{{ photo.get_filename }}" />
+                                    <li>
+                                        <img src="{{ photo.get_absolute_url}}" alt="{{ photo.get_filename }}" />
                                     </li>
                                 {% endfor %}
                             </ul>
-                        </div>
-                        <nav>
-                            <a onclick="swipes[{{ forloop.counter0 }}].prev()" id="prev" href="javascript:void(0)">&lt;<</a>
-                            <a onclick="swipes[{{ forloop.counter0 }}].next()" id="next" href="javascript:void(0)">&gt;</a>
-                        </nav>
-                        {% else %}
-                        <ul class="no-swipe span12">
-                            {% for photo in step.gallery.all %}
-                                <li>
-                                    <img src="{{ photo.get_absolute_url}}" alt="{{ photo.get_filename }}" />
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
+                        {% endif %}
+                    </div>
+                    <ul class="tiled">
+                        {% for photo in step.gallery.all %}
+                            <li class="span6">
+                                <img src="{{ photo.get_absolute_url }}" alt="{{ photo.get_filename }}" />
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
-                <ul class="tiled">
-                    {% for photo in step.gallery.all %}
-                        <li class="span6">
-                            <img src="{{ photo.get_absolute_url }}" alt="{{ photo.get_filename }}" />
-                        </li>
-                    {% endfor %}
-                </ul>
             </div>
-        </div>
-    {% endif %}
+        {% endif %}
     {% endfor %}
 {% endblock %}
 
