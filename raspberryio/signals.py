@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 
 from actstream import action
 from actstream.actions import unfollow
-from actstream import models as act_models
 
 from wiki.models.article import Article, ArticleRevision
 
@@ -43,9 +42,16 @@ def wiki_revision_delete_handler(sender, instance, **kwargs):
 
 
 def user_followers_delete_handler(sender, instance, **kwargs):
-    # Make all users unfollow the user being deleted.
-    # N.B. Because django-activity-stream is using a GFK, these do not cascade
-    # delete.
+    """
+    Make all users unfollow the user being deleted.
+    N.B. Because django-activity-stream is using a GFK, these do not cascade
+    delete.
+    """
+    # Import act_models here. If imported at the top, this interferes with
+    # appconf imports and breaks compressor configuration.
+    # See https://github.com/jezdez/django_compressor/issues/333
+    from actstream import models as act_models
+
     followers = act_models.followers(instance)
     for follower in followers:
         unfollow(follower, instance)
