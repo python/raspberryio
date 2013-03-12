@@ -15,10 +15,10 @@
         </div>
     </div>
 </header>
-<div class="user-list row">
+<div class="user-list">
     <ul>
         {% for related_user in related_users %}
-        <li class="span3">
+        <li>
             <a href="{{ related_user.get_absolute_url }}">
             {% with related_user.get_profile as profile %}
                 {% avatar profile 150 %}
