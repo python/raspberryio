@@ -1,6 +1,10 @@
 from django.db.models.signals import post_save, pre_delete
+from django.contrib.auth.models import User
 
 from actstream import action
+from actstream.actions import unfollow
+from actstream import models as act_models
+
 from wiki.models.article import Article, ArticleRevision
 
 from raspberryio.search_models.models import LatestArticleRevision
@@ -38,7 +42,17 @@ def wiki_revision_delete_handler(sender, instance, **kwargs):
         )
 
 
+def user_followers_delete_handler(sender, instance, **kwargs):
+    # Make all users unfollow the user being deleted.
+    # N.B. Because django-activity-stream is using a GFK, these do not cascade
+    # delete.
+    followers = act_models.followers(instance)
+    for follower in followers:
+        unfollow(follower, instance)
+
+
 post_save.connect(wiki_article_handler, sender=Article)
 post_save.connect(wiki_revision_handler, sender=ArticleRevision)
 pre_delete.connect(wiki_article_delete_handler, sender=Article)
 pre_delete.connect(wiki_article_delete_handler, sender=ArticleRevision)
+pre_delete.connect(user_followers_delete_handler, sender=User)

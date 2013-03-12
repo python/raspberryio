@@ -18,18 +18,20 @@
 <div class="user-list">
     <ul>
         {% for related_user in related_users %}
-        <li>
-            <a href="{{ related_user.get_absolute_url }}">
-            {% with related_user.get_profile as profile %}
-                {% avatar profile 150 %}
-            {% endwith %}
-            </a>
-            
-            <div class="userinfo">  
-                <p><a class="username" href="{{ related_user.get_absolute_url }}">{{ related_user.username }}</a></p>
-                {% include 'includes/relationship-status.html' with profile_user=related_user %}
-            </div>
-        </li>
+            {% if related_user %}
+                <li>
+                    <a href="{{ related_user.get_absolute_url }}">
+                    {% with related_user.get_profile as profile %}
+                        {% avatar profile 150 %}
+                    {% endwith %}
+                    </a>
+                    
+                    <div class="userinfo">  
+                        <p><a class="username" href="{{ related_user.get_absolute_url }}">{{ related_user.username }}</a></p>
+                        {% include 'includes/relationship-status.html' with profile_user=related_user %}
+                    </div>
+                </li>
+            {% endif %}
         {% endfor %}
     </ul>
 {% endblock %}
