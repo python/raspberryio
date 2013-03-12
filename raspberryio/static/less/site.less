@@ -1432,6 +1432,9 @@ body.wiki {
 		> .active > a, .active > a:hover {
 			background-color: @raspberry;
 			color: @white;
+			[class^="icon-"] {
+				background-image: url('/static/img/glyphicons-halflings-white.png')
+			}
 		}
 		h2#article-title {
 			border-bottom: none;
@@ -1454,6 +1457,24 @@ body.wiki {
 		}
 		button {
 			margin-top: 5px;
+		}
+	}
+	.form-actions {
+		button, a.btn {
+			margin:0 10px;
+		}
+		a.pull-right {
+			.btn-danger;
+			.btn-large;
+			color: @white;
+			[class^="icon-"] {
+				background-image: url('/static/img/glyphicons-halflings-white.png')
+			}
+		}
+		a.btn-primary {
+			[class^="icon-"] {
+				background-image: url('/static/img/glyphicons-halflings-white.png')
+			}
 		}
 	}
 }
