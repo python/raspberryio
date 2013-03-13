@@ -64,6 +64,7 @@ def production():
     # Provided machine uses default port
     env.ssh_port = 22
     setup_path()
+    env.db = 'psf_rpi'
 
 
 def setup_path():
