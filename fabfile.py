@@ -58,7 +58,7 @@ def staging():
 def production():
     env.environment = 'production'
     env.vagrant = False
-    env.hosts = ['raspberry.io', ]
+    env.hosts = ['raspberry.int.python.org', ]
     env.branch = 'master'
     env.server_name = 'raspberry.io'
     # Provided machine uses default port
