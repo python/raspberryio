@@ -12,6 +12,7 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
+DEFAULT_FROM_EMAIL = 'reset-password@raspberry.io'
 
 DATABASES = {
     'default': {
