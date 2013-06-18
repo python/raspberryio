@@ -2,10 +2,10 @@ import json
 from datetime import timedelta
 
 from django.core.urlresolvers import reverse
+from django.core.cache import cache
 
 from hilbert.test import ViewTestMixin, AuthViewMixin
 
-from actstream.actions import follow
 from actstream.models import Action
 
 from mezzanine.utils.timezone import now
@@ -751,6 +751,9 @@ class IndexTestCase(ProjectBaseTestCase):
         self.user1.actor_actions.add(Action())
         self.url = reverse(self.url_name)
 
+    def tearDown(self):
+        cache.clear()
+
     def test_active_users(self):
         response = self.client.get(self.url)
         self.assertEqual(2, len(response.context['active_users']))
@@ -760,6 +763,13 @@ class IndexTestCase(ProjectBaseTestCase):
         self.assertEqual(1, len(response.context['active_users']))
 
     def test_sorted_active_users(self):
-        follow(self.user, self.user1)
+        user2 = self.create_user(data={'password': 'password'})
+        user2.actor_actions.add(Action())
+        user2.actor_actions.add(Action())
+        user2.actor_actions.add(Action())
+        expected_active_users = [user2, self.user, self.user1]
         response = self.client.get(self.url)
-        self.assertEqual(self.user, response.context['active_users'][0])
+        self.assertEqual(
+            expected_active_users, response.context['active_users'], []
+        )
+

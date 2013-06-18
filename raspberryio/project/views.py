@@ -22,8 +22,8 @@ def index(request):
     "Custom view for site homepage"
     active_users = cache.get('active_users')
     if active_users is None:
-        active_users = get_active_users(days=7, number=6)
-        cache.set('active_users', active_users, 60 * 180)
+        active_users = get_active_users(days=62, number=6)
+        cache.set('active_users', active_users, 60 * 30)
     return render(request, 'homepage.html', {'active_users': active_users})
 
 
