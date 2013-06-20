@@ -56,20 +56,22 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="active-users hidden-phone">
-                    <hr>
-                   <h3>Most Active Users</h3>
-                   <ul>
-                   {% for user in active_users %}
-                       <li class="span2">
-                           <a href="{% url 'profile' user %}">{% avatar user.get_profile 200 %}
-                               {{ user.username }}</a>
-                       </li>
-                   {% endfor %}
-                   </ul>
+            {% if active_users %}
+                <div class="row">
+                    <div class="active-users hidden-phone">
+                        <hr>
+                       <h3>Most Active Users</h3>
+                       <ul>
+                       {% for user in active_users %}
+                           <li class="span2">
+                               <a href="{% url 'profile' user %}">{% avatar user.get_profile 200 %}
+                                   {{ user.username }}</a>
+                           </li>
+                       {% endfor %}
+                       </ul>
+                    </div>
                 </div>
-            </div>
+            {% endif %}
         {% endcache %}
     </div>
 </div>

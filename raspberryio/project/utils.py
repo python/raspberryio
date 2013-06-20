@@ -52,16 +52,28 @@ def get_active_users(days=7, number=4):
     Return a queryset of the most active users for the given `days` and limited
     to `number` users. Defaults to 7 days and 4 users.
     """
-    week_ago = now() - timedelta(days=days)
+    yester_date = now() - timedelta(days=days)
     actions = Action.objects.model_actions(User) \
-        .filter(timestamp__gte=week_ago) \
+        .filter(timestamp__gte=yester_date) \
         .values_list('actor_object_id', flat=True)
+    # Create a counter for user pks with the most associated actions
+    action_counter = Counter(actions).most_common(number)
+    # Sort the most active users on the number of actions
+    action_counter.sort(key=itemgetter(1), reverse=True)
+    # Use the user pk's to query for the user data
     most_active_user_pks = map(
-        itemgetter(0), Counter(actions).most_common(number * 2)
+        lambda user_action: int(user_action[0]), action_counter
     )
-    return User.objects.filter(
+    users = User.objects.filter(
         pk__in=most_active_user_pks, is_active=True, profile__isnull=False
-    )[:number]
+    )
+    # Return a list of users sorted on the number of actions (desc.)
+    pk_user_mapping = dict((user.pk, user) for user in users)
+    return [
+        pk_user_mapping[pk]
+        for pk in most_active_user_pks
+        if pk in pk_user_mapping
+    ]
 
 
 def cache_on_auth(timeout):
