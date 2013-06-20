@@ -12,8 +12,8 @@
         <header>
             <h3>Posts for 
                 <a href="{% url 'community-feed-list' feed_type.slug %}">{{ feed_type }}</a> 
-                <a class="rss" href="{{ feed_type.feed.feed_url }}">
-                <img src="{{ STATIC_URL }}img/feed-icon.png" width="20"> RSS</a>
+                <a class="rss" href="{% url 'aggregator-feed' feed_type.slug %}">
+                    <img src="{{ STATIC_URL }}img/feed-icon.png" width="20"> RSS</a>
             </h3>
             <p>These are a few blog posts collected around the interwebs about {{ feed_type }}. If you have one you would like to add, <a href="{% url 'community-add-feed' feed_type.slug %}">please fill out this form.</a></p>
         </header>
