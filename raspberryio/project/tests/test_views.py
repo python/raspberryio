@@ -770,6 +770,6 @@ class IndexTestCase(ProjectBaseTestCase):
         expected_active_users = [user2, self.user, self.user1]
         response = self.client.get(self.url)
         self.assertEqual(
-            expected_active_users, response.context['active_users'], []
+            expected_active_users, response.context['active_users']
         )
 
