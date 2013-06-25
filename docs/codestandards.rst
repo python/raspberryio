@@ -45,8 +45,5 @@ We follow these practices when developing Raspberry IO code:
    and get reviews before merging your changes, even if you have authority to
    merge the changes yourself.
 
-#. Sign the
-   :ref:`Contributor License Agreement <contributor-license-agreements>`.
-
 
 .. _PEP-8: http://www.python.org/dev/peps/pep-0008/
