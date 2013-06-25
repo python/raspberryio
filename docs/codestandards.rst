@@ -41,6 +41,9 @@ We follow these practices when developing Raspberry IO code:
    document for the next release. The release notes should focus on the effects
    on existing users, particularly if it will require them to make changes.
 
+#. Add your name to the `AUTHORS file
+   <https://github.com/caktus/raspberryio/blob/master/AUTHORS>`_
+
 #. Submit a `pull request <https://help.github.com/articles/using-pull-requests>`_
    and get reviews before merging your changes, even if you have authority to
    merge the changes yourself.
