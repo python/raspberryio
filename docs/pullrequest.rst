@@ -8,8 +8,8 @@ be merged into the official repository, you make a pull request. If
 you're already familiar with Github and pull requests, just open a
 pull request against the ``develop`` branch of the Raspberry IO
 repository. (https://github.com/caktus/raspberryio/tree/develop) Be
-sure that your code passes all tests, conforms to our code standards,
-and has appropriate documentation.
+sure that your code passes all tests, conforms to our :ref:`code standards
+<codestandards>`, and has appropriate :ref:`documentation <documentation>`.
 
 Read the rest of this document for more details.
 

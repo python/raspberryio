@@ -10,16 +10,13 @@ We follow these practices when developing Raspberry IO code:
    of development, which means most of your work will be on a feature
    branch off the ``develop`` branch.
 
-#. Follow `PEP8 style conventions <http://www.python.org/dev/peps/pep-0008/>`_.
-   Use 4 spaces instead of tabs.
+#. Follow :pep:`8` style conventions. Use 4 spaces instead of tabs.
 
    * To learn more about writing 'pythonic' code, check out
      The Hitchhiker's Guide To Python's `Code Style guide <http://docs.python-guide.org/en/latest/writing/style.html>`_
 
    * Tip: `Configure your development environment for python <http://docs.python-guide.org/en/latest/dev/env.html>`_
      to make your life a bit easier.
-
-#. Run a `PEP-8`_ adherence tool.
 
 #. Use CapitalizedCase for class names, underscored_words for method names.
 

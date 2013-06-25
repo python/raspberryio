@@ -14,10 +14,8 @@ Getting the raw documentation
 
 The official documentation is available on `Read the Docs`_. This is
 the compiled HTML version. However, we edit it as a collection of text
-files for maximum flexibility. These files live in the top-level
-``docs/`` directory of a Raspberry IO release. If you'd like to start
-contributing to our docs, get the code from our Github repository (see
-:ref:`getcode`).
+files (reST format) which live in the top-level ``docs/`` directory of
+a Raspberry IO release.
 
 Using Sphinx
 ************

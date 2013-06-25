@@ -16,10 +16,14 @@ once the code is proven to be stable and working on staging.
 Server Provisioning
 -------------------
 
+.. Note::
+   This section is only for the maintainers of Raspberry IO. If you
+   wish to test out deployment, please see the next section:
+   :ref:`vagrant-testing`
+
 The first step in creating a new server is to create users on the remote server. You
 will need root user access with passwordless sudo. How you specify this user will vary
-based on the hosting provider. EC2 and Vagrant use a private key file. Rackspace and
-Linode use a user/password combination.
+based on the hosting provider.
 
 1. For each developer, put a file in the ``conf/users`` directory
    containing their public ssh key, and named exactly the same as the
@@ -63,6 +67,8 @@ Linode use a user/password combination.
         fab staging load_db_dump:production.sql
 
 
+.. _vagrant-testing:
+
 Vagrant Testing
 ---------------
 
@@ -88,8 +94,9 @@ Use the full path to the keys/vagrant file as the value in the ``-i`` option::
     fab vagrant syncdb
 
 When prompted, do not make a superuser during the syncdb, but do make a site.
-To make a superuser, you'll need to run
-```fab vagrant manage_run:createsuperuser```
+To make a superuser, you'll need to run::
+
+    fab vagrant manage_run:createsuperuser
 
 It is not necessary to reconfigure the SSH settings on the vagrant box.
 
