@@ -11,3 +11,4 @@
 public/static/
 public/media/
 conf/jmeter/jmeter.log
+_build

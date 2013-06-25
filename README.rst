@@ -13,6 +13,16 @@ make our site better. You can help by fixing bugs, planning new
 features, writing documentation, writing tests, or even managing the
 project. Ready to contribute? Read our Getting Started document.
 
+Submit an issue
+------------------------
+
+Found an issue? We appreciate any and all feedback! Issues are managed
+on `Github <https://github.com/caktus/raspberryio/issues>`_. Please
+include details about the browser, operating system, and/or device
+being used.
+
+If you have a feature you'd like us to consider adding, please add the
+"Proposal" label to your issue.
 
 Dependencies
 ------------------------
