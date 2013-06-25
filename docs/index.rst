@@ -12,8 +12,6 @@ new features, writing documentation, writing tests, or even managing
 the project. This section discusses some technical details of
 contributing to the Raspberry IO project.
 
-Contents:
-
 .. toctree::
    :maxdepth: 2
 
@@ -22,6 +20,7 @@ Contents:
    codestandards
    documentation
    deployment
+   CHANGELOG
 
 .. _Raspberry IO: http://raspberry.io/
 .. _open source: http://opensource.org/

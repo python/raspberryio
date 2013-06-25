@@ -40,12 +40,11 @@ We follow these practices when developing Raspberry IO code:
 #. Write new or update existing :ref:`documentation <documentation>`
    to describe the changes you made.
 
-#. Add the change to the `release notes <https://github.com/caktus/raspberryio/tree/develop/docs/releases>`_
-   document for the next release. The release notes should focus on the effects
-   on existing users, particularly if it will require them to make changes.
+#. Add the change to the `CHANGELOG <https://github.com/caktus/raspberryio/blob/develop/docs/CHANGELOG.rst>`_
+   for the **next** release.
 
 #. Add your name to the `AUTHORS file
-   <https://github.com/caktus/raspberryio/blob/master/AUTHORS>`_
+   <https://github.com/caktus/raspberryio/blob/develop/AUTHORS>`_
 
 #. Submit a `pull request <https://help.github.com/articles/using-pull-requests>`_
    and get reviews before merging your changes, even if you have authority to
