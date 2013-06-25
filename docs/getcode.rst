@@ -115,10 +115,13 @@ Master versus Develop branch
 ----------------------------
 
 The ``master`` branch in the Raspberry IO repository represents the
-code that is running on the production site, raspberry.io. All
-development should happen on the ``develop`` branch. Once things are
-shown to be stable, they will be migrated to the ``master`` branch by
-the project maintainers.
+code that is running on the production site, raspberry.io. The staging
+server runs off the code on the ``develop`` branch. Most work should
+be done on feature branches off ``develop`` and then migrated to the
+``master`` branch by the project maintainers, once it has been shown
+to be stable. We generally use the `git flow
+<http://nvie.com/posts/a-successful-git-branching-model/>`_ model of
+development.
 
 .. code-block:: console
 

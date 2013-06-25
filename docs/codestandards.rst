@@ -5,7 +5,10 @@ Conform to best practices
 
 We follow these practices when developing Raspberry IO code:
 
-#. Work on a branch off the ``develop`` branch.
+#. We generally follow the `git flow
+   <http://nvie.com/posts/a-successful-git-branching-model/>`_ model
+   of development, which means most of your work will be on a feature
+   branch off the ``develop`` branch.
 
 #. Follow `PEP8 style conventions <http://www.python.org/dev/peps/pep-0008/>`_.
    Use 4 spaces instead of tabs.
