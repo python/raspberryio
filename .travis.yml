@@ -1,0 +1,9 @@
+language: python
+python:
+  - "2.7"
+env:
+  - TOXENV=raspberryio
+install:
+  - pip install -q tox==1.4.3
+script:
+  - tox
