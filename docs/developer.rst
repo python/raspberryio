@@ -3,88 +3,81 @@
 Developer Documentation
 =======================
 
-This is just a draft.
-
 Raspberry IO is a site to help users share knowledge about using the
 Python language on the Raspberry Pi platform. If you've gotten to this
 page, then you are interested in helping with the development of the
-site. Thanks! First, please check out the contribution docs, which
-explain how to get the code running and how to make sure your
-contributions meet our standards.
+site. Thanks! First, please check out the :doc:`contribution docs
+<index>`, which explain how to get the code running and how to make
+sure your contributions meet our standards.
 
 This document will give a high level overview of the site and its
-components.
+components. There are 5 main areas to the site:
 
-There are 5 main areas to the site:
-
-Create:
--------
-
-This is where you share information about Raspberry Pi projects you
-create.
-
-Explore:
---------
-
-This is where you can browse projects that community members have
-created.
-
-Learn:
-------
-
-This is a wiki where you can learn about the Raspberry Pi and
-contribute your own knowledge to the community.
-
-Community:
-----------
-
-This has 2 features: 1) An RSS aggregator which collects interesting
-posts about the Raspberry Pi in one place. 2) a Q&A forum where you
-can ask questions and help other users
-
-Social:
--------
-
-You can see information about other users, follow them, and view how
-they are interacting with the site.
+`Create <http://raspberry.io/projects/add/>`_
+    This is where you share information about Raspberry Pi projects
+    you create.
+`Explore <http://raspberry.io/projects/>`_
+    This is where you can browse projects that community members have
+    created.
+`Learn <http://raspberry.io/wiki/>`_
+    This is a wiki where you can learn about the Raspberry Pi and
+    contribute your own knowledge to the community.
+`Community <http://raspberry.io/community/>`_
+    This includes a RSS aggregator which collects interesting
+    Raspberry Pi posts and a Q&A forum where you can ask questions and
+    help other users.
+`Social <http://raspberry.io/dashboard/>`_
+    You can see information about other users, follow them, and view
+    how they are interacting with the site.
 
 Detailed info
 -------------
 
 The 'Create' and 'Explore' sections are built with the
-raspberryio.project app, which is built on top of the Mezzanine CMS.
-It allows users to create a project with an arbitrary number of steps
-(think steps in a tutorial), images, video links, etc. Projects can be
-labelled as 'Featured' by site admins. Projects can be in draft or
-published state.
+``raspberryio.project`` app, which is built on top of the `Mezzanine
+CMS <http://mezzanine.jupo.org/>`_. It allows users to create projects
+with arbitrary numbers of steps (think steps in a tutorial), images,
+video links, etc. Projects can be labelled as 'Featured' by site
+admins. Projects can be in draft or published state.
 
-The 'Learn' section is a wiki. We use a fork of django-wiki. FIXME:
-explain reason for fork.
+The 'Learn' section is a wiki. We use a `fork of django-wiki
+<https://github.com/daaray/django-wiki>`_. The main reason for the
+fork is to use the Pillow imaging library rather than PIL, as Pillow
+installation has been simpler in our experience.
 
 As mentioned above, the 'Community' section includes two pieces of
-functionality. The Feed aggregator is in 'raspberryio.aggregator'.
+functionality. The Feed aggregator is in ``raspberryio.aggregator``.
 This app allows users to submit RSS feeds and admins to approve or
-deny them. Feeds are then displayed to the community. django-push
-is used to manage the PubSub process
+deny them. Feeds are then displayed to the community. The `django-push
+<https://django-push.readthedocs.org/en/latest/>`_ is used to manage
+the PubSub process.
 
 The second portion is a Q&A forum which is included in the app
-'raspberryio.qanda'. This datamodel includes Questions and Answers,
-and allows users to upvote good Answers. This is again built on top
-of Mezzanine models.
+``raspberryio.qanda``. This datamodel includes questions and answers,
+and allows users to upvote good answers. This is again built on top of
+Mezzanine models.
 
 The social aspect is built by various packages. The
-raspberryio.userprofile app collects information about users. The
-django-activity-stream
-https://django-activity-stream.readthedocs.org/en/latest/ app is used
-to allow people to follow other users.
+``raspberryio.userprofile`` app collects information about users. The
+`django-activity-stream
+<https://django-activity-stream.readthedocs.org/en/latest/>`_ app is
+used to allow people to follow the activity of other users.
 
 
 Search:
 -------
 
-FIXME: Document how search works
+Search is implemented through the Mezzanine search facilities. We
+specify which models and fields we are interested in indexing in the
+``SEARCH_MODEL_INDEXES`` dictionary in the base.py settings file.
+Proxy models which subclass Searchable are dynamically created in the
+``raspberryio.search`` app, containing only those fields with the
+desired weights. (Fields with higher weights will be shown to the user
+before those with lower weights).
 
-Design:
--------
-
-django-bootstrap-toolkit is used as a base, but heavily modified
+Searching the wiki is a special case. Since each revision of the wiki
+is saved, we could get multiple revisions of the same article show up
+in search results. So, instead of feeding the wiki.ArticleRevision
+model to Mezzanine, we have created an app
+``raspberryio.search_models`` which extracts only the latest revision
+of each article and indexes that.
