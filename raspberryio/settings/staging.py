@@ -28,6 +28,9 @@ CACHES = {
 
 EMAIL_SUBJECT_PREFIX = '[Raspberryio Staging] '
 
+# Setup Mezzanine SSL
+SSL_ENABLED = True
+
 # Django Compressor configuration
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
