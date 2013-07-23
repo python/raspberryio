@@ -11,13 +11,14 @@ Raspberry Pi computers.
 This is an open source project. We welcome contributions which will
 make our site better. You can help by fixing bugs, planning new
 features, writing documentation, writing tests, or even managing the
-project. Ready to contribute? Read our Getting Started document.
+project. Ready to contribute? Read our `Getting Started
+<https://raspberry-io.readthedocs.org/>`_ document.
 
 Submit an issue
 ------------------------
 
 Found an issue? We appreciate any and all feedback! Issues are managed
-on `Github <https://github.com/caktus/raspberryio/issues>`_. Please
+on `Github <https://github.com/python/raspberryio/issues>`_. Please
 include details about the browser, operating system, and/or device
 being used.
 
@@ -44,7 +45,7 @@ Running the project
 
 Download the code::
 
-    git clone git@github.com:caktus/raspberryio.git
+    git clone git@github.com:python/raspberryio.git
     cd raspberryio
 
 Create a virtualenv and install the necessary requirements::

@@ -37,11 +37,11 @@ We follow these practices when developing Raspberry IO code:
 #. Write new or update existing :ref:`documentation <documentation>`
    to describe the changes you made.
 
-#. Add the change to the `CHANGELOG <https://github.com/caktus/raspberryio/blob/develop/docs/CHANGELOG.rst>`_
+#. Add the change to the `CHANGELOG <https://github.com/python/raspberryio/blob/develop/docs/CHANGELOG.rst>`_
    for the **next** release.
 
 #. Add your name to the `AUTHORS file
-   <https://github.com/caktus/raspberryio/blob/develop/AUTHORS>`_
+   <https://github.com/python/raspberryio/blob/develop/AUTHORS>`_
 
 #. Submit a `pull request <https://help.github.com/articles/using-pull-requests>`_
    and get reviews before merging your changes, even if you have authority to

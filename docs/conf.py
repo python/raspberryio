@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Raspberry IO'
-copyright = u'2013, Caktus Group'
+copyright = u'2013, Python Software Foundation'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -187,7 +187,7 @@ latex_elements = {
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
   ('index', 'RaspberryIO.tex', u'Raspberry IO Documentation',
-   u'Caktus Group', 'manual'),
+   u'Python Software Foundation', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -217,7 +217,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'raspberryio', u'Raspberry IO Documentation',
-     [u'Caktus Group'], 1)
+     [u'Python Software Foundation'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -231,7 +231,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'RaspberryIO', u'Raspberry IO Documentation',
-   u'Caktus Group', 'RaspberryIO', 'One line description of project.',
+   u'Python Software Foundation', 'RaspberryIO', 'One line description of project.',
    'Miscellaneous'),
 ]
 
