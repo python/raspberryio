@@ -27,7 +27,7 @@ Clone the `Raspberry IO repository`_ from Github:
 
 .. code-block:: console
 
-    $ git clone git@github.com:caktus/raspberryio.git
+    $ git clone git@github.com:python/raspberryio.git
     Cloning into 'raspberryio'...
     remote: Counting objects: 3860, done.
     remote: Compressing objects: 100% (1749/1749), done.
@@ -153,4 +153,4 @@ Then run the development server and play around!
 
 .. _Raspberry IO: http://raspberry.io/
 .. _Mezzanine CMS: http://mezzanine.jupo.org/
-.. _Raspberry IO repository: https://github.com/caktus/raspberryio
+.. _Raspberry IO repository: https://github.com/python/raspberryio

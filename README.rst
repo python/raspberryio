@@ -17,7 +17,7 @@ Submit an issue
 ------------------------
 
 Found an issue? We appreciate any and all feedback! Issues are managed
-on `Github <https://github.com/caktus/raspberryio/issues>`_. Please
+on `Github <https://github.com/python/raspberryio/issues>`_. Please
 include details about the browser, operating system, and/or device
 being used.
 
@@ -44,7 +44,7 @@ Running the project
 
 Download the code::
 
-    git clone git@github.com:caktus/raspberryio.git
+    git clone git@github.com:python/raspberryio.git
     cd raspberryio
 
 Create a virtualenv and install the necessary requirements::

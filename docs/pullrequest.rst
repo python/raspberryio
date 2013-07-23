@@ -7,7 +7,7 @@ To ask for a change you've made in your own Raspberry IO repository to
 be merged into the official repository, you make a pull request. If
 you're already familiar with Github and pull requests, just open a
 pull request against the ``develop`` branch of the Raspberry IO
-repository. (https://github.com/caktus/raspberryio/tree/develop) Be
+repository. (https://github.com/python/raspberryio/tree/develop) Be
 sure that your code passes all tests, conforms to our :ref:`code standards
 <codestandards>`, and has appropriate :ref:`documentation <documentation>`.
 
@@ -100,7 +100,7 @@ Click the ``Pull request`` button near the top center of the page.
 Check the settings:
 
 base repo
-    caktus/raspberryio
+    python/raspberryio
 base branch
     develop
 head repo
@@ -137,4 +137,4 @@ right, below the description box.
 .. _Git Flow: http://nvie.com/posts/a-successful-git-branching-model/
 .. _gitflow tool: https://github.com/nvie/gitflow
 .. _Github: https://github.com
-.. _Raspberry IO repository: https://github.com/caktus/raspberryio
+.. _Raspberry IO repository: https://github.com/python/raspberryio

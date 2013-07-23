@@ -9,6 +9,7 @@ Version 0.2 - Open Source Release (unreleased)
 * Initial version of 'How to Contribute' Documentation
 * Revamped README
 * Licensed under Apache 2.0
+* Transfer repo to PSF
 
 
 Version 0.1 (2013-07-15)
