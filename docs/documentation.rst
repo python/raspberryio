@@ -15,7 +15,8 @@ Getting the raw documentation
 The official documentation is available on `Read the Docs`_. This is
 the compiled HTML version. However, we edit it as a collection of text
 files (reST format) which live in the top-level ``docs/`` directory of
-a Raspberry IO release.
+a Raspberry IO release. Note that the official documentation is
+currently built from the ``develop`` branch.
 
 Using Sphinx
 ************
@@ -63,7 +64,7 @@ If you're interested in helping out, a good starting point is with the
 __ http://sphinx.pocoo.org/
 __ http://docutils.sourceforge.net/
 
-.. _Read the Docs: http://raspberryio.readthedocs.org/
+.. _Read the Docs: http://raspberry-io.readthedocs.org/
 .. _documentation label: https://github.com/python/raspberryio/issues?labels=documentation&page=1&state=open
 .. _reStructuredText Primer: http://sphinx.pocoo.org/rest.html#rst-primer
 .. _Sphinx-specific markup: http://sphinx.pocoo.org/markup/index.html#sphinxmarkup

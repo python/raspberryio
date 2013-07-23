@@ -11,7 +11,8 @@ Raspberry Pi computers.
 This is an open source project. We welcome contributions which will
 make our site better. You can help by fixing bugs, planning new
 features, writing documentation, writing tests, or even managing the
-project. Ready to contribute? Read our Getting Started document.
+project. Ready to contribute? Read our `Getting Started
+<https://raspberry-io.readthedocs.org/>`_ document.
 
 Submit an issue
 ------------------------
