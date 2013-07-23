@@ -3,9 +3,6 @@ import os
 
 from ConfigParser import RawConfigParser
 
-# Setup Mezzanine SSL
-SSL_ENABLED = True
-
 from raspberryio.settings.base import *
 
 DEBUG = False
@@ -34,6 +31,10 @@ EMAIL_SUBJECT_PREFIX = '[Raspberryio Staging] '
 # Django Compressor configuration
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
+
+# Setup SSL
+SSL_ENABLED = True
+SECURE_PROXY_SSL_HEADER = ('X-Forwarded-Proto', 'https')
 
 # import secrets
 try:
