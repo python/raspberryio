@@ -34,7 +34,7 @@ COMPRESS_OFFLINE = True
 
 # Setup SSL
 SSL_ENABLED = True
-SECURE_PROXY_SSL_HEADER = ('X-Forwarded-Proto', 'https')
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # import secrets
 try:
