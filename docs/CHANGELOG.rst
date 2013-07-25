@@ -2,7 +2,7 @@ Raspberry IO Changelog
 ======================
 
 Version 0.2 - Open Source Release (unreleased)
---------------------------------
+----------------------------------------------
 
 * Set up Travis CI
 * Set up Spinx docs, Read The Docs integration

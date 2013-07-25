@@ -128,3 +128,19 @@ is not given, it will use the default branch defined for this environment in
 
 New requirements or South migrations are detected by parsing the VCS changes and
 will be installed/run automatically.
+
+SSL
+---
+
+Raspberry IO sits behind the `PSF <http://www.python.org/psf/>`_ Load
+Balancer. Requests come in to the load balancer via either HTTP or
+HTTPS. The load balancer terminates the SSL connection and then
+forwards the request to our Django server with the
+``X-Forwarded-Proto`` header set to either ``http`` or ``https``.
+Django checks that header and sets ``request.is_secure()``
+appropriately. Mezzanine routes any URLs beginning with ``/account``
+or ``/admin`` to HTTPS. This can be configured within Mezzanine if
+other URL patterns need to be secure.
+
+The Chef recipes which control the load balancer are located at
+`<https://github.com/python/psf-chef/tree/master/cookbooks/psf-loadbalancer>`_
