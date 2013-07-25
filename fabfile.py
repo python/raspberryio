@@ -253,7 +253,7 @@ def upload_newrelic_conf():
 def update_requirements():
     """Update required Python libraries."""
     require('environment')
-    project_run(u'HOME=%(home)s %(virtualenv)s/bin/pip install --use-mirrors -r %(requirements)s' % {
+    project_run(u'HOME=%(home)s %(virtualenv)s/bin/pip install --pre --use-mirrors -r %(requirements)s' % {
         'virtualenv': env.virtualenv_root,
         'requirements': os.path.join(env.code_root, 'requirements', 'production.txt'),
         'home': env.home,
