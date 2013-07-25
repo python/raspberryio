@@ -2,8 +2,8 @@ language: python
 python:
   - "2.7"
 env:
-  - TOXENV=raspberryio
+  - DJANGO_SETTINGS_MODULE=raspberryio.settings.test
 install:
-  - pip install -q tox==1.4.3
+  - pip install -r requirements/dev.txt
 script:
-  - tox
+  - python manage.py test
