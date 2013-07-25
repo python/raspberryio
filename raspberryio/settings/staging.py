@@ -33,7 +33,6 @@ COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
 
 # Setup SSL
-SSL_ENABLED = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # import secrets
