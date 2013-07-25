@@ -32,6 +32,9 @@ EMAIL_SUBJECT_PREFIX = '[Raspberryio Staging] '
 COMPRESS_ENABLED = True
 COMPRESS_OFFLINE = True
 
+# Setup SSL
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # import secrets
 try:
     SECRETS_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, os.pardir))

@@ -20,7 +20,7 @@ CONF_ROOT = os.path.join(PROJECT_ROOT, 'conf')
 SERVER_ROLES = ['app', 'lb', 'db']
 env.project = 'raspberryio'
 env.project_user = 'raspberryio'
-env.repo = u'git@github.com:caktus/raspberryio.git'
+env.repo = u'git@github.com:python/raspberryio.git'
 env.shell = '/bin/bash -c'
 env.disable_known_hosts = True
 env.ssh_port = 2222
@@ -386,5 +386,3 @@ def reset_local_db():
     local('createdb %s' % local_db)
     host = '%s@%s' % (env.project_user, env.hosts[0])
     local('ssh -p %s -C %s pg_dump -Ox %s | psql %s' % (env.ssh_port, host, remote_db, local_db))
-
-
