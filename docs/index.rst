@@ -8,11 +8,11 @@
 Welcome to Raspberry IO's documentation!
 ========================================
 
-`Raspberry IO`_ is an `open source`_ project. We welcome contributions
-which will make our site better. You can help by fixing bugs, planning
-new features, writing documentation, writing tests, or even managing
-the project. This section discusses some technical details of
-contributing to the Raspberry IO project.
+`Raspberry IO`_ is an `open source`_ project. We welcome
+contributions. You can help by fixing bugs, planning new features,
+writing documentation, writing tests, or even managing the project.
+This section discusses some technical details of contributing to the
+Raspberry IO project.
 
 
 Contribution Documentation

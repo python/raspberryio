@@ -4,15 +4,13 @@ Raspberry IO
 ========================
 
 This is the source code for the `Raspberry IO <http://raspberry.io/>`_
-site. Raspberry IO is a place for Raspberry Pi enthusiasts to share
-knowledge about using the Python programming language to control
-Raspberry Pi computers.
+site. Raspberry IO is a place to share knowledge about using the
+Python programming language to control Raspberry Pi computers.
 
-This is an open source project. We welcome contributions which will
-make our site better. You can help by fixing bugs, planning new
-features, writing documentation, writing tests, or even managing the
-project. Ready to contribute? Read our `Getting Started
-<https://raspberry-io.readthedocs.org/>`_ document.
+This is an open source project. We welcome contributions. You can help
+by fixing bugs, planning new features, writing documentation, writing
+tests, or even managing the project. Ready to contribute? Read our
+`Getting Started <https://raspberry-io.readthedocs.org/>`_ document.
 
 Travis CI Build Status
 ----------------------
@@ -23,10 +21,10 @@ Travis CI Build Status
 Submit an issue
 ------------------------
 
-Found an issue? We appreciate any and all feedback! Issues are managed
-on `Github <https://github.com/python/raspberryio/issues>`_. Please
-include details about the browser, operating system, and/or device
-being used.
+Found an issue? Have a question? We appreciate any and all feedback!
+Issues are managed on `Github
+<https://github.com/python/raspberryio/issues>`_. Please include
+details about the browser, operating system, and/or device being used.
 
 If you have a feature you'd like us to consider adding, please add the
 "Proposal" label to your issue.
@@ -34,10 +32,10 @@ If you have a feature you'd like us to consider adding, please add the
 Dependencies
 ------------------------
 
-Raspberry IO is a Django project built on top of the Mezzanine CMS,
-using Postgres as our database. To get started, you will need the
-following programs installed. These should be installed using your
-operating system's standard package management system:
+Raspberry IO is a Django project using Postgres as our database. To
+get started, you will need the following programs installed. These
+should be installed using your operating system's standard package
+management system:
 
 - Python >= 2.6 (2.7 recommended)
 - `pip >= 1.1 <http://www.pip-installer.org/>`_
