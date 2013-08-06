@@ -1,6 +1,12 @@
 Raspberry IO Changelog
 ======================
 
+Version 0.3 (Unreleased)
+------------------------
+
+*
+
+
 Version 0.2 - Open Source Release (2013-08-06)
 ----------------------------------------------
 
