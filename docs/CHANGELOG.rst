@@ -1,7 +1,7 @@
 Raspberry IO Changelog
 ======================
 
-Version 0.2 - Open Source Release (unreleased)
+Version 0.2 - Open Source Release (2013-08-06)
 ----------------------------------------------
 
 * Set up SSL
