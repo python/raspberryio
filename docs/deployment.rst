@@ -129,6 +129,29 @@ is not given, it will use the default branch defined for this environment in
 New requirements or South migrations are detected by parsing the VCS changes and
 will be installed/run automatically.
 
+Releases
+--------
+
+In general, every deployment to master should be a new released
+version of Raspberry IO. Currently hotfixes are an exception to this
+rule. Here's the steps involved in creating a new release. Let's
+assume that master is running version 0.1 and we have made a bunch of
+changes on the ``develop`` branch that we want to release as version
+0.2:
+
+#. Update ``docs/CHANGELOG.rst`` on ``develop`` branch and replace
+   "(unreleased)" with "(today's date)"
+#. Update ``setup.py`` on ``develop`` branch and change version to the
+   new number (e.g. 0.2)
+#. Deploy ``develop`` to staging, ensuring that everything works
+#. Merge ``develop`` into ``master``
+#. Tag ``master`` on github as v0.2
+#. Deploy ``master`` to production
+#. Update ``docs/CHANGELOG.rst`` on ``develop`` branch, adding a new heading
+   at the top: "Version 0.3 - (Unreleased)"
+#. All new changes on ``develop`` should now be documented under the
+   Version 0.3 heading in the CHANGELOG
+
 SSL
 ---
 
