@@ -185,7 +185,7 @@ def setup_server(*roles):
         path_file = os.path.join(env.virtualenv_root, 'lib', 'python2.7', 'site-packages', 'project.pth')
         files.append(path_file, env.code_root, use_sudo=True)
         sudo('chown %s:%s %s' % (env.project_user, env.project_user, path_file))
-        sudo('npm install less -g')
+        sudo('npm install less@1.3 -g')
         update_requirements()
         upload_supervisor_app_conf(app_name=u'gunicorn')
         upload_supervisor_app_conf(app_name=u'group')

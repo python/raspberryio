@@ -1,11 +1,41 @@
 
 
-Raspberryio
+Raspberry IO
 ========================
 
-Below you will find basic setup and deployment instructions for the raspberryio
-project. To begin you should have the following applications installed on your
-local development system::
+This is the source code for the `Raspberry IO <http://raspberry.io/>`_
+site. Raspberry IO is a place to share knowledge about using the
+Python programming language to control Raspberry Pi computers.
+
+This is an open source project. We welcome contributions. You can help
+by fixing bugs, planning new features, writing documentation, writing
+tests, or even managing the project. Ready to contribute? Read our
+`Getting Started <https://raspberry-io.readthedocs.org/>`_ document.
+
+Travis CI Build Status
+----------------------
+
+.. image:: https://travis-ci.org/python/raspberryio.png
+   :target: https://travis-ci.org/python/raspberryio
+
+Submit an issue
+------------------------
+
+Found an issue? Have a question? We appreciate any and all feedback!
+Issues are managed on `Github
+<https://github.com/python/raspberryio/issues>`_. Please include
+details about the browser, operating system, and/or device being used.
+
+If you have a feature you'd like us to consider adding, please add the
+"Proposal" label to your issue.
+
+Dependencies
+------------------------
+
+Raspberry IO is a Django project using Postgres as our database. To
+get started, you will need the following programs installed. These
+should be installed using your operating system's standard package
+management system:
 
 - Python >= 2.6 (2.7 recommended)
 - `pip >= 1.1 <http://www.pip-installer.org/>`_
@@ -14,37 +44,28 @@ local development system::
 - Postgres >= 8.4 (9.1 recommended)
 - git >= 1.7
 
-Some additional packages are needed for PIL:
-
-     sudo apt-get install libjpeg8-dev libfreetype6 libfreetype6-dev zlib1g-dev
-
-
-The deployment uses SSH with agent forwarding so you'll need to enable agent
-forwarding if it is not already by adding ``ForwardAgent yes`` to your SSH config.
-
-
-Getting Started
+Running the project
 ------------------------
 
-First, download the code from github:
+Download the code::
 
-    git clone git@github.com:caktus/raspberryio.git
+    git clone git@github.com:python/raspberryio.git
     cd raspberryio
 
-To setup your local environment you should create a virtualenv and install the
-necessary requirements::
+Create a virtualenv and install the necessary requirements::
 
     mkvirtualenv --distribute raspberryio
     $VIRTUAL_ENV/bin/pip install -r $PWD/requirements/dev.txt
 
-Then create a local settings file and set your ``DJANGO_SETTINGS_MODULE`` to use it::
+Create a local settings file and set your ``DJANGO_SETTINGS_MODULE``
+to use it::
 
     cp raspberryio/settings/local.example.py raspberryio/settings/local.py
     echo "export DJANGO_SETTINGS_MODULE=raspberryio.settings.local" >> $VIRTUAL_ENV/bin/postactivate
     echo "unset DJANGO_SETTINGS_MODULE" >> $VIRTUAL_ENV/bin/postdeactivate
 
-Add the project directory to the virtualenv, deactivate and reactivate it to
-activate the settings just changed::
+Add the project directory to the virtualenv, deactivate and reactivate
+it to setup the environment variables above::
 
     add2virtualenv .
     deactivate
@@ -54,144 +75,33 @@ Create the Postgres database::
 
     createdb -E UTF-8 raspberryio
 
-Run the initial syncdb/migrate. When asked to create a superuser type `no`
-(N.B. - Creating a superuser in the syncdb step will cause an integrity error because
-of a required one-to-one with a user profile model that doesn't exist in the
-database yet.)::
+Run the initial syncdb/migrate. When asked to create a superuser,
+answer ``no``. ::
 
     django-admin.py syncdb
     django-admin.py migrate
 
-Create a superuser (This will also create the profile correctly)::
+NOTE:
+   Creating a superuser in the syncdb step will trigger the error
+   ``django.db.utils.DatabaseError: relation "userprofile_profile"
+   does not exist`` because of a required one-to-one relation with a
+   user profile model that doesn't exist in the database yet.
+
+**Now**, create a superuser (This will also create the profile correctly)::
 
     django-admin.py createsuperuser
+
+Run the test suite with::
+
+    django-admin.py test
 
 You should now be able to run the development server::
 
     django-admin.py runserver
 
 
-Server Provisioning
+License
 ------------------------
 
-The first step in creating a new server is to create users on the remote server. You
-will need root user access with passwordless sudo. How you specify this user will vary
-based on the hosting provider. EC2 and Vagrant use a private key file. Rackspace and
-Linode use a user/password combination.
-
-1. For each developer, put a file in the ``conf/users`` directory
-    containing their public ssh key, and named exactly the same as the
-    user to create on the server, which should be the same as the userid
-    on the local development system. (E.g. for user "dickens", the filename
-    must be "dickens", not "dickens.pub" or "user_dickens".)
-
-2. Run this command to create users on the server::
-
-        fab -H <fresh-server-ip> -u <root-user> create_users
-
-This will create a project user and users for all the developers.
-
-3. Lock down SSH connections: disable password login and move
-    the default port from 22 to ``env.ssh_port``::
-
-        fab -H <fresh-server-ip> configure_ssh
-
-4. Add the IP to the appropriate environment function and provision it for its
-    role. You can provision a new server with the ``setup_server`` fab command.
-    It takes a list of roles for this server ('app', 'db', 'lb') or you can
-    say 'all'. The name of the environment can now be used in fab commands
-    (such as production, staging, and so on.) To setup a server with all roles
-    use::
-
-        fab staging setup_server:all
-
-5. Deploy the latest code to the newly setup server::
-
-        fab staging deploy
-
-6. If a new database is desired for this environment, use syncdb::
-
-        fab staging syncdb
-
-Otherwise, a database can be moved to the new environment using get_db_dump and
-load_db_dump as in the following example::
-
-    fab production get_db_dump
-    fab staging load_db_dump:production.sql
-
-
-Vagrant Testing
-------------------------
-
-You can test the provisioning/deployment using
-`Vagrant <http://vagrantup.com/>`_. Using the Vagrantfile you can start up the
-VM. This uses the ``precise64`` box::
-
-    vagrant up
-
-With the VM up and running, you can create the necessary users.
-Put the developers' keys in ``conf/users`` as before, then
-use these commands to create the users. The location of the vagrant key file might be::
-
-    if gem installed: /usr/lib/ruby/gems/1.8/gems/vagrant-1.0.2/keys/vagrant
-    if apt-get installed: /usr/share/vagrant/keys/vagrant
-
-This may vary on your system. Running ``locate keys/vagrant`` might help find it.
-Use the full path to the keys/vagrant file as the value in the -i option::
-
-    fab -H 33.33.33.10 -u vagrant -i /usr/share/vagrant/keys/vagrant create_users
-    fab vagrant setup_server:all
-    fab vagrant deploy
-    fab vagrant syncdb
-
-When prompted, do not make a superuser during the syncdb, but do make a site.
-To make a superuser, you'll need to run
-```fab vagrant manage_run:createsuperuser```
-
-It is not necessary to reconfigure the SSH settings on the vagrant box.
-
-The vagrant box forwards
-port 80 in the VM to port 8080 on the host box. You can view the site
-by visiting localhost:8080 in your browser.
-
-You may also want to add::
-
-    33.33.33.10 vagrant.raspberry.io
-
-to your hosts (/etc/hosts) file.
-
-You can stop the VM with ``vagrant halt`` and
-destroy the box completely to retest the provisioning with ``vagrant destroy``.
-
-For more information please review the Vagrant documentation.
-
-
-Deployment
-------------------------
-
-For future deployments, you can deploy changes to a particular environment with
-the ``deploy`` command. This takes an optional branch name to deploy. If the branch
-is not given, it will use the default branch defined for this environment in
-``env.branch``::
-
-    fab staging deploy
-    fab staging deploy:new-feature
-
-New requirements or South migrations are detected by parsing the VCS changes and
-will be installed/run automatically.
-
-
-Testing
-------------------------
-
-The Raspberry I/O test suite only tests internal apps by default and prints a
-coverage report when complete. To run the test suite, assure you've installed
-the local development requirements as follows::
-
-    cd raspberryio
-    workon raspberryio
-    pip install -r requirements/dev.txt
-
-Run the test suite with::
-
-    django-admin.py test
+This code is licensed under the `Apache 2.0 License
+<http://www.apache.org/licenses/LICENSE-2.0.html>`_.
