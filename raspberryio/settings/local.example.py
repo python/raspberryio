@@ -2,7 +2,11 @@ import sys
 
 from raspberryio.settings.dev import *
 
-# Override settings here
+## Override settings here
+
+# Make this unique, and don't share it with anybody.
+SECRET_KEY = 'yv!hkvt&amp;k8dn^$*$&amp;lif)#ydw8zvk4iz93s8m+$x%eyg-!$n69'
+
 
 # Special test settings
 if 'test' in sys.argv:
