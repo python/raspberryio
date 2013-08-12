@@ -41,5 +41,6 @@ try:
     config = RawConfigParser()
     config.read(os.path.join(SECRETS_ROOT, 'settings.ini'))
     SUPERFEEDR_CREDS = json.loads(config.get('secrets', 'SUPERFEEDR_CREDS'))
+    SECRET_KEY = json.loads(config.get('secrets', 'SECRET_KEY'))
 except:
     pass
