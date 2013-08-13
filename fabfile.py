@@ -88,12 +88,11 @@ def create_users():
     user_dir = os.path.join(CONF_ROOT, "users")
     for username in os.listdir(user_dir):
         key_file = os.path.normpath(os.path.join(user_dir, username))
-        system.create_user(username, groups=['dev', 'login', ], key_file=key_file)
+        system.create_user(username, groups=['dev', 'login', 'admin', ], key_file=key_file)
         with open(key_file, 'rt') as f:
             ssh_key = f.read()
         # Add ssh key for project user
         files.append('%s/authorized_keys' % ssh_dir, ssh_key, use_sudo=True)
-    files.append(u'/etc/sudoers', r'%dev ALL=(ALL) NOPASSWD:ALL', use_sudo=True)
     sudo('chown -R %s:%s %s' % (env.project_user, env.project_user, ssh_dir))
 
 
