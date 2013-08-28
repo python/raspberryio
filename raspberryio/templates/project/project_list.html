@@ -12,43 +12,15 @@
         </form>
 
         {% if is_paginated %}
-            <div class="pagination pagination-large">
-                <ul>
-                    {% if page_obj.has_previous %}
-                        <li><a href="?page={{ page_obj.previous_page_number }}">&larr; Prev</a></li>
-                    {% endif %}
-                    {% for page_num in page_obj.paginator.page_range %}
-                        <li>
-                            <a href="?page={{ page_num }}">{{ page_num }}</a>
-                        </li>
-                    {% endfor %}
-                    {% if page_obj.has_next %}
-                        <li><a href="?page={{ page_obj.next_page_number }}">More &rarr;</a></li>
-                    {% endif %}
-                </ul>
-            </div>
+            {% include "includes/pagination.html" %}
         {% endif %}
 
         <div class="row">
             {% include 'includes/project-gallery.html' with projects=object_list %}
-    	</div> 
+    	</div>
 
         {% if is_paginated %}
-            <div class="pagination pagination-large">
-                <ul>
-                    {% if page_obj.has_previous %}
-                        <li><a href="?page={{ page_obj.previous_page_number }}">&larr; Prev</a></li>
-                    {% endif %}
-                    {% for page_num in page_obj.paginator.page_range %}
-                        <li>
-                            <a href="?page={{ page_num }}">{{ page_num }}</a>
-                        </li>
-                    {% endfor %}
-                    {% if page_obj.has_next %}
-                        <li><a href="?page={{ page_obj.next_page_number }}">More &rarr;</a></li>
-                    {% endif %}
-                </ul>
-            </div>
+            {% include "includes/pagination.html" %}
         {% endif %}
 
     {% endcache %}

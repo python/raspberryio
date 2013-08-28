@@ -6,16 +6,21 @@
 {% block title %}{{ user.username }}{% endblock %}
 {% block body_id %}user-listing{% endblock %}
 
-{% block main%}
+{% block main %}
 <header>
     <div class="row">
         <div class="nav-actions span12">
             <a class="{% if "following" in request.get_full_path %}active{% endif %}" href="{% url 'profile-related' username=user relation='following' %}">Following</a>
-            <a class=" {% if "followers" in request.get_full_path %}active{% endif %}" href="{% url 'profile-related' username=user relation='followers' %}">Followers</a> 
+            <a class=" {% if "followers" in request.get_full_path %}active{% endif %}" href="{% url 'profile-related' username=user relation='followers' %}">Followers</a>
         </div>
     </div>
 </header>
-<div class="user-list">
+
+{% if related_users.has_other_pages %}
+    {% include "includes/pagination.html" with page_obj=related_users %}
+{% endif %}
+
+<div class="row user-list">
     <ul>
         {% for related_user in related_users %}
             {% if related_user %}
@@ -25,8 +30,8 @@
                         {% avatar profile 150 %}
                     {% endwith %}
                     </a>
-                    
-                    <div class="userinfo">  
+
+                    <div class="userinfo">
                         <p><a class="username" href="{{ related_user.get_absolute_url }}">{{ related_user.username }}</a></p>
                         {% include 'includes/relationship-status.html' with profile_user=related_user %}
                     </div>
@@ -34,8 +39,12 @@
             {% endif %}
         {% endfor %}
     </ul>
-{% endblock %}
 </div>
+
+{% if related_users.has_other_pages %}
+    {% include "includes/pagination.html" with page_obj=related_users %}
+{% endif %}
+{% endblock %}
 
 {% block extra_js %}
     <script src="{{ STATIC_URL }}js/update_relationship.min.js"></script>
