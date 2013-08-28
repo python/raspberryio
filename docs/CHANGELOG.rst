@@ -4,7 +4,7 @@ Raspberry IO Changelog
 Version 0.3 (Unreleased)
 ------------------------
 
-*
+* Improve pagination throughout site
 
 
 Version 0.2 - Open Source Release (2013-08-06)
