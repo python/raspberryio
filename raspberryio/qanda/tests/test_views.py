@@ -19,7 +19,7 @@ class QuestionListViewTestCase(ViewTestMixin, QandaBaseTestCase):
         question3 = self.create_question()
         expected_questions = set([question1, question2, question3])
         response = self.client.get(self.url)
-        result_questions = response.context['questions']
+        result_questions = response.context['question_list']
         self.assertEqual(set(result_questions), expected_questions)
 
 
