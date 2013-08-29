@@ -5,8 +5,9 @@ Version 0.3 (Unreleased)
 ------------------------
 
 * Add DISQUS comments to project detail page
-* Fabfile fixes
+* Add link to RaspberryIO Twitter account
 * Improve pagination throughout site
+* Fabfile fixes
 
 
 Version 0.2 - Open Source Release (2013-08-06)
