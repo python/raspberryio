@@ -44,3 +44,6 @@ try:
     SECRET_KEY = json.loads(config.get('secrets', 'SECRET_KEY'))
 except:
     pass
+
+# Disqus
+DISQUS_SHORTNAME = 'raspberryio-staging'

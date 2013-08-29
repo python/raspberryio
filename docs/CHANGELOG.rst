@@ -4,6 +4,7 @@ Raspberry IO Changelog
 Version 0.3 (Unreleased)
 ------------------------
 
+* Add DISQUS comments to project detail page
 * Fabfile fixes
 * Improve pagination throughout site
 

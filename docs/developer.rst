@@ -88,3 +88,16 @@ this flattened representation of the latest revision in its own table,
 and should be used in the future for any other models with a similar
 structure. Using something in MPTT or similar might be better than the
 current "flatten and copy" behavior, but this is what we have for now.
+
+Comments:
+---------
+
+We use `Disqus <http://disqus.com/>`_ to allow users to comment on
+individual projects. The ``DISQUS_HOSTNAME`` (in Django settings) is
+set to ``http://raspberry.io` so that non-production sites can see the
+commenting functionality. ``DISQUS_SHORTNAME`` is set to
+``raspberryio`` for production and ``raspberryio-staging`` for the
+staging site. If local developers wish to test commenting for some
+reason, then they should create a DISQUS account, set up a new
+shortname and use that for ``DISQUS_SHORTNAME`` in
+``raspberryio.settings.base``.
