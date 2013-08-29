@@ -18,24 +18,15 @@
 </header>
 
 {% if is_paginated %}
-    <div class="pagination pagination-large">
-        <ul>
-          {% if page_obj.has_next %}
-            <li><a href="?page={{ page_obj.next_page_number }}">&larr; Older post</a></li>
-          {% endif %}
-          {% if page_obj.has_previous %}
-            <li><a href="?page={{ page_obj.previous_page_number }}">Newer posts &rarr;</a></li>
-          {% endif %}
-        </ul>
-    </div>
+    {% include "includes/pagination.html" %}
 {% endif %}
 
-<div class="item-list"> 
+<div class="item-list">
     {% for item in object_list %}
         <article>
             <section>
                 <a href="{{ item.link }}"><h4>{{ item.title }}</h4></a>
-                <p>Posted on {{ item.date_modified|date:"F j, Y" }} at {{ item.date_modified|date:"g:i A" }} by 
+                <p>Posted on {{ item.date_modified|date:"F j, Y" }} at {{ item.date_modified|date:"g:i A" }} by
                     <a class="rss" href="{{ item.feed.feed_url }}">
                         {{ item.feed.title }}
                         <img src="{{ STATIC_URL }}img/feed-icon.png" width="15">
@@ -49,16 +40,7 @@
 </div>
 
 {% if is_paginated %}
-    <div class="pagination pagination-large">
-        <ul>
-          {% if page_obj.has_next %}
-            <li><a href="?page={{ page_obj.next_page_number }}">&larr; Older post</a></li>
-          {% endif %}
-          {% if page_obj.has_previous %}
-            <li><a href="?page={{ page_obj.previous_page_number }}">Newer posts &rarr;</a></li>
-          {% endif %}
-        </ul>
-    </div>
+    {% include "includes/pagination.html" %}
 {% endif %}
 
 {% endblock %}

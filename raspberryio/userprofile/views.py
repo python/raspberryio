@@ -50,6 +50,17 @@ def profile_related_list(request, username, relation):
         related_users = models.followers(user)
     elif relation == 'following':
         related_users = models.following(user)
+
+    paginator = Paginator(related_users, 20)
+    page = request.GET.get('page')
+    try:
+        related_users = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        related_users = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        related_users = paginator.page(paginator.num_pages)
     return render(request, "accounts/account_profile_related.html", {
         'user': user,
         'profile': profile,
