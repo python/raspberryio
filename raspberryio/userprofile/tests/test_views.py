@@ -46,6 +46,14 @@ class RelationshipTestCase(RaspberryIOBaseTestCase):
         related_users = len(response.context['related_users'])
         self.assertEqual(related_users, self.user.follow_set.all().count())
 
+    def test_paginator_out_of_range(self):
+        # if page# is > max, then show last page
+        follow(self.user, self.user1)
+        url = self.get_url_args(self.user, 'following')
+        response = self.client.get(url, {'page': '9999'})
+        related_users = response.context['related_users']
+        self.assertEqual(len(related_users), self.user.follow_set.all().count())
+
 
 class DashboardTestCase(ProjectBaseTestCase):
     url_name = 'profile-dashboard'
@@ -99,3 +107,33 @@ class ActiveUsersTestCase(RaspberryIOBaseTestCase):
         response = self.client.get(self.url)
         users = response.context['users']
         self.assertEqual(len(users), User.objects.filter(is_active=True).count())
+
+    def test_paginator_out_of_range(self):
+        # if page# is > max, then show last page
+        response = self.client.get(self.url, {'page': '9999'})
+        users = response.context['users']
+        self.assertEqual(len(users), User.objects.all().count())
+
+
+class ActivityStreamTestCase(RaspberryIOBaseTestCase):
+    url_name = 'profile-actions'
+
+    def setUp(self):
+        self.user = self.create_user(data={'username': 'test', 'password': 'pwd'})
+        self.user1 = self.create_user(data={'username': 'test1', 'password': 'pwd'})
+
+    def get_url_args(self, user):
+        return reverse(self.url_name, args=(user,))
+
+    def test_empty_activity_stream(self):
+        url = self.get_url_args(self.user)
+        response = self.client.get(url)
+        actions = response.context['actions']
+        self.assertEqual(len(actions), 0)
+
+    def test_nonempty_activity_stream(self):
+        follow(self.user, self.user1)
+        url = self.get_url_args(self.user)
+        response = self.client.get(url)
+        actions = response.context['actions']
+        self.assertEqual(len(actions), 1)
