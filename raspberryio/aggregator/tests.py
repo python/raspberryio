@@ -2,8 +2,6 @@
 # https://docs.djangoproject.com/en/dev/topics/testing/#email-services
 from __future__ import absolute_import
 
-import datetime
-
 from mock import patch
 
 from django.conf import settings
@@ -12,7 +10,7 @@ from django.core import mail
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
-
+from django.utils.timezone import now
 from django_push.subscriber.models import SubscriptionManager
 
 from .management.commands import send_pending_approval_email
@@ -60,7 +58,7 @@ class AggregatorTests(TestCase):
             for feed in [self.approved_feed, self.denied_feed, self.pending_feed, self.defunct_feed]:
                 feed.save()
                 feed_item = models.FeedItem(feed=feed, title="%s Item" % feed.title, link=feed.public_url,
-                                     date_modified=datetime.datetime.now(), guid=feed.title)
+                                     date_modified=now(), guid=feed.title)
                 feed_item.save()
 
             self.client = Client()
