@@ -7,8 +7,18 @@ from raspberryio.project.forms import ProjectImageForm, ProjectStepForm
 class ProjectFormTestCase(ProjectBaseTestCase):
 
     def setUp(self):
+        self.request_factory = RequestFactory()
         self.project = self.create_project()
 
+    def test_placeholder_labels(self):
+        request = self.request_factory.get('/')
+        form = ProjectStepForm()
+        # first assert that label is shown
+        self.assertEqual(form.fields['title'].label, 'Title')
+        form.Meta.remove_labels = True
+        form = ProjectStepForm(request.GET, instance=self.project)
+        # now assert that Meta attribute removes it
+        self.assertEqual(form.fields['title'].label, '')
 
 class ProjectStepFormTestCase(ProjectBaseTestCase):
 
@@ -98,6 +108,16 @@ class ProjectStepFormTestCase(ProjectBaseTestCase):
             self.assertEqual(tuple(project_step.gallery.all()), project_images)
         else:
             self.fail('Form should be valid')
+
+    def test_bad_video_url(self):
+        post_data = {
+            'title': self.get_random_string(),
+            'content': self.get_random_string(),
+            'video': 'http://example.com/badurl',
+        }
+        request = self.request_factory.post('/', post_data)
+        form = ProjectStepForm(request.POST, instance=self.project_step)
+        self.assertFalse(form.is_valid())
 
 
 class ProjectImageFormTestCase(ProjectBaseTestCase):
