@@ -137,3 +137,21 @@ class ActivityStreamTestCase(RaspberryIOBaseTestCase):
         response = self.client.get(url)
         actions = response.context['actions']
         self.assertEqual(len(actions), 1)
+
+
+class LoginTestCase(RaspberryIOBaseTestCase):
+    url_name = 'login'
+
+    def setUp(self):
+        self.user = self.create_user(data={'username': 'test', 'password': 'right'})
+        self.url = reverse(self.url_name)
+
+    def test_login(self):
+        # try bad password first
+        response = self.client.post(self.url, {'username': 'test', 'password': 'wrong'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Invalid')
+        # now try right password
+        response = self.client.post(self.url, {'username': 'test', 'password': 'right'})
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, reverse('profile-dashboard'))
