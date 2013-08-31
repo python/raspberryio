@@ -15,6 +15,7 @@ from django_push.subscriber.models import SubscriptionManager
 
 from .management.commands import send_pending_approval_email
 from . import models
+from . import utils
 
 
 class MockResponse(object):
@@ -78,3 +79,17 @@ class AggregatorTests(TestCase):
         send_pending_approval_email.Command().handle_noargs()
         self.assertEqual(1, len(mail.outbox))
         self.assertEqual(mail.outbox[0].to, [self.user.email])
+
+    def test_feed_type_items(self):
+        # 4 items were created in our default feed_type in setUp
+        self.assertEqual(len(self.feed_type.items()), 4)
+
+    def test_unicode_method(self):
+        self.assertEqual(self.approved_feed.__unicode__(), 'Approved')
+
+
+class UtilsTests(TestCase):
+
+    def test_push_credentials(self):
+        settings.SUPERFEEDR_CREDS = ['testid', 'testsecret']
+        self.assertEqual(utils.push_credentials(''), ('testid', 'testsecret'))
