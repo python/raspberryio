@@ -8,6 +8,12 @@ class ProfileTestCase(RaspberryIOBaseTestCase):
         self.user = self.create_user()
         self.profile = self.user.get_profile()
 
+    def test_unicode_method(self):
+        self.assertEqual(self.profile.__unicode__(), self.user.username)
+
+    def test_absolute_url(self):
+        self.assertEqual(self.profile.get_absolute_url(), '/users/%s/' % self.user.username)
+
     def test_model_clean(self):
         "Ensure the twitter_id is stripped of the @ symbol during clean"
         self.profile.twitter_id = '@test'
@@ -25,4 +31,3 @@ class ProfileTestCase(RaspberryIOBaseTestCase):
                              feed_type=self.feed_type, owner=self.profile.user)
         self.approved_feed.save()
         self.assertTrue(self.profile.feed_owner)
-

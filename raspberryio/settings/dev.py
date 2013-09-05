@@ -31,7 +31,7 @@ SOUTH_TESTS_MIGRATE = True
 
 TEST_RUNNER = 'hilbert.test.CoverageRunner'
 
-DEFAULT_TEST_LABELS = ['project', 'userprofile', 'search', 'qanda']
+DEFAULT_TEST_LABELS = ['project', 'userprofile', 'search', 'qanda', 'aggregator', ]
 
 COVERAGE_MODULES = (
     'forms',
