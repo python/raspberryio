@@ -41,8 +41,6 @@ def login(request, template="accounts/account_login.html"):
 def profile_related_list(request, username, relation):
     "Render the list of a users folllowers or who the user is following"
     profile = get_object_or_404(Profile, user__username__iexact=username)
-    if profile.user.username != username:
-        return redirect(profile, permanent=True)
     user = profile.user
 
     # get a queryset of users described by this relationship
@@ -71,8 +69,6 @@ def profile_related_list(request, username, relation):
 def profile_actions(request, username):
     "Custom renderer for user profile activity stream"
     profile = get_object_or_404(Profile, user__username__iexact=username)
-    if profile.user.username != username:
-        return redirect(profile, permanent=True)
     user = profile.user
     return render(request, "accounts/account_profile_actions.html", {
         'user': user,

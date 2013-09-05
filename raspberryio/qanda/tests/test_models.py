@@ -11,6 +11,13 @@ class AnswerTestCase(QandaBaseTestCase):
             question=self.question, user=self.answer_user
         )
 
+    def test_unicode_method(self):
+        title = 'My title'
+        q = self.create_question(title=title)
+        a = self.create_answer(question=q)
+        self.assertEqual(q.__unicode__(), title)
+        self.assertEqual(a.__unicode__(), title)
+
     def test_default_score(self):
         self.assertEqual(self.answer.score, 0)
 

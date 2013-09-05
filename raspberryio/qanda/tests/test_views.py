@@ -6,6 +6,19 @@ from raspberryio.qanda.tests.base import QandaBaseTestCase
 from raspberryio.qanda.models import Question, Answer
 
 
+class IndexViewTestCase(ViewTestMixin, QandaBaseTestCase):
+    url_name = 'community-index'
+
+    def setUp(self):
+        super(IndexViewTestCase, self).setUp()
+
+    def test_index_page(self):
+        question = self.create_question()
+        response = self.client.get(self.url)
+        result = response.context['questions']
+        self.assertEqual(set(result), set([question]))
+
+
 class QuestionListViewTestCase(ViewTestMixin, QandaBaseTestCase):
     url_name = 'question-list'
 

@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.core.urlresolvers import reverse
 from django.test.client import RequestFactory
 
 from mezzanine.utils.timezone import now
@@ -42,6 +43,15 @@ class ProjectTestCase(ProjectBaseTestCase):
     def test_default_draft(self):
         self.assertEqual(self.project.status, CONTENT_STATUS_DRAFT)
 
+    def test_video_params(self):
+        # first test that garbage input doesn't work
+        self.assertEqual(self.project.embed_url, None)
+        # now test a real video URL
+        video_id = "6BbufUp_HNs"
+        video_url = "http://www.youtube.com/watch?v=%s" % video_id
+        project = self.create_project(featured_video=video_url)
+        self.assertEqual(project.video_id, video_id)
+        self.assertEqual(project.embed_url, 'http://www.youtube.com/embed/%s?wmode=transparent' % video_id)
 
 class ProjectStepTestCase(ProjectBaseTestCase):
 
@@ -117,3 +127,21 @@ class ProjectStepTestCase(ProjectBaseTestCase):
         self.assertEqual(project1_step1._order, 1)
         self.assertEqual(project2_step0._order, 0)
         self.assertEqual(project2_step1._order, 1)
+
+    def test_absolute_url(self):
+        self.assertEqual(self.project_step.get_absolute_url(),
+                         reverse('project-detail', args=[self.project.slug]))
+
+    def test_video_params(self):
+        # first test that garbage input doesn't work
+        self.assertEqual(self.project_step.embed_url, None)
+        # now test a real video URL
+        video_id = "6BbufUp_HNs"
+        video_url = "http://www.youtube.com/watch?v=%s" % video_id
+        project_step = self.create_project_step(video=video_url)
+        self.assertEqual(project_step.video_id, video_id)
+        self.assertEqual(project_step.embed_url, 'http://www.youtube.com/embed/%s?wmode=transparent' % video_id)
+
+    def test_unicode_method(self):
+        unicode = 'Step %d of project %s' % (self.project_step._order, self.project.title)
+        self.assertEqual(self.project_step.__unicode__(), unicode)
