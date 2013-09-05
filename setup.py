@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='raspberryio',
-    version='0.2',
+    version='0.3',
     packages=['raspberryio', 'raspberryio.aggregator', 'raspberryio.project',
               'raspberryio.qanda', 'raspberryio.search',
               'raspberryio.search_models', 'raspberryio.userprofile'],

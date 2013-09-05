@@ -1,7 +1,7 @@
 Raspberry IO Changelog
 ======================
 
-Version 0.3 (Unreleased)
+Version 0.3 (2013-09-05)
 ------------------------
 
 * Improve coverage to near 100% (excepting aggregator)
