@@ -21,3 +21,6 @@ except:
     pass
 
 EMAIL_SUBJECT_PREFIX = '[Raspberryio Prod] '
+
+# Disqus
+DISQUS_SHORTNAME = 'raspberryio'

@@ -4,6 +4,8 @@ Raspberry IO Changelog
 Version 0.3 (Unreleased)
 ------------------------
 
+* Improve coverage to near 100% (excepting aggregator)
+* Add DISQUS comments to project detail page
 * Add link to RaspberryIO Twitter account
 * Improve pagination throughout site
 * Fabfile fixes
