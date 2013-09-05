@@ -2,6 +2,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.models import Site
+from django.views.generic.list_detail import object_list
 
 from hilbert.decorators import ajax_only
 from mezzanine.utils.sites import current_site_id
@@ -29,9 +30,8 @@ def index(request):
 @cache_on_auth(60 * 2)
 def question_list(request):
     questions = Question.objects.all()
-    return render(request, 'qanda/question_list.html', {
-        'questions': questions,
-    })
+    return object_list(request, queryset=questions, paginate_by=20,
+                       template_object_name='question')
 
 
 def question_detail(request, question_slug):

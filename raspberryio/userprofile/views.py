@@ -41,8 +41,6 @@ def login(request, template="accounts/account_login.html"):
 def profile_related_list(request, username, relation):
     "Render the list of a users folllowers or who the user is following"
     profile = get_object_or_404(Profile, user__username__iexact=username)
-    if profile.user.username != username:
-        return redirect(profile, permanent=True)
     user = profile.user
 
     # get a queryset of users described by this relationship
@@ -50,6 +48,17 @@ def profile_related_list(request, username, relation):
         related_users = models.followers(user)
     elif relation == 'following':
         related_users = models.following(user)
+
+    paginator = Paginator(related_users, 20)
+    page = request.GET.get('page')
+    try:
+        related_users = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        related_users = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        related_users = paginator.page(paginator.num_pages)
     return render(request, "accounts/account_profile_related.html", {
         'user': user,
         'profile': profile,
@@ -60,8 +69,6 @@ def profile_related_list(request, username, relation):
 def profile_actions(request, username):
     "Custom renderer for user profile activity stream"
     profile = get_object_or_404(Profile, user__username__iexact=username)
-    if profile.user.username != username:
-        return redirect(profile, permanent=True)
     user = profile.user
     return render(request, "accounts/account_profile_actions.html", {
         'user': user,

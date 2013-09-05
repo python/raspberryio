@@ -2,8 +2,6 @@
 # https://docs.djangoproject.com/en/dev/topics/testing/#email-services
 from __future__ import absolute_import
 
-import datetime
-
 from mock import patch
 
 from django.conf import settings
@@ -12,11 +10,12 @@ from django.core import mail
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
-
+from django.utils.timezone import now
 from django_push.subscriber.models import SubscriptionManager
 
 from .management.commands import send_pending_approval_email
 from . import models
+from . import utils
 
 
 class MockResponse(object):
@@ -60,7 +59,7 @@ class AggregatorTests(TestCase):
             for feed in [self.approved_feed, self.denied_feed, self.pending_feed, self.defunct_feed]:
                 feed.save()
                 feed_item = models.FeedItem(feed=feed, title="%s Item" % feed.title, link=feed.public_url,
-                                     date_modified=datetime.datetime.now(), guid=feed.title)
+                                     date_modified=now(), guid=feed.title)
                 feed_item.save()
 
             self.client = Client()
@@ -80,3 +79,17 @@ class AggregatorTests(TestCase):
         send_pending_approval_email.Command().handle_noargs()
         self.assertEqual(1, len(mail.outbox))
         self.assertEqual(mail.outbox[0].to, [self.user.email])
+
+    def test_feed_type_items(self):
+        # 4 items were created in our default feed_type in setUp
+        self.assertEqual(len(self.feed_type.items()), 4)
+
+    def test_unicode_method(self):
+        self.assertEqual(self.approved_feed.__unicode__(), 'Approved')
+
+
+class UtilsTests(TestCase):
+
+    def test_push_credentials(self):
+        settings.SUPERFEEDR_CREDS = ['testid', 'testsecret']
+        self.assertEqual(utils.push_credentials(''), ('testid', 'testsecret'))

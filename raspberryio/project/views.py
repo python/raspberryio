@@ -5,6 +5,7 @@ from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required
 from django.views.generic.list_detail import object_list
 from django.core.cache import cache
+from django.conf import settings
 
 from actstream import action
 
@@ -39,6 +40,8 @@ def project_detail(request, project_slug):
         raise Http404('There is no project here')
     return render(request, 'project/project_detail.html', {
         'project': project,
+        'DISQUS_SHORTNAME': settings.DISQUS_SHORTNAME,
+        'DISQUS_HOSTNAME': settings.DISQUS_HOSTNAME,
     })
 
 

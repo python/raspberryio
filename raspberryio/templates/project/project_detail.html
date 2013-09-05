@@ -3,6 +3,7 @@
 {% load url from future %}
 {% load cache %}
 
+{% block meta_title %}{{ project.title }}{% endblock %}
 {% block body_id %}project-detail{% endblock %}
 
 {% block main %}
@@ -169,6 +170,11 @@
             </div>
         </div>
     {% endfor %}
+
+    <h2>Comments</h2>
+    <div id="disqus_thread"></div>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
 {% endblock %}
 
 {% block extra_js %}
@@ -226,4 +232,17 @@
             });
         });
     </script>
+    <script type="text/javascript">
+        var disqus_shortname = '{{ DISQUS_SHORTNAME }}';
+        var disqus_identifier = '{{ project.pk }}';
+        var disqus_url = '{{ DISQUS_HOSTNAME }}{{request.path}}';
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 {% endblock %}

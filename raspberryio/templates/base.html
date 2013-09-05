@@ -10,7 +10,7 @@
     <meta name="description" content="{% block meta_description %}{% endblock %}">
     {% block extra-meta %}{% endblock %}
 
-    <title>{% block meta_title %}{% endblock %} {% block site_title %}{{ settings.SITE_TITLE }}{% endblock %}</title>
+    <title>{% block meta_title %}{% endblock %} : {% block site_title %}{{ settings.SITE_TITLE }}{% endblock %}</title>
 
     <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico">
     <link rel="apple-touch-icon" href="{{ STATIC_URL }}img/apple-touch-icon.png">
@@ -168,7 +168,10 @@
                 </div>
                 <footer>
                     {% block footer %}
-                    &copy;{% now "Y" %} <a href="http://www.python.org/psf/">Python Software Foundation</a>
+                    <ul class="container">
+                      <li><a href="https://twitter.com/raspberryio" class="twitter-follow-button" data-show-count="false">Follow @raspberryio</a></li>
+                      <li>&copy;{% now "Y" %} <a href="http://www.python.org/psf/">Python Software Foundation</a></li>
+                    </ul>
                     {% page_menu "pages/menus/dropdown.html" %}
                     {% endblock %}
                 </footer>

@@ -12,16 +12,31 @@
     <p>Have a question about a Raspberry Pi project you are working on? Find or ask questions, plus submit answers too!</p>
     <a href="{% url 'question-create-edit' %}">Ask a question</a>
 </header>
-	
-{% if questions %}
+
+{% if question_list %}
 	<h3>Questions</h3>
+
+    {% if is_paginated %}
+      {% include "includes/pagination.html" %}
+    {% endif %}
+
     <ul>
-        {% for question in questions %}
-        <li><a href="{% url 'question' question.slug %}">{{ question.title }}</a></li>
-        {% endfor %}
+      {% for question in question_list %}
+        <li>
+          <a href="{% url 'question' question.slug %}">{{ question.title }}</a>
+          asked by <a href="{% url 'profile' question.user.username %}">{{ question.user.username }}</a>
+        ({{ question.answers.count }} replies)
+        </li>
+      {% endfor %}
     </ul>
+
+    {% if is_paginated %}
+      {% include "includes/pagination.html" with current_page=page_obj %}
+    {% endif %}
 {% else %}
 	<h3>No questions have been asked :(</h3>
 {% endif %}
+
+
 
 {% endblock %}
