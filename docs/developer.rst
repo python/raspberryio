@@ -100,4 +100,4 @@ commenting functionality. ``DISQUS_SHORTNAME`` is set to
 staging site. If local developers wish to test commenting for some
 reason, then they should create a DISQUS account, set up a new
 shortname and use that for ``DISQUS_SHORTNAME`` in
-``raspberryio.settings.base``.
+``raspberryio.settings.local``.
