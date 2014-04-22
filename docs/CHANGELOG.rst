@@ -1,10 +1,10 @@
 Raspberry IO Changelog
 ======================
 
-Version 0.4 (Unreleased)
+Version 0.4 (2014-04-22)
 ------------------------
 
-*
+* Bumped Django version to 1.4.11 for security relase.
 
 
 Version 0.3 (2013-09-05)
